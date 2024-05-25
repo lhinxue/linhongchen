@@ -1,9 +1,32 @@
-import {a, useTransition} from "@react-spring/web";
+import { animated, useSpring, useTransition } from "@react-spring/web";
 import PropTypes from "prop-types";
-import {forwardRef, useEffect, useImperativeHandle, useMemo, useState} from "react";
+import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import useMeasure from "react-use-measure";
 import utils from "../../utils";
-import styles from "./style.module.css";
+import styled from "styled-components";
+
+const Back = styled.div``;
+
+const List = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    & > div {
+        position: absolute;
+        will-change: transform, width, height, opacity;
+        height: 33%;
+        width: 33%;
+
+        & > div {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+    }
+`;
 
 const SquareImagePuzzle = forwardRef(
     (
@@ -16,13 +39,15 @@ const SquareImagePuzzle = forwardRef(
         },
         ref
     ) => {
-        const [containerRef, {width, height}] = useMeasure();
-        const [padding, setPadding] = useState(gap * (width + height) / 200);
-        const [borderRadius, setBorderRadius] = useState('0.5rem');
+        const [themeColor, setThemeColor] = useState("#FFFFFF");
+        const [containerRef, { width, height }] = useMeasure();
+        const [padding, setPadding] = useState((gap * (width + height)) / 200);
+        const [borderRadius, setBorderRadius] = useState("0.5rem");
+
         const [isShuffling, setIsShuffling] = useState(true);
 
         const initItems = () => {
-            return Array.from({length: columns * columns}).map((_, i) => {
+            return Array.from({ length: columns * columns }).map((_, i) => {
                 const xPos = ((i % columns) * 100) / (columns - 1);
                 const yPos = (Math.floor(i / columns) * 100) / (columns - 1);
                 return {
@@ -60,21 +85,87 @@ const SquareImagePuzzle = forwardRef(
             return [gridItems];
         }, [columns, height, items, width, padding, borderRadius]);
 
+        const [boxShadowCSS, glow] = useSpring(() => ({
+            from: {
+                boxShadow: `0px 0px 6px 0px #AAAAAA`,
+            },
+        }));
+
+        const [outerCSS, outer] = useSpring(() => ({
+            from: {
+                boxShadow: `0px 0px 0px 0px ${themeColor}`,
+                opacity: 0,
+            },
+        }));
+        const [ctn, ctnapi] = useSpring(() => ({
+            from: {
+                opacity: 1,
+            },
+        }));
+
         const reset = () => {
             setPadding(0);
-            setBorderRadius('0');
+            setBorderRadius("0");
             setIsShuffling(false);
             setItems(utils.resetArrayPosition);
+            glow.start({
+                boxShadow: `0px 0px 0px 0px #FFFFFF`,
+                config: { duration: 3000 },
+            });
+            outer.start({
+                boxShadow: `0px 0px 10px 10px ${themeColor}FF`,
+
+                opacity: 1,
+                config: { duration: 500 },
+                delay: 3600,
+            });
+            ctnapi.start({
+                opacity: 0,
+                config: { duration: 500 },
+                delay: 3600,
+            });
         };
+
+        useEffect(() => {
+            utils.getImageThemeColor(src).then(setThemeColor);
+        }, [src]);
+
+        useEffect(() => {
+            outer.start({ boxShadow: `0px 0px 10px 10px ${themeColor}00`, config: { duration: 0 } });
+        }, [glow, themeColor]);
 
         const transitions = useTransition(gridItems, {
             key: (item) => item.index,
-            from: ({x, y, width, height, padding, borderRadius}) => ({x, y, width, height, padding, borderRadius, opacity: 0}),
-            enter: ({x, y, width, height, padding, borderRadius}) => ({x, y, width, height, padding, borderRadius, opacity: 1, immediate: true}),
-            update: ({x, y, width, height, padding, borderRadius}) => ({x, y, width, height, padding, borderRadius}),
-            leave: {height: 0, opacity: 0},
-            config: {mass: 5, tension: 400, friction: 150},
-            trail: 25
+            from: ({ x, y, width, height, padding, borderRadius }) => ({
+                x,
+                y,
+                width,
+                height,
+                padding,
+                borderRadius,
+                opacity: 0,
+            }),
+            enter: ({ x, y, width, height, padding, borderRadius }) => ({
+                x,
+                y,
+                width,
+                height,
+                padding,
+                borderRadius,
+                opacity: 1,
+                immediate: true,
+            }),
+            update: ({ x, y, width, height, padding, borderRadius }) => ({
+                x,
+                y,
+                width,
+                height,
+                padding,
+                borderRadius,
+            }),
+            leave: { height: 0, opacity: 0 },
+            config: { mass: 5, tension: 400, friction: 150 },
+            trail: 25,
         });
 
         useEffect(() => {
@@ -82,7 +173,7 @@ const SquareImagePuzzle = forwardRef(
             if (isShuffling) {
                 setItems(utils.shuffle);
                 t = setInterval(() => setItems(utils.shuffle), interval);
-                setBorderRadius('0.5rem');
+                setBorderRadius("0.5rem");
             }
             return () => clearInterval(t);
         }, [isShuffling, interval]);
@@ -92,40 +183,68 @@ const SquareImagePuzzle = forwardRef(
             setIsShuffling: (shuffling) => {
                 setIsShuffling(shuffling);
                 if (shuffling) {
-                    setPadding(gap * (width + height) / 200);
-                    setBorderRadius('0.5rem');
+                    setPadding((gap * (width + height)) / 200);
+                    setBorderRadius("0.5rem");
                 }
-            }
+            },
         }));
 
         useEffect(() => {
-            setPadding(gap * (width + height) / 200);
+            setPadding((gap * (width + height)) / 200);
         }, [gap, width, height]);
 
         return (
-            <div style={{width: `${size}vw`, height: `${size}vh`, maxWidth: `${size}vh`, maxHeight: `${size}vw`}}>
-                <div
-                    ref={containerRef}
-                    className={styles.list}
-                >
-                    {transitions((style, item) => (
-                        <a.div style={{...style, padding: style.padding.to((p) => p + 'px'), borderRadius: style.borderRadius}}>
-                            <div
+            <animated.div
+                style={{
+                    width: `${size}vw`,
+                    height: `${size}vh`,
+                    maxWidth: `${size}vh`,
+                    maxHeight: `${size}vw`,
+                    position: "relative",
+                }}
+            >
+                <animated.span style={{ ...ctn }}>
+                    <List ref={containerRef}>
+                        {transitions((style, item) => (
+                            <animated.div
                                 style={{
-                                    ...item.css,
-                                    width: '100%',
-                                    height: '100%',
-                                    borderRadius: 'inherit',
+                                    ...style,
+                                    padding: style.padding.to((p) => p + "px"),
+                                    borderRadius: style.borderRadius,
                                 }}
-                            />
-                        </a.div>
-                    ))}
-                </div>
-            </div>
+                            >
+                                <animated.div
+                                    style={{
+                                        ...item.css,
+                                        width: "100%",
+                                        height: "100%",
+                                        borderRadius: "inherit",
+                                        ...boxShadowCSS,
+                                    }}
+                                />
+                            </animated.div>
+                        ))}
+                    </List>
+                </animated.span>
+
+                <animated.div
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        width: "100%",
+                        height: "100%",
+                        backgroundImage: `url(${src})`,
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                        // borderRadius: "20rem",
+                        padding: padding,
+                        ...outerCSS,
+                    }}
+                ></animated.div>
+            </animated.div>
         );
     }
 );
-
 
 SquareImagePuzzle.displayName = "SquareImagePuzzle";
 

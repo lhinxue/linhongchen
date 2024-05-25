@@ -1,4 +1,4 @@
-export function resetArrayPosition(array) {
+export default function resetArrayPosition(array) {
     let arr = array.slice(); // Copy the array
     for (let i = 0; i < arr.length; i++) {
         while (i !== arr[i].index) {

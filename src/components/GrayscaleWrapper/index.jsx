@@ -15,12 +15,10 @@ const GrayscaleWrapper = ({ level, children, duration = 1000 }) => {
             await grayscale.start({ to: initialGrayscale, config: { duration } });
         };
         forceUpdateSpring();
-    }, [duration, initialGrayscale]);
+    }, [duration, grayscale, initialGrayscale]);
 
     return (
-        <animated.span style={{ filter: grayscale.to((value) => `grayscale(${value}%)`) }}>
-            {children}
-        </animated.span>
+        <animated.span style={{ filter: grayscale.to((value) => `grayscale(${value}%)`) }}>{children}</animated.span>
     );
 };
 
