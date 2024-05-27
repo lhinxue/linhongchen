@@ -4,6 +4,7 @@ import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "r
 import useMeasure from "react-use-measure";
 import utils from "../../utils";
 import styled from "styled-components";
+import shuffle from "../../utils/src/shuffle";
 
 const Back = styled.div``;
 
@@ -47,18 +48,20 @@ const SquareImagePuzzle = forwardRef(
         const [isShuffling, setIsShuffling] = useState(true);
 
         const initItems = () => {
-            return Array.from({ length: columns * columns }).map((_, i) => {
-                const xPos = ((i % columns) * 100) / (columns - 1);
-                const yPos = (Math.floor(i / columns) * 100) / (columns - 1);
-                return {
-                    index: i,
-                    css: {
-                        backgroundImage: `url(${src})`,
-                        backgroundPosition: `${xPos}% ${yPos}%`,
-                        backgroundSize: `${columns * 100}% ${columns * 100}%`,
-                    },
-                };
-            });
+            return shuffle(
+                Array.from({ length: columns * columns }).map((_, i) => {
+                    const xPos = ((i % columns) * 100) / (columns - 1);
+                    const yPos = (Math.floor(i / columns) * 100) / (columns - 1);
+                    return {
+                        index: i,
+                        css: {
+                            backgroundImage: `url(${src})`,
+                            backgroundPosition: `${xPos}% ${yPos}%`,
+                            backgroundSize: `${columns * 100}% ${columns * 100}%`,
+                        },
+                    };
+                })
+            );
         };
 
         const [items, setItems] = useState(initItems());
@@ -134,6 +137,7 @@ const SquareImagePuzzle = forwardRef(
 
         useEffect(() => {
             utils.getImageThemeColor(src).then(setThemeColor);
+            setItems(initItems());
         }, [src]);
 
         useEffect(() => {
@@ -177,7 +181,7 @@ const SquareImagePuzzle = forwardRef(
         useEffect(() => {
             let t;
             if (isShuffling) {
-                setItems(utils.shuffle);
+                // setItems(utils.shuffle);
                 t = setInterval(() => setItems(utils.shuffle), interval);
                 setBorderRadius("0.5rem");
             }
