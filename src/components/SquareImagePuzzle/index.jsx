@@ -33,7 +33,7 @@ const SquareImagePuzzle = forwardRef(
         {
             columns = 3,
             interval = 5000,
-            size = 80,
+            size = 300,
             src = "./Firefly.jpg",
             gap = 1, // default gap ratio in percentage
         },
@@ -87,7 +87,7 @@ const SquareImagePuzzle = forwardRef(
 
         const [boxShadowCSS, glow] = useSpring(() => ({
             from: {
-                boxShadow: `0px 0px 6px 0px #AAAAAA`,
+                boxShadow: `0px 0px 2px 0px #FFFFFFAA`,
             },
         }));
 
@@ -109,21 +109,27 @@ const SquareImagePuzzle = forwardRef(
             setIsShuffling(false);
             setItems(utils.resetArrayPosition);
             glow.start({
-                boxShadow: `0px 0px 0px 0px #FFFFFF`,
-                config: { duration: 3000 },
+                boxShadow: `0px 0px 6px 2px #FFFFFF`,
+                config: { duration: 1600 },
             });
             outer.start({
-                boxShadow: `0px 0px 10px 10px ${themeColor}FF`,
+                boxShadow: `0px 0px 6px 2px #FFFFFF`,
 
                 opacity: 1,
-                config: { duration: 500 },
-                delay: 3600,
+                config: { duration: 300 },
+                delay: 1800,
             });
             ctnapi.start({
                 opacity: 0,
-                config: { duration: 500 },
-                delay: 3600,
+                config: { duration: 300 },
+                delay: 2000,
             });
+            setTimeout(() => {
+                // glow.start({
+                //     boxShadow: `inset 0px 0px 10px 10px #FFFFFF`,
+                //     config: { duration: 200 },
+                // });
+            }, 1600);
         };
 
         useEffect(() => {
@@ -131,7 +137,7 @@ const SquareImagePuzzle = forwardRef(
         }, [src]);
 
         useEffect(() => {
-            outer.start({ boxShadow: `0px 0px 10px 10px ${themeColor}00`, config: { duration: 0 } });
+            outer.start({ boxShadow: `0px 0px 10px 0px $FFFFFF00`, config: { duration: 0 } });
         }, [glow, themeColor]);
 
         const transitions = useTransition(gridItems, {
@@ -164,7 +170,7 @@ const SquareImagePuzzle = forwardRef(
                 borderRadius,
             }),
             leave: { height: 0, opacity: 0 },
-            config: { mass: 5, tension: 400, friction: 150 },
+            config: { mass: 5, tension: 600, friction: 200 },
             trail: 25,
         });
 
@@ -196,10 +202,10 @@ const SquareImagePuzzle = forwardRef(
         return (
             <animated.div
                 style={{
-                    width: `${size}vw`,
-                    height: `${size}vh`,
-                    maxWidth: `${size}vh`,
-                    maxHeight: `${size}vw`,
+                    width: size,
+                    height: size,
+                    maxHeight: "80vw",
+                    maxWidth: "80vw",
                     position: "relative",
                 }}
             >
@@ -236,8 +242,9 @@ const SquareImagePuzzle = forwardRef(
                         backgroundImage: `url(${src})`,
                         backgroundPosition: "center",
                         backgroundSize: "cover",
-                        // borderRadius: "20rem",
                         padding: padding,
+                        zIndex: -1,
+
                         ...outerCSS,
                     }}
                 ></animated.div>
