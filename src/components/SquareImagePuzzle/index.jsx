@@ -112,11 +112,11 @@ const SquareImagePuzzle = forwardRef(
             setIsShuffling(false);
             setItems(utils.resetArrayPosition);
             glow.start({
-                boxShadow: `0px 0px 6px 2px #FFFFFF`,
+                boxShadow: `0px 0px 6px 2px ${themeColor}`,
                 config: { duration: 1600 },
             });
             outer.start({
-                boxShadow: `0px 0px 6px 2px #FFFFFF`,
+                boxShadow: `0px 0px 6px 2px ${themeColor}`,
 
                 opacity: 1,
                 config: { duration: 300 },
@@ -141,7 +141,7 @@ const SquareImagePuzzle = forwardRef(
         }, [src]);
 
         useEffect(() => {
-            outer.start({ boxShadow: `0px 0px 10px 0px $FFFFFF00`, config: { duration: 0 } });
+            outer.start({ boxShadow: `0px 0px 10px 0px ${themeColor}00`, config: { duration: 0 } });
         }, [glow, themeColor]);
 
         const transitions = useTransition(gridItems, {

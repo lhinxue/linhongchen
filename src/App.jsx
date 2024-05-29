@@ -5,12 +5,57 @@ import { useSpring, animated } from "@react-spring/web";
 import BlurredBackground from "./components/BlurredBackground";
 import usePortraitScreen from "./hooks/usePortraitScreen";
 import * as Icons from "@phosphor-icons/react";
-import { Button } from "@nextui-org/react";
+import { Button, Slider, cn } from "@nextui-org/react";
 import useImageTheme from "./hooks/useImageTheme";
+import styled from "styled-components";
 // import Button from "./components/Buttons/Button";
 
 const imageList = ["./Firefly.jpg", "./March7th.jpg"];
-
+function hexToHSL(hex) {
+    // Convert hex to RGB first
+    try {
+        let r = 0,
+            g = 0,
+            b = 0;
+        if (hex.length == 4) {
+            r = "0x" + hex[1] + hex[1];
+            g = "0x" + hex[2] + hex[2];
+            b = "0x" + hex[3] + hex[3];
+        } else if (hex.length == 7) {
+            r = "0x" + hex[1] + hex[2];
+            g = "0x" + hex[3] + hex[4];
+            b = "0x" + hex[5] + hex[6];
+        }
+        // Then to HSL
+        r /= 255;
+        g /= 255;
+        b /= 255;
+        let cmin = Math.min(r, g, b),
+            cmax = Math.max(r, g, b),
+            delta = cmax - cmin,
+            h = 0,
+            s = 0,
+            l = 0;
+        if (delta == 0) h = 0;
+        else if (cmax == r) h = ((g - b) / delta) % 6;
+        else if (cmax == g) h = (b - r) / delta + 2;
+        else h = (r - g) / delta + 4;
+        h = Math.round(h * 60);
+        if (h < 0) h += 360;
+        l = (cmax + cmin) / 2;
+        s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+        s = +(s * 100).toFixed(2);
+        l = +(l * 100).toFixed(2);
+        return [h, s + "%", l + "%"];
+    } catch (error) {
+        return [];
+    }
+}
+const HideAfter = styled.span`
+    &:after {
+        display: none;
+    }
+`;
 function App() {
     const [grayscale, setGrayscale] = useState(1);
     const ref = createRef();
@@ -23,21 +68,7 @@ function App() {
 
     return (
         <GrayscaleWrapper level={grayscale}>
-            {/* <div className="absolute ">
-                <Button aria-label="SetShuffle" onClick={() => ref.current.setIsShuffling(false)}>
-                    Start Shuffle
-                </Button>
-                <Button
-                    onClick={() => {
-                        setTimeout(() => setGrayscale(0), 500);
-                        ref.current.reset();
-                    }}
-                >
-                    reset
-                </Button>
-                <Slider step={0.1} maxValue={1} minValue={0} value={grayscale} onChange={setGrayscale} />
-            </div> */}
-            <div className="h-screen w-screen flex justify-center items-center">
+            <div className="h-screen w-screen flex justify-center items-center" color={themeColor}>
                 <BlurredBackground src={imageSrc} />
                 {/*  */}
                 <div
@@ -45,29 +76,55 @@ function App() {
                     style={{
                         width: width,
                         height: height,
+                        "--nextui-primary": hexToHSL(themeColor).join(" "),
                     }}
                 >
                     <SquareImagePuzzle ref={ref} size={width} src={imageSrc} />
-                    <div className="flex items-center gap-5">
-                        <Button isIconOnly radius="full" variant="bordered" size="sm" style={{ color: themeColor }}>
-                            <Icons.SkipBack weight="bold" />
-                        </Button>
-                        <Button
-                            isIconOnly
-                            radius="full"
-                            variant="bordered"
-                            size="lg"
-                            style={{ color: themeColor }}
-                            onClick={() => {
-                                setTimeout(() => setGrayscale(0), 500);
-                                ref.current.reset();
+                    <div className="flex flex-col w-full items-center gap-5">
+                        <Slider
+                            size="sm"
+                            classNames={{
+                                base: "max-w-md gap-3 opacity-50",
+                                thumb: "h-3",
                             }}
-                        >
-                            <Icons.Play weight="bold" />
-                        </Button>
-                        <Button isIconOnly radius="full" variant="bordered" size="sm" style={{ color: themeColor }}>
-                            <Icons.SkipForward weight="bold" onClick={() => nextImage()} />
-                        </Button>
+                            minValue={0}
+                            maxValue={100}
+                            defaultValue={100}
+                            renderThumb={(props) => <HideAfter {...props} />}
+                        />
+                        <div className="flex items-center gap-5">
+                            <Button
+                                isIconOnly
+                                radius="full"
+                                variant="bordered"
+                                size="sm"
+                                style={{ color: themeColor, borderColor: `${themeColor}AA` }}
+                            >
+                                <Icons.SkipBack weight="bold" />
+                            </Button>
+                            <Button
+                                isIconOnly
+                                radius="full"
+                                variant="bordered"
+                                size="lg"
+                                style={{ color: themeColor, borderColor: `${themeColor}AA` }}
+                                onClick={() => {
+                                    setTimeout(() => setGrayscale(0), 500);
+                                    ref.current.reset();
+                                }}
+                            >
+                                <Icons.Play weight="bold" />
+                            </Button>
+                            <Button
+                                isIconOnly
+                                radius="full"
+                                variant="bordered"
+                                size="sm"
+                                style={{ color: themeColor, borderColor: `${themeColor}AA` }}
+                            >
+                                <Icons.SkipForward weight="bold" onClick={() => nextImage()} />
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
