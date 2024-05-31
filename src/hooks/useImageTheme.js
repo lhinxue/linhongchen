@@ -1,37 +1,25 @@
 import { useEffect, useState } from "react";
 import utils from "../utils";
 
-const useImageTheme = (initialImageSrcList) => {
-    const [imageSrcList] = useState(initialImageSrcList);
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [themeColor, setThemeColor] = useState(null);
-    const [imageSrc, setImageSrc] = useState(imageSrcList[currentImageIndex]);
-
-    const getThemeColor = async (imageSrc) => {
-        try {
-            const themeColor = await utils.getImageThemeColor(imageSrc);
-            setThemeColor(themeColor);
-        } catch (error) {
-            console.error("Error processing image:", error);
-        }
-    };
+const useImageTheme = (srcList) => {
+    const [i, $i] = useState(0);
+    const [src, $src] = useState(srcList[0]);
+    const [themeColor, $themeColor] = useState(null);
 
     useEffect(() => {
-        getThemeColor(imageSrc);
-    }, [imageSrc]);
+        const newSrc = srcList[i];
+        utils.getImageThemeColor(newSrc).then($themeColor);
+        $src(newSrc);
+    }, [i, srcList]);
 
-    const nextImage = (random = true) => {
-        let newIndex;
-        if (random) {
-            newIndex = Math.floor(Math.random() * imageSrcList.length);
-        } else {
-            newIndex = (currentImageIndex + 1) % imageSrcList.length;
-        }
-        setCurrentImageIndex(newIndex);
-        setImageSrc(imageSrcList[newIndex]);
+    const next = () => {
+        $i((i) => (i + 1) % srcList.length);
+    };
+    const previous = () => {
+        $i((i) => (i + srcList.length - 1) % srcList.length);
     };
 
-    return [themeColor, imageSrc, setImageSrc, imageSrcList, nextImage];
+    return [themeColor, src, next, previous];
 };
 
 export default useImageTheme;

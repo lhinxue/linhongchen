@@ -56,22 +56,30 @@ const HideAfter = styled.span`
         display: none;
     }
 `;
+const Tryshi = styled.div`
+    & div,
+    & svg,
+    & button,
+    & span {
+        transition: color 0.8s ease-in-out, background-color 0.8s ease-in-out, border-color 0.8s ease-in-out,
+            border-inline-start-color 0.8s ease-in-out, fill 0.8s ease-in-out, background-image 0.8s ease-in-out;
+    }
+`;
 function App() {
     const [grayscale, setGrayscale] = useState(1);
     const ref = createRef();
-    const [themeColor, imageSrc, setImageSrc, imageSrcList, nextImage] = useImageTheme(imageList);
+    const [themeColor, imageSrc, nextImage, previousImage] = useImageTheme(imageList);
     const { width, height } = usePortraitScreen();
 
     useEffect(() => {
-        setImageSrc(imageList[0]);
+        // setImageSrc(imageList[0]);
     }, []);
 
     return (
         <GrayscaleWrapper level={grayscale}>
-            <div className="h-screen w-screen flex justify-center items-center" color={themeColor}>
-                <BlurredBackground src={imageSrc} />
+            <div className="h-screen w-screen flex justify-center items-center">
                 {/*  */}
-                <div
+                <Tryshi
                     className="flex justify-evenly items-center flex-col"
                     style={{
                         width: width,
@@ -79,6 +87,7 @@ function App() {
                         "--nextui-primary": hexToHSL(themeColor).join(" "),
                     }}
                 >
+                    <BlurredBackground src={imageSrc} />
                     <SquareImagePuzzle ref={ref} size={width} src={imageSrc} />
                     <div className="flex flex-col w-full items-center gap-5">
                         <Slider
@@ -91,6 +100,9 @@ function App() {
                             maxValue={100}
                             defaultValue={100}
                             renderThumb={(props) => <HideAfter {...props} />}
+                            style={{
+                                transition: "all 1s",
+                            }}
                         />
                         <div className="flex items-center gap-5">
                             <Button
@@ -99,8 +111,9 @@ function App() {
                                 variant="bordered"
                                 size="sm"
                                 style={{ color: themeColor, borderColor: `${themeColor}AA` }}
+                                onClick={previousImage}
                             >
-                                <Icons.SkipBack weight="bold" />
+                                <Icons.SkipBack weight="bold" fill={themeColor} />
                             </Button>
                             <Button
                                 isIconOnly
@@ -113,20 +126,21 @@ function App() {
                                     ref.current.reset();
                                 }}
                             >
-                                <Icons.Play weight="bold" />
+                                <Icons.Play weight="bold" fill={themeColor} />
                             </Button>
                             <Button
                                 isIconOnly
                                 radius="full"
                                 variant="bordered"
                                 size="sm"
+                                onClick={() => nextImage()}
                                 style={{ color: themeColor, borderColor: `${themeColor}AA` }}
                             >
-                                <Icons.SkipForward weight="bold" onClick={() => nextImage()} />
+                                <Icons.SkipForward weight="bold" fill={themeColor} />
                             </Button>
                         </div>
                     </div>
-                </div>
+                </Tryshi>
             </div>
         </GrayscaleWrapper>
     );

@@ -6,8 +6,6 @@ import utils from "../../utils";
 import styled from "styled-components";
 import shuffle from "../../utils/src/shuffle";
 
-const Back = styled.div``;
-
 const List = styled.div`
     position: relative;
     width: 100%;
@@ -44,6 +42,7 @@ const SquareImagePuzzle = forwardRef(
         const [containerRef, { width, height }] = useMeasure();
         const [padding, setPadding] = useState((gap * (width + height)) / 200);
         const [borderRadius, setBorderRadius] = useState("0.5rem");
+        const [isReset, $isReset] = useState(false);
 
         const [isShuffling, setIsShuffling] = useState(true);
 
@@ -55,7 +54,7 @@ const SquareImagePuzzle = forwardRef(
                     return {
                         index: i,
                         css: {
-                            backgroundImage: `url(${src})`,
+                            backgroundImage: `url(${src}?auto=compress&dpr=2&h=500&w=500)`,
                             backgroundPosition: `${xPos}% ${yPos}%`,
                             backgroundSize: `${columns * 100}% ${columns * 100}%`,
                         },
@@ -127,12 +126,7 @@ const SquareImagePuzzle = forwardRef(
                 config: { duration: 300 },
                 delay: 2000,
             });
-            setTimeout(() => {
-                // glow.start({
-                //     boxShadow: `inset 0px 0px 10px 10px #FFFFFF`,
-                //     config: { duration: 200 },
-                // });
-            }, 1600);
+            $isReset(true);
         };
 
         useEffect(() => {
@@ -141,8 +135,9 @@ const SquareImagePuzzle = forwardRef(
         }, [src]);
 
         useEffect(() => {
-            outer.start({ boxShadow: `0px 0px 10px 0px ${themeColor}00`, config: { duration: 0 } });
-        }, [glow, themeColor]);
+            if (isReset) outer.start({ boxShadow: `0px 0px 6px 2px ${themeColor}FF`, config: { duration: 1000 } });
+            else outer.start({ boxShadow: `0px 0px 6px 2px ${themeColor}00`, config: { duration: 0 } });
+        }, [glow, outer, themeColor]);
 
         const transitions = useTransition(gridItems, {
             key: (item) => item.index,
