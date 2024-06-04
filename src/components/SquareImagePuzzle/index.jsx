@@ -5,6 +5,7 @@ import useMeasure from "react-use-measure";
 import utils from "../../utils";
 import styled from "styled-components";
 import shuffle from "../../utils/src/shuffle";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 const List = styled.div`
     position: relative;
@@ -17,12 +18,16 @@ const List = styled.div`
         height: 33%;
         width: 33%;
 
+        & > div:hover {
+            filter: grayscale(0.5);
+        }
+
         & > div {
             position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            border-radius: 0.5rem;
+            ${'' /* border-radius: 5px; */}
         }
     }
 `;
@@ -38,8 +43,10 @@ const SquareImagePuzzle = forwardRef(
         },
         ref
     ) => {
+        const { width: windowWidth, height: windowHeight } = useWindowSize();
         const [themeColor, setThemeColor] = useState("#FFFFFF");
-        const [containerRef, { width, height }] = useMeasure();
+        const [containerRef, { width: containerWidth, height: containerHeight }] = useMeasure();
+        const [listRef, { width, height }] = useMeasure();
         const [padding, setPadding] = useState((gap * (width + height)) / 200);
         const [borderRadius, setBorderRadius] = useState("0.5rem");
         const [isReset, $isReset] = useState(false);
@@ -203,13 +210,16 @@ const SquareImagePuzzle = forwardRef(
                 style={{
                     width: size,
                     height: size,
-                    maxHeight: "80vw",
-                    maxWidth: "80vw",
-                    position: "relative",
+                    // maxHeight: "80vw",
+                    // maxWidth: "80vw",
+                    position: "fixed",
+                    top: (windowHeight - containerHeight) / 2,
+                    left: (windowWidth - containerWidth) / 2,
                 }}
+                ref={containerRef}
             >
                 <animated.span style={{ ...ctn }}>
-                    <List ref={containerRef}>
+                    <List ref={listRef}>
                         {transitions((style, item) => (
                             <animated.div
                                 style={{
