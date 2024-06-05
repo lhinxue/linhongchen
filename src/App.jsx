@@ -1,12 +1,14 @@
-import { Slider } from "@nextui-org/react";
+import { Button, Input, Slider } from "@nextui-org/react";
 import * as Icons from "@phosphor-icons/react";
-import { motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { createRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import BlurredBackground from "./components/BlurredBackground";
 import GrayscaleWrapper from "./components/GrayscaleWrapper";
 import useImageTheme from "./hooks/useImageTheme";
 import usePortraitScreen from "./hooks/usePortraitScreen";
+import SquareImagePuzzle from "./components/SquareImagePuzzle";
+import Elements from "./assets/svg/Elements";
 // import Button from "./components/Buttons/Button";
 
 const imageList = ["./Firefly.jpg", "./March7th.jpg"];
@@ -67,6 +69,39 @@ const Tryshi = styled.div`
     }
 `;
 
+const ElementsLoading = ({ value, gap = 200 }) => {
+    const numElements = Elements.length;
+    const animationControls = useAnimation();
+
+    useEffect(() => {
+        animationControls.start({ width: Math.floor(value / 10) * (1600 + gap) + 1600 * ((value % 10) / 10) });
+    }, [animationControls, gap, value]);
+
+    return (
+        <div style={{ width: `${numElements * 50}px`, height: "50px" }}>
+            <svg viewBox={`0 0 ${(1600 + gap) * 7} 1600`} width="100%" height="100%">
+                <defs>
+                    <mask id={`mask`}>
+                        <rect x="0" y="0" width="100%" height="100%" fill="black" />
+                        {Elements.map((E, i) => (
+                            <E key={i} fill="white" transform={`translate(${i * (1600 + gap)})`} />
+                        ))}
+                    </mask>
+                </defs>
+                <rect width="100%" height="100%" fill="#ccc" mask={`url(#mask)`} />
+                <motion.rect
+                    initial={{ width: 0 }}
+                    animate={animationControls}
+                    exit={{ width: 0 }}
+                    height="100%"
+                    fill="#000"
+                    mask={`url(#mask)`}
+                />
+            </svg>
+        </div>
+    );
+};
+
 const MusicNote = motion(Icons.MusicNoteSimple);
 function App() {
     const [grayscale, setGrayscale] = useState(1);
@@ -86,9 +121,17 @@ function App() {
         });
     };
     const [v, _v] = useState(0);
+    useEffect(() => {
+        setTimeout(() => {
+            _v(30);
+            setTimeout(() => {
+                _v(65);
+            }, 2000);
+        }, 1000);
+    }, []);
 
     return (
-        <GrayscaleWrapper level={grayscale}>
+        <GrayscaleWrapper level={0}>
             <div className="h-screen w-screen flex justify-center items-center">
                 {/*  */}
                 <Tryshi
@@ -99,23 +142,24 @@ function App() {
                         "--nextui-primary": hexToHSL(themeColor).join(" "),
                     }}
                 >
-                    <BlurredBackground src={imageSrc} />
-                    <AnimatedRectangles value={v} />
-                    <MusicNote
-                        initial={{ rotate: 10, height: 50, width: 100, color: "#666", scale: 1 }}
-                        animate={controls}
-                        transition={{ duration: 0.5 }}
-                        onClick={startAnimation}
-                    />
-                    <AnimatedRectangles value={v} reverse />
+                    {/* <BlurredBackground src={imageSrc} /> */}
+                    <ElementsLoading value={v} />
+
+                    <div className="flex flex-row items-center">
+                        {/* <AnimatedRectangles value={v} reverse /> */}
+                        {/* <MusicNote
+                            initial={{ rotate: 10, height: 50, width: 50, color: "#666", scale: 1 }}
+                            animate={controls}
+                            transition={{ duration: 0.5 }}
+                            onClick={startAnimation}
+                        /> */}
+                        {/* <AnimatedRectangles value={v} /> */}
+                    </div>
+                    {/* <Wave /> */}
                     <Slider
-                        size="sm"
-                        classNames={{
-                            base: "max-w-md gap-3 opacity-50",
-                            thumb: "h-3",
-                        }}
+                        size="lg"
                         minValue={0}
-                        maxValue={100}
+                        maxValue={70}
                         renderThumb={(props) => <HideAfter {...props} />}
                         style={{
                             transition: "all 1s",
@@ -123,6 +167,7 @@ function App() {
                         value={v}
                         onChange={_v}
                     />
+                    <Input value={v} onValueChange={_v} />
 
                     {/* <SquareImagePuzzle ref={ref} size={width} src={imageSrc} />
                     <div className="flex flex-col w-full items-center gap-5">
@@ -181,15 +226,33 @@ function App() {
         </GrayscaleWrapper>
     );
 }
+const Wave = () => {
+    const waveVariants = {
+        hidden: { d: "M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z" },
+        visible: { d: "M0,100 C150,50 350,150 500,100 L500,00 L0,0 Z" },
+    };
 
-const Rectangle = ({ d, active, color1, color2 }) => {
+    return (
+        <motion.svg width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <motion.path
+                stroke="black"
+                strokeWidth="3"
+                variants={waveVariants}
+                initial="hidden"
+                animate="visible"
+                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+            />
+        </motion.svg>
+    );
+};
+const Rectangle = ({ d, active, color1, color2, strokeWidth }) => {
     const color = active ? color2 : color1;
 
     return (
         <motion.path
             d={d}
             stroke={color}
-            strokeWidth="3"
+            strokeWidth={strokeWidth}
             fill="transparent"
             strokeLinecap={"round"}
             strokeLinejoin={"round"}
@@ -199,19 +262,33 @@ const Rectangle = ({ d, active, color1, color2 }) => {
     );
 };
 
-const AnimatedRectangles = ({ value, maxHeight = 20, numLines = 20, reverse = false }) => {
-    const rectangles = Array.from({ length: numLines }, (_, i) => i + 1);
+const AnimatedRectangles = ({
+    value,
+    maxHeight = 20,
+    maxWidth = 200,
+    numLines = 20,
+    reverse = false,
+    strokeWidth = 3,
+    gap = 5,
+}) => {
     const color1 = "#666";
     const color2 = "#fff";
-
+    numLines = Math.floor(maxWidth / (strokeWidth + gap));
+    const rectangles = Array.from({ length: numLines }, (_, i) => i + 1);
     return (
-        <svg viewBox={`-12 -${maxHeight + 5} ${numLines * (2 + 10) + 12} ${maxHeight * 2 + 10}`} height={maxHeight * 2}>
+        <svg
+            viewBox={`-${gap + strokeWidth} -${maxHeight + 5} ${(numLines + 1) * (strokeWidth + gap) + strokeWidth} ${
+                maxHeight * 2 + 10
+            }`}
+            height={maxHeight * 2}
+        >
             {rectangles.map((_, i) => (
                 <Rectangle
                     key={i}
                     color1={color1}
                     color2={color2}
-                    d={`M ${(i * numLines * (2 + 10)) / numLines} ${
+                    strokeWidth={strokeWidth}
+                    d={`M ${(i * numLines * (strokeWidth + gap)) / numLines} ${
                         -((reverse ? i : numLines - i) * maxHeight) / numLines
                     } V ${((reverse ? i : numLines - i) * maxHeight) / numLines}`}
                     active={value > (i / numLines) * 100}

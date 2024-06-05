@@ -1,4 +1,4 @@
-import { animated, useSpring, useTransition } from "@react-spring/web";
+import { motion, useAnimation } from "framer-motion";
 import PropTypes from "prop-types";
 import { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from "react";
 import useMeasure from "react-use-measure";
@@ -27,7 +27,7 @@ const List = styled.div`
             width: 100%;
             height: 100%;
             overflow: hidden;
-            ${'' /* border-radius: 5px; */}
+            ${"" /* border-radius: 5px; */}
         }
     }
 `;
@@ -76,8 +76,8 @@ const SquareImagePuzzle = forwardRef(
             let heights = new Array(columns).fill(0);
             let gridItems = items.map((child, i) => {
                 const column = heights.indexOf(Math.min(...heights));
-                const x = (width / columns) * column;
-                const y = (heights[column] += height / columns) - height / columns;
+                const x = (width / columns) * column - size / 2;
+                const y = (heights[column] += height / columns) - height / columns - size / 2;
                 const xPos = ((i % column) * 100) / (column - 1);
                 const yPos = (Math.floor(i / column) * 100) / (column - 1);
                 return {
@@ -94,44 +94,27 @@ const SquareImagePuzzle = forwardRef(
             return [gridItems];
         }, [columns, height, items, width, padding, borderRadius]);
 
-        const [boxShadowCSS, glow] = useSpring(() => ({
-            from: {
-                boxShadow: `0px 0px 2px 0px #FFFFFFAA`,
-            },
-        }));
-
-        const [outerCSS, outer] = useSpring(() => ({
-            from: {
-                boxShadow: `0px 0px 0px 0px ${themeColor}`,
-                opacity: 0,
-            },
-        }));
-        const [ctn, ctnapi] = useSpring(() => ({
-            from: {
-                opacity: 1,
-            },
-        }));
+        const boxShadowControls = useAnimation();
+        const outerControls = useAnimation();
+        const ctnControls = useAnimation();
 
         const reset = () => {
             setPadding(0);
             setBorderRadius("0");
             setIsShuffling(false);
             setItems(utils.resetArrayPosition);
-            glow.start({
+            boxShadowControls.start({
                 boxShadow: `0px 0px 6px 2px ${themeColor}`,
-                config: { duration: 1600 },
+                transition: { duration: 1.6 },
             });
-            outer.start({
+            outerControls.start({
                 boxShadow: `0px 0px 6px 2px ${themeColor}`,
-
                 opacity: 1,
-                config: { duration: 300 },
-                delay: 1800,
+                transition: { duration: 0.3, delay: 1.8 },
             });
-            ctnapi.start({
+            ctnControls.start({
                 opacity: 0,
-                config: { duration: 300 },
-                delay: 2000,
+                transition: { duration: 0.3, delay: 2 },
             });
             $isReset(true);
         };
@@ -142,48 +125,16 @@ const SquareImagePuzzle = forwardRef(
         }, [src]);
 
         useEffect(() => {
-            if (isReset) outer.start({ boxShadow: `0px 0px 6px 2px ${themeColor}FF`, config: { duration: 1000 } });
-            else outer.start({ boxShadow: `0px 0px 6px 2px ${themeColor}00`, config: { duration: 0 } });
-        }, [glow, outer, themeColor]);
-
-        const transitions = useTransition(gridItems, {
-            key: (item) => item.index,
-            from: ({ x, y, width, height, padding, borderRadius }) => ({
-                x,
-                y,
-                width,
-                height,
-                padding,
-                borderRadius,
-                opacity: 0,
-            }),
-            enter: ({ x, y, width, height, padding, borderRadius }) => ({
-                x,
-                y,
-                width,
-                height,
-                padding,
-                borderRadius,
-                opacity: 1,
-                immediate: true,
-            }),
-            update: ({ x, y, width, height, padding, borderRadius }) => ({
-                x,
-                y,
-                width,
-                height,
-                padding,
-                borderRadius,
-            }),
-            leave: { height: 0, opacity: 0 },
-            config: { mass: 5, tension: 600, friction: 200 },
-            trail: 25,
-        });
+            if (isReset) {
+                outerControls.start({ boxShadow: `0px 0px 6px 2px ${themeColor}FF`, transition: { duration: 1 } });
+            } else {
+                outerControls.start({ boxShadow: `0px 0px 6px 2px ${themeColor}00`, transition: { duration: 0 } });
+            }
+        }, [outerControls, themeColor, isReset]);
 
         useEffect(() => {
             let t;
             if (isShuffling) {
-                // setItems(utils.shuffle);
                 t = setInterval(() => setItems(utils.shuffle), interval);
                 setBorderRadius("0.5rem");
             }
@@ -204,61 +155,77 @@ const SquareImagePuzzle = forwardRef(
         useEffect(() => {
             setPadding((gap * (width + height)) / 200);
         }, [gap, width, height]);
-
-        return (
-            <animated.div
-                style={{
-                    width: size,
-                    height: size,
-                    // maxHeight: "80vw",
-                    // maxWidth: "80vw",
-                    position: "fixed",
-                    top: (windowHeight - containerHeight) / 2,
-                    left: (windowWidth - containerWidth) / 2,
-                }}
-                ref={containerRef}
-            >
-                <animated.span style={{ ...ctn }}>
-                    <List ref={listRef}>
-                        {transitions((style, item) => (
-                            <animated.div
-                                style={{
-                                    ...style,
-                                    padding: style.padding.to((p) => p + "px"),
-                                    borderRadius: style.borderRadius,
-                                }}
-                            >
-                                <animated.div
-                                    style={{
-                                        ...item.css,
-                                        width: "100%",
-                                        height: "100%",
-                                        borderRadius: "inherit",
-                                        ...boxShadowCSS,
-                                    }}
-                                />
-                            </animated.div>
-                        ))}
-                    </List>
-                </animated.span>
-
-                <animated.div
+        console.log(containerHeight, containerWidth);
+        if (size)
+            return (
+                <motion.div
                     style={{
-                        position: "absolute",
-                        top: 0,
-                        width: "100%",
-                        height: "100%",
-                        backgroundImage: `url(${src})`,
-                        backgroundPosition: "center",
-                        backgroundSize: "cover",
-                        padding: padding,
-                        zIndex: -1,
-
-                        ...outerCSS,
+                        width: size,
+                        height: size,
+                        position: "fixed",
+                        top: windowHeight / 2,
+                        left: windowWidth / 2,
                     }}
-                ></animated.div>
-            </animated.div>
-        );
+                    ref={containerRef}
+                >
+                    <motion.span initial={{ opacity: 1 }} animate={ctnControls}>
+                        <List ref={listRef}>
+                            {gridItems.map((item) => (
+                                <motion.div
+                                    key={item.index}
+                                    initial={{
+                                        x: item.x,
+                                        y: item.y,
+                                        width: item.width,
+                                        height: item.height,
+                                        opacity: 0,
+                                    }}
+                                    animate={{
+                                        x: item.x,
+                                        y: item.y,
+                                        width: item.width,
+                                        height: item.height,
+                                        opacity: 1,
+                                    }}
+                                    transition={{ type: "spring", stiffness: 100, damping: 40, mass: 5 }}
+                                    style={{
+                                        padding: item.padding + "px",
+                                        borderRadius: item.borderRadius,
+                                    }}
+                                >
+                                    <motion.div
+                                        style={{
+                                            ...item.css,
+                                            width: "100%",
+                                            height: "100%",
+                                            borderRadius: "none",
+                                        }}
+                                        initial={{ boxShadow: "0px 0px 2px 0px #FFFFFFAA" }}
+                                        animate={boxShadowControls}
+                                    />
+                                </motion.div>
+                            ))}
+                        </List>
+                    </motion.span>
+
+                    <motion.div
+                        style={{
+                            position: "absolute",
+                            top: -containerHeight / 2,
+                            left: -containerWidth / 2,
+                            width: "100%",
+                            height: "100%",
+                            backgroundImage: `url(${src})`,
+                            backgroundPosition: "center",
+                            backgroundSize: "cover",
+                            padding: padding,
+                            zIndex: -1,
+                        }}
+                        initial={{ boxShadow: `0px 0px 0px 0px ${themeColor}`, opacity: 0 }}
+                        animate={outerControls}
+                    ></motion.div>
+                </motion.div>
+            );
     }
 );
 
