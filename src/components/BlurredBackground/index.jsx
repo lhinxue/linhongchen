@@ -34,10 +34,11 @@ const BlackOverlay = styled.div`
     background-color: rgba(0, 0, 0, ${(props) => props.blackLevel});
 `;
 
-const BlurBackground = ({ src, level, blackLevel }) => {
+const BlurBackground = ({ src, level, blackLevel, children }) => {
     return (
         <BackgroundWrapper>
-            <BackgroundImage src={src} level={level} />
+            {src&&<BackgroundImage src={src} level={level} />}
+            {children}
             <BlackOverlay blackLevel={blackLevel} />
         </BackgroundWrapper>
     );

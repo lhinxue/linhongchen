@@ -6,4 +6,5 @@ export default {
     shuffle,
     resetArrayPosition,
     getImageThemeColor,
+    doNothing: ()=>{},
 };
