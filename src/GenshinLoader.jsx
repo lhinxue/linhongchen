@@ -6,6 +6,7 @@ import styled from "styled-components";
 const Container = styled.div`
     height: 50px;
     width: ${(props) => `${props.length * 50}px`};
+
     position: fixed;
 `;
 
@@ -21,13 +22,13 @@ function GenshinLoader({ value, gap = 200, active = true, fadeInDuration = 0.5, 
         active: {
             scale: 1,
             opacity: 1,
-            transition: { duration: fadeInDuration }
+            transition: { duration: fadeInDuration },
         },
         inactive: {
             scale: 1.2,
             opacity: 0,
-            transition: { duration: fadeOutDuration }
-        }
+            transition: { duration: fadeOutDuration },
+        },
     };
 
     return (
@@ -35,7 +36,7 @@ function GenshinLoader({ value, gap = 200, active = true, fadeInDuration = 0.5, 
             initial="active"
             animate={active ? "active" : "inactive"}
             variants={containerVariants}
-            style={{ height: '50px', width: `${numElements * 50}px`, position: 'fixed' }}
+            style={{ height: "50px", width: `${numElements * 50}px`, position: "fixed", maxWidth: "80vw" }}
         >
             <svg viewBox={`0 0 ${(1600 + gap) * 7} 1600`} width="100%" height="100%">
                 <defs>
@@ -46,13 +47,13 @@ function GenshinLoader({ value, gap = 200, active = true, fadeInDuration = 0.5, 
                         ))}
                     </mask>
                 </defs>
-                <rect width="100%" height="100%" fill="#ccc" mask={`url(#mask)`} />
+                <rect width="100%" height="100%" fill="#666" mask={`url(#mask)`} />
                 <motion.rect
                     initial={{ width: 0 }}
                     animate={animationControls}
                     exit={{ width: 0 }}
                     height="100%"
-                    fill="#000"
+                    fill="#fff"
                     mask={`url(#mask)`}
                 />
             </svg>

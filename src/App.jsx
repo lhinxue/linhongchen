@@ -12,6 +12,9 @@ import Elements from "./assets/svg/Elements";
 import Bg from "./Bg";
 import GenshinLoader from "./GenshinLoader";
 import VisibilityControl from "./VisibilityControl";
+import OpController from "./OpController";
+import AudioPlayer from "./AudioPlayer";
+
 // import Button from "./components/Buttons/Button";
 
 const imageList = ["./Firefly.jpg", "./March7th.jpg"];
@@ -113,19 +116,23 @@ function App() {
     }, [bgLoadCompleted]);
 
     const [elementLoaderVisible, setELV] = useState(true);
+    const [showBg, setsbg] = useState(false);
 
     useEffect(() => {
         if (preLoadTaskCompleted) {
             setTimeout(() => {
                 setELV(false);
-                
+                setsbg(true);
             }, 1000);
         }
     }, [preLoadTaskCompleted]);
 
+    const adplayer = useRef(null);
+
     return (
         <GrayscaleWrapper level={0}>
             {/* Control */}
+            <AudioPlayer ref={adplayer} />
             <Popover>
                 <PopoverTrigger>
                     <Button isIconOnly className="absolute" t>
@@ -161,35 +168,82 @@ function App() {
             </Popover>
 
             {/* Content */}
-
-            <Bg src={"bg (1).mp4"} level={bgProgress} onLoadComplete={() => setBgLoadCompleted(true)} />
-
-            <div className="h-screen w-screen flex justify-center items-center">
-                {/*  */}
-                <Tryshi
-                    className="flex justify-evenly items-center flex-col"
+            <OpController on={!showBg}>
+                <div
                     style={{
-                        width: width,
-                        height: height,
-                        "--nextui-primary": hexToHSL(themeColor).join(" "),
+                        position: "fixed",
+                        height: "100vh",
+                        width: "100vw",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                     }}
                 >
                     <GenshinLoader value={v} active={elementLoaderVisible} />
-                    {/* <BlurredBackground src={imageSrc} /> */}
+                </div>
+            </OpController>
 
-                    <div className="flex flex-row items-center">
-                        {/* <AnimatedRectangles value={v} reverse /> */}
-                        {/* <MusicNote
-                            initial={{ rotate: 10, height: 50, width: 50, color: "#666", scale: 1 }}
-                            animate={controls}
-                            transition={{ duration: 0.5 }}
-                            onClick={startAnimation}
-                        /> */}
-                        {/* <AnimatedRectangles value={v} /> */}
-                    </div>
-                    {/* <Wave /> */}
+            <OpController on={showBg}>
+                <Bg src={"bg (1).mp4"} level={bgProgress} onLoadComplete={() => setBgLoadCompleted(true)} />
 
-                    {/* <SquareImagePuzzle ref={ref} size={width} src={imageSrc} />
+                <div className="h-screen w-screen flex justify-center items-center">
+                    {/*  */}
+                    <Tryshi
+                        className="flex justify-evenly items-center flex-col"
+                        style={{
+                            width: width,
+                            height: height,
+                            "--nextui-primary": hexToHSL(themeColor).join(" "),
+                        }}
+                    >
+                        {/* <GenshinLoader value={v} active={elementLoaderVisible} /> */}
+                        {/* <BlurredBackground src={imageSrc} /> */}
+
+                        <div className="flex flex-row items-center">
+                            {/* <AnimatedRectangles value={v} reverse /> */}
+                            <div
+                                style={{
+                                    fontFamily: "Source Han Serif SC",
+                                    // fontWeight: 400,
+                                    fontSize: `${window.innerWidth / 8 > 100 ? 100 : window.innerWidth / 8}px`,
+                                    color: "white",
+                                    lineHeight: "1em",
+                                    textAlign: "center",
+                                    // letterSpacing: ".1em",
+                                    // fontVariantCaps: "small-caps",
+                                }}
+                            >
+                                <p>Lin·Hongchen</p>
+                                <Button
+                                    radius="full"
+                                    className="dark"
+                                    // size="lg"
+                                    variant="light"
+                                    style={{
+                                        // color: "white",
+                                        width: `${window.innerWidth / 6 > 100 ? 100 : window.innerWidth / 6}px`,
+                                        height: `${window.innerWidth / 6 > 100 ? 100 : window.innerWidth / 6}px`,
+                                    }}
+                                    isIconOnly
+                                    onClick={() => {
+                                        adplayer.current.play();
+                                    }}
+                                    // size={window.innerWidth / 8 > 80 ? 80 : window.innerWidth / 8}
+                                >
+                                    <span></span>
+                                    <Icons.MagnifyingGlass style={{ width: "60%", height: "60%" }} />
+                                    {/* <div>Know More</div> */}
+                                </Button>
+                                {/* <p >WELCOME</p>
+                            <p>TO MY</p>
+                            <p>W·O·R·L·D</p> */}
+                            </div>
+
+                            {/* <AnimatedRectangles value={v} /> */}
+                        </div>
+                        {/* <Wave /> */}
+
+                        {/* <SquareImagePuzzle ref={ref} size={width} src={imageSrc} />
                     <div className="flex flex-col w-full items-center gap-5">
                         <Slider
                             size="sm"
@@ -241,8 +295,9 @@ function App() {
                             </Button>
                         </div>
                     </div> */}
-                </Tryshi>
-            </div>
+                    </Tryshi>
+                </div>
+            </OpController>
         </GrayscaleWrapper>
     );
 }

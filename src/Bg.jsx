@@ -10,6 +10,8 @@ const Container = styled.div`
     height: 100vh;
     overflow: hidden;
     z-index: -1;
+    opacity: ${(props) => props.opacity};
+    transition: opacity 1.5s ease;
 `;
 
 const VdC = styled.span`
@@ -28,7 +30,7 @@ const Vdo = styled.video`
     object-fit: cover;
 `;
 
-function Bg({ src, level, onLoadComplete = utils.doNothing }) {
+function Bg({ src, level, opacity = 1, onLoadComplete = utils.doNothing }) {
     const videoRef = useRef(null);
 
     useEffect(() => {
@@ -74,7 +76,7 @@ function Bg({ src, level, onLoadComplete = utils.doNothing }) {
     }, [src]);
 
     return (
-        <Container>
+        <Container opacity={opacity}>
             <VdC size={level}>
                 <Vdo ref={videoRef} autoPlay muted controls={false} size={level} loop />
             </VdC>
