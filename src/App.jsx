@@ -2,7 +2,7 @@ import { Button, Input, Popover, PopoverContent, PopoverTrigger, Slider } from "
 import * as Icons from "@phosphor-icons/react";
 import { AnimatePresence, animate, motion, useAnimation } from "framer-motion";
 import { createRef, useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import BlurredBackground from "./components/BlurredBackground";
 import GrayscaleWrapper from "./components/GrayscaleWrapper";
 import useImageTheme from "./hooks/useImageTheme";
@@ -15,7 +15,62 @@ import VisibilityControl from "./VisibilityControl";
 import OpController from "./OpController";
 import AudioPlayer from "./AudioPlayer";
 
-// import Button from "./components/Buttons/Button";
+const bounce = keyframes`
+0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  0.4175%, 0.8325% {
+    -webkit-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+  }
+  1.25%, 2.0825%, 2.9175%, 3.75%, 4.5825% {
+    -webkit-transform: scale3d(1.15, 1.15, 1.15) rotate3d(0, 0, 1, 3deg);
+    transform: scale3d(1.15, 1.15, 1.15) rotate3d(0, 0, 1, 3deg);
+  }
+  1.6675%, 2.5%, 3.3325%, 4.1675% {
+    -webkit-transform: scale3d(1.15, 1.15, 1.15) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(1.15, 1.15, 1.15) rotate3d(0, 0, 1, -3deg);
+  }
+  7.5% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    -webkit-transform: none;
+    transform: none;
+  }
+  50.625% {
+    -webkit-transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
+    transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg);
+  }
+  51.25% {
+    -webkit-transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
+    transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg);
+  }
+  51.875% {
+    -webkit-transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
+    transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg);
+  }
+  52.5% {
+    -webkit-transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
+    transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg);
+  }
+  53.125% {
+    -webkit-transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
+    transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg);
+  }
+  54.1675% {
+    -webkit-transform: none;
+    transform: none;
+  }
+`;
+
+const BouncingSpan = styled.span`
+    cursor: pointer;
+    display: inline-block;
+    animation: ${bounce} 20s infinite 5s;
+`;
 
 const imageList = ["./Firefly.jpg", "./March7th.jpg"];
 function hexToHSL(hex) {
@@ -191,8 +246,8 @@ function App() {
                     <Tryshi
                         className="flex justify-evenly items-center flex-col"
                         style={{
-                            width: width,
-                            height: height,
+                            // width: width,
+                            // height: height,
                             "--nextui-primary": hexToHSL(themeColor).join(" "),
                         }}
                     >
@@ -203,27 +258,42 @@ function App() {
                             {/* <AnimatedRectangles value={v} reverse /> */}
                             <div
                                 style={{
-                                    fontFamily: "Source Han Serif SC",
+                                    fontFamily: "Bitter",
                                     // fontWeight: 400,
-                                    fontSize: `${window.innerWidth / 8 > 100 ? 100 : window.innerWidth / 8}px`,
+                                    fontSize: `${window.innerWidth / 9 > 70 ? 70 : window.innerWidth / 9}px`,
                                     color: "white",
-                                    lineHeight: "1em",
+                                    // lineHeight: "1em",
                                     textAlign: "center",
-                                    // letterSpacing: ".1em",
+                                    // letterSpacing: "-.05em",
                                     // fontVariantCaps: "small-caps",
                                 }}
                             >
-                                <p>Lin·Hongchen</p>
-                                <Button
-                                    radius="full"
-                                    className="dark"
-                                    // size="lg"
-                                    variant="light"
+                                <p
                                     style={{
-                                        // color: "white",
-                                        width: `${window.innerWidth / 6 > 100 ? 100 : window.innerWidth / 6}px`,
-                                        height: `${window.innerWidth / 6 > 100 ? 100 : window.innerWidth / 6}px`,
+                                        fontFamily: "Bitter",
                                     }}
+                                >
+                                    Hongchen Lin²¹
+                                </p>
+                                <BouncingSpan>
+                                    <p
+                                        style={{
+                                            fontSize: `${window.innerWidth / 10 > 50 ? 50 : window.innerWidth / 10}px`,
+                                        }}
+                                    >
+                                        →
+                                    </p>
+                                </BouncingSpan>
+
+                                {/* <Button
+                                    radius="full"
+                                    // size="lg"
+                                    variant="solid"
+                                    // style={{
+                                    //     // color: "white",
+                                    //     width: `${window.innerWidth / 6 > 100 ? 100 : window.innerWidth / 6}px`,
+                                    //     height: `${window.innerWidth / 6 > 100 ? 100 : window.innerWidth / 6}px`,
+                                    // }}
                                     isIconOnly
                                     onClick={() => {
                                         adplayer.current.play();
@@ -231,9 +301,10 @@ function App() {
                                     // size={window.innerWidth / 8 > 80 ? 80 : window.innerWidth / 8}
                                 >
                                     <span></span>
-                                    <Icons.MagnifyingGlass style={{ width: "60%", height: "60%" }} />
-                                    {/* <div>Know More</div> */}
-                                </Button>
+                                    <Icons.MagnifyingGlass />
+                                </Button> */}
+                                {/* <p>生命因何而沉睡？</p> */}
+
                                 {/* <p >WELCOME</p>
                             <p>TO MY</p>
                             <p>W·O·R·L·D</p> */}
