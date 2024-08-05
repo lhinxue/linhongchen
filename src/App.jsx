@@ -316,6 +316,7 @@ function App() {
 
                                 <div style={{ fontFamily: "'DINosaur Book', emoji" }}>
                                     <p>... Why does life slumber?</p>
+                                    <p>"Because... in the end, we will wake up from our dreams"</p>
                                     {/* <p>
                                         <em>Lin</em> is my father's name, <em>Hong</em> is my mother's family name.{" "}
                                         <em>Chen</em> means treasure. Together, I am the treasure of my parent.
