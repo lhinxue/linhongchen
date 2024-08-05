@@ -4,6 +4,11 @@
 
 @font-face {
     font-family: HanYiWenHei;
+    src: url('./SourceHanSansSC-Light.otf');
+}
+
+@font-face {
+    font-family: Genshin;
     src: url('./zh-cn.ttf');
 }
 
@@ -12,6 +17,15 @@
     src: url('./Bitter-Regular-5.otf');
 }
 
+@font-face {
+    font-family: NeonSans;
+    src: url('./NeonSans.woff2');
+}
+
+@font-face {
+    font-family: emoji;
+    src: url('./OpenMoji-color-colr0_svg.woff2');
+}
 
 html,
 body,

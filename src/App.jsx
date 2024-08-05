@@ -14,6 +14,8 @@ import GenshinLoader from "./GenshinLoader";
 import VisibilityControl from "./VisibilityControl";
 import OpController from "./OpController";
 import AudioPlayer from "./AudioPlayer";
+import { Pinyinspan } from "./styleddiv";
+import { useCustomWidth } from "./useFitSize";
 
 const bounce = keyframes`
 0% {
@@ -136,6 +138,10 @@ function App() {
     const ref = createRef();
     const [themeColor, imageSrc, nextImage, previousImage] = useImageTheme(imageList);
     const { width, height } = usePortraitScreen();
+    const { custWidth } = useCustomWidth();
+    const calcCustWidth = (scale = 1) => {
+        return (window.innerWidth / 9 > 70 ? 70 : window.innerWidth / 9) * scale;
+    };
 
     useEffect(() => {
         // setImageSrc(imageList[0]);
@@ -258,32 +264,113 @@ function App() {
                             {/* <AnimatedRectangles value={v} reverse /> */}
                             <div
                                 style={{
-                                    fontFamily: "Bitter",
+                                    fontFamily: "'DINosaur Book', emoji",
                                     // fontWeight: 400,
-                                    fontSize: `${window.innerWidth / 9 > 70 ? 70 : window.innerWidth / 9}px`,
+                                    maxWidth: "80vw",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "1em",
                                     color: "white",
                                     // lineHeight: "1em",
-                                    textAlign: "center",
+                                    // textAlign: "center",
                                     // letterSpacing: "-.05em",
                                     // fontVariantCaps: "small-caps",
                                 }}
                             >
-                                <p
-                                    style={{
-                                        fontFamily: "Bitter",
-                                    }}
-                                >
-                                    Hongchen Lin²¹
-                                </p>
-                                <BouncingSpan>
+                                <span>
                                     <p
                                         style={{
-                                            fontSize: `${window.innerWidth / 10 > 50 ? 50 : window.innerWidth / 10}px`,
+                                            fontSize: `${calcCustWidth() * 0.8}px`,
+                                            // marginBottom: "-.5em",
                                         }}
                                     >
-                                        →
+                                        Hello, I am
                                     </p>
-                                </BouncingSpan>
+                                    <p
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "wrap",
+                                            flexWrap: "wrap",
+                                            // gap: "1rem",
+                                        }}
+                                    >
+                                        <span style={{ fontSize: `${calcCustWidth()}px`, marginRight: ".3em" }}>
+                                            <em>Hongchen Lin</em>,
+                                        </span>
+                                        <span
+                                            style={{
+                                                fontSize: `${calcCustWidth()}px`,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                // justifyContent: "space-between",
+                                                // gap: "1rem",
+                                                // marginLeft: ".3em",
+                                            }}
+                                        >
+                                            <span style={{}}>
+                                                a <Pinyinspan pinyin={"PRESERVATION"}>Trailblazer</Pinyinspan>
+                                            </span>
+                                        </span>
+                                    </p>
+                                </span>
+
+                                <div style={{ fontFamily: "'DINosaur Book', emoji" }}>
+                                    <p>... Why does life slumber?</p>
+                                    {/* <p>
+                                        <em>Lin</em> is my father's name, <em>Hong</em> is my mother's family name.{" "}
+                                        <em>Chen</em> means treasure. Together, I am the treasure of my parent.
+                                    </p> */}
+                                    <p>23 years, 18900 days, I have been suffered on this</p>
+                                    {/* <p>{`Currently, I have ${
+                                        new Date().getFullYear() -
+                                        2000 -
+                                        (new Date().getMonth() + 1 < 11 ||
+                                        (new Date().getMonth() + 1 === 11 && new Date().getDate() < 30)
+                                            ? 1
+                                            : 0)
+                                    } years' experience living on this earth.`}</p>
+                                    <p>
+                                        "I believe in the inherent evil of human nature, I believe in the injustice of
+                                        the world, I believe that everything is meaningless. So then... why does life
+                                        fall into slumber?"
+                                    </p> */}
+                                </div>
+                                <div style={{ width: "fit-content" }}>
+                                    <span
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 5,
+                                            padding: "0 10px 3px 5px",
+                                        }}
+                                    >
+                                        <BouncingSpan>
+                                            <span
+                                                style={{
+                                                    fontSize: `${calcCustWidth() * 0.8}px`,
+                                                }}
+                                            >
+                                                <Icons.HandTap />
+                                            </span>
+                                        </BouncingSpan>
+                                        <span
+                                            style={{
+                                                fontSize: `${calcCustWidth() * 0.8}px`,
+                                            }}
+                                        >
+                                            {/* Welcome to My World */}
+                                        </span>
+                                    </span>
+
+                                    {/* <div
+                                        style={{
+                                            background: "white",
+                                            height: (custWidth) * 0.025,
+                                            borderRadius: "1em",
+                                            width: "100%",
+                                        }}
+                                    ></div> */}
+                                </div>
 
                                 {/* <Button
                                     radius="full"
