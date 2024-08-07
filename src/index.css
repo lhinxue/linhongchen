@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: HanYiWenHei;
-    src: url('./SourceHanSansSC-Light.otf');
+    font-family: SourceHanSansSC;
+    src: url('./SourceHanSansSC-Regular.otf');
 }
 
 @font-face {
@@ -25,6 +25,16 @@
 @font-face {
     font-family: emoji;
     src: url('./OpenMoji-color-colr0_svg.woff2');
+}
+
+@font-face {
+    font-family: DINO;
+    src: url('./DINosaur Bold.ttf');
+}
+
+@font-face {
+    font-family: DINext;
+    src: url('./DINNextW1G-Medium.otf');
 }
 
 html,

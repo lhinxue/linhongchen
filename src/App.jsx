@@ -1,4 +1,4 @@
-import { Button, Input, Popover, PopoverContent, PopoverTrigger, Slider } from "@nextui-org/react";
+import { Button, Input, Popover, PopoverContent, PopoverTrigger, Select, SelectItem, Slider } from "@nextui-org/react";
 import * as Icons from "@phosphor-icons/react";
 import { AnimatePresence, animate, motion, useAnimation } from "framer-motion";
 import { createRef, useEffect, useRef, useState } from "react";
@@ -16,6 +16,8 @@ import OpController from "./OpController";
 import AudioPlayer from "./AudioPlayer";
 import { Pinyinspan } from "./styleddiv";
 import { useCustomWidth } from "./useFitSize";
+import { useLang } from "./Context";
+import T from "./T";
 
 const bounce = keyframes`
 0% {
@@ -140,7 +142,7 @@ function App() {
     const { width, height } = usePortraitScreen();
     const { custWidth } = useCustomWidth();
     const calcCustWidth = (scale = 1) => {
-        return (window.innerWidth / 9 > 70 ? 70 : window.innerWidth / 9) * scale;
+        return (window.innerWidth / 9 > 50 ? 50 : window.innerWidth / 9) * scale;
     };
 
     useEffect(() => {
@@ -157,6 +159,8 @@ function App() {
     const [v, _v] = useState(0);
 
     const [taskCompletingProgress, setTaskCompletingProgress] = useState(0);
+
+    const [locale, setLocale, locales] = useLang();
 
     const [preLoadTaskCompleted, setPreLoadTaskCompleted] = useState(false);
     const [bgLoadCompleted, setBgLoadCompleted] = useState(false);
@@ -194,9 +198,11 @@ function App() {
         <GrayscaleWrapper level={0}>
             {/* Control */}
             <AudioPlayer ref={adplayer} />
+
+            {/* Controller */}
             <Popover>
                 <PopoverTrigger>
-                    <Button isIconOnly className="absolute" t>
+                    <Button isIconOnly className="absolute">
                         <Icons.Toolbox />
                     </Button>
                 </PopoverTrigger>
@@ -225,6 +231,15 @@ function App() {
                         value={bgProgress}
                         onChange={setBgProgress}
                     />
+                    <Select
+                        label="Language"
+                        selectedKeys={new Set([locale])}
+                        onSelectionChange={(v) => setLocale(Array.from(v)[0])}
+                    >
+                        {locales.map((l) => (
+                            <SelectItem key={l}>{l}</SelectItem>
+                        ))}
+                    </Select>
                 </PopoverContent>
             </Popover>
 
@@ -264,13 +279,14 @@ function App() {
                             {/* <AnimatedRectangles value={v} reverse /> */}
                             <div
                                 style={{
-                                    fontFamily: "'DINosaur Book', emoji",
+                                    fontFamily: "DINO, Genshin, emoji",
                                     // fontWeight: 400,
                                     maxWidth: "80vw",
                                     display: "flex",
                                     flexDirection: "column",
-                                    gap: "1em",
+                                    gap: "3em",
                                     color: "white",
+                                    textShadow: "0px 0px 3px #000",
                                     // lineHeight: "1em",
                                     // textAlign: "center",
                                     // letterSpacing: "-.05em",
@@ -280,22 +296,34 @@ function App() {
                                 <span>
                                     <p
                                         style={{
-                                            fontSize: `${calcCustWidth() * 0.8}px`,
+                                            fontSize: `${calcCustWidth() * 0.7}px`,
                                             // marginBottom: "-.5em",
                                         }}
                                     >
-                                        Hello, I am
+                                        <T c={{ jp: "こんにちは、私は", zh: "你好，我是", en: "Hello, I am" }} />
                                     </p>
                                     <p
                                         style={{
                                             display: "flex",
                                             flexDirection: "wrap",
                                             flexWrap: "wrap",
-                                            // gap: "1rem",
+                                            // gap: "2rem",
                                         }}
                                     >
                                         <span style={{ fontSize: `${calcCustWidth()}px`, marginRight: ".3em" }}>
-                                            <em>Hongchen Lin</em>,
+                                            <T
+                                                c={{
+                                                    jp: (
+                                                        <>
+                                                            <Pinyinspan pinyin={"リン"}>林</Pinyinspan>
+                                                            <Pinyinspan pinyin={"ホン"}>洪</Pinyinspan>
+                                                            <Pinyinspan pinyin={"チェン"}>琛</Pinyinspan>、
+                                                        </>
+                                                    ),
+                                                    zh: "林洪琛，",
+                                                    en: "Hongchen Lin,",
+                                                }}
+                                            />
                                         </span>
                                         <span
                                             style={{
@@ -308,33 +336,60 @@ function App() {
                                             }}
                                         >
                                             <span style={{}}>
-                                                a <Pinyinspan pinyin={"PRESERVATION"}>Trailblazer</Pinyinspan>
+                                                <span>
+                                                    <T c={{ zh: "一位", en: "a ", jp: "" }} />
+                                                </span>
+                                                {T({ zh: " ", jp: " ", en: "" })}
+                                                <Pinyinspan
+                                                    pinyin={T({
+                                                        jp: "仮面の愚者",
+                                                        zh: "假面愚者",
+                                                        en: "Masked   Fools",
+                                                    })}
+                                                >
+                                                    {T({ jp: "開拓者", zh: "开拓者", en: "Trailblazer" })}
+                                                </Pinyinspan>
+                                                {T({ zh: "。", jp: " です。", en: "." })}
                                             </span>
                                         </span>
                                     </p>
                                 </span>
 
-                                <div style={{ fontFamily: "'DINosaur Book', emoji" }}>
-                                    <p>... Why does life slumber?</p>
-                                    <p>"Because... in the end, we will wake up from our dreams"</p>
-                                    {/* <p>
-                                        <em>Lin</em> is my father's name, <em>Hong</em> is my mother's family name.{" "}
-                                        <em>Chen</em> means treasure. Together, I am the treasure of my parent.
-                                    </p> */}
-                                    <p>23 years, 18900 days, I have been suffered on this</p>
-                                    {/* <p>{`Currently, I have ${
-                                        new Date().getFullYear() -
-                                        2000 -
-                                        (new Date().getMonth() + 1 < 11 ||
-                                        (new Date().getMonth() + 1 === 11 && new Date().getDate() < 30)
-                                            ? 1
-                                            : 0)
-                                    } years' experience living on this earth.`}</p>
-                                    <p>
-                                        "I believe in the inherent evil of human nature, I believe in the injustice of
-                                        the world, I believe that everything is meaningless. So then... why does life
-                                        fall into slumber?"
-                                    </p> */}
+                                <div className="flex flex-col gap-2" style={{ fontFamily: "SourceHanSansSC, emoji" }}>
+                                    {T({
+                                        jp: (
+                                            <>
+                                                <p>
+                                                    すでに結末が決まっていたとしても、構うことはない。人には変えられないことがたくさんある……
+                                                </p>
+                                                <p>だが、その前に…結末に向かうまでにできることも、たくさんあるんだ。</p>
+                                                <p>そして「結末」は…それによってまったく異なる意味合いを見せる。</p>
+                                            </>
+                                        ),
+                                        zh: (
+                                            <>
+                                                <p>就算结局早已注定，那也无妨，人改变不了的事太多。</p>
+                                                <p>但在此之前，在走向结局的路上，我们能做的事同样很多。</p>
+                                                <p>而结局……也会因此展现截然不同的意义。</p>
+                                            </>
+                                        ),
+                                        en: (
+                                            <>
+                                                <p>
+                                                    Even if the ending has been predetermined, that's fine. There are
+                                                    countless things that humans cannot change.
+                                                </p>
+                                                <p>
+                                                    But before that, on the road towards the end, there are still many
+                                                    things that we can do.
+                                                </p>
+                                                <p>
+                                                    And because of this, the "end" will thus reveal a completely
+                                                    different meaning.
+                                                </p>
+                                            </>
+                                        ),
+                                    })}
                                 </div>
                                 <div style={{ width: "fit-content" }}>
                                     <span
