@@ -2,41 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-    font-family: SourceHanSansSC;
-    src: url('./SourceHanSansSC-Regular.otf');
-}
-
-@font-face {
-    font-family: Genshin;
-    src: url('./zh-cn.ttf');
-}
-
-@font-face {
-    font-family: Bitter;
-    src: url('./Bitter-Regular-5.otf');
-}
-
-@font-face {
-    font-family: NeonSans;
-    src: url('./NeonSans.woff2');
-}
-
-@font-face {
-    font-family: emoji;
-    src: url('./OpenMoji-color-colr0_svg.woff2');
-}
-
-@font-face {
-    font-family: DINO;
-    src: url('./DINosaur Bold.ttf');
-}
-
-@font-face {
-    font-family: DINext;
-    src: url('./DINNextW1G-Medium.otf');
-}
-
 html,
 body,
 #root {
@@ -44,9 +9,27 @@ body,
     width: 100%;
     margin: 0;
     padding: 0;
-    background-color: #333;
-    /* font-family: HanYiWenHei; */
 }
+
+/* body::-webkit-scrollbar {
+    display: none;
+} */
+
+#root {
+    width: 100%;
+    height: 1000vh;
+    background-color: #333;
+}
+
+#app {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+}
+
+
+
+
 
 *,
 *:after,

@@ -1,0 +1,14 @@
+@font-face {
+    font-family: SourceHanSansSC;
+    src: url('./SourceHanSansSC-Regular.otf');
+}
+
+@font-face {
+    font-family: Genshin;
+    src: url('./zh-cn.ttf');
+}
+
+@font-face {
+    font-family: DINO;
+    src: url('./DINosaur Medium.ttf');
+}

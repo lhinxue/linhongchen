@@ -1,6 +1,6 @@
 import { Button, Input, Popover, PopoverContent, PopoverTrigger, Select, SelectItem, Slider } from "@nextui-org/react";
 import * as Icons from "@phosphor-icons/react";
-import { AnimatePresence, animate, motion, useAnimation } from "framer-motion";
+import { AnimatePresence, animate, motion, useAnimation, useScroll, useTransform } from "framer-motion";
 import { createRef, useEffect, useRef, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import BlurredBackground from "./components/BlurredBackground";
@@ -18,6 +18,7 @@ import { Pinyinspan } from "./styleddiv";
 import { useCustomWidth } from "./useFitSize";
 import { useLang } from "./Context";
 import T from "./T";
+import "./assets/font/font.css";
 
 const bounce = keyframes`
 0% {
@@ -144,6 +145,16 @@ function App() {
     const calcCustWidth = (scale = 1) => {
         return (window.innerWidth / 9 > 50 ? 50 : window.innerWidth / 9) * scale;
     };
+    const { scrollYProgress } = useScroll();
+    scrollYProgress.on("change", (latest) => {
+        const clampedProgress = Math.min(Math.max(latest, 0), 0.1);
+
+        // Calculate the new bgProgress
+        const newBgProgress = 5 - ((clampedProgress - 0) / 0.1) * (5 - 0);
+
+        // Update the state
+        setBgProgress(newBgProgress);
+    });
 
     useEffect(() => {
         // setImageSrc(imageList[0]);
@@ -195,230 +206,239 @@ function App() {
     const adplayer = useRef(null);
 
     return (
-        <GrayscaleWrapper level={0}>
-            {/* Control */}
-            <AudioPlayer ref={adplayer} />
+        <div id="app">
+            <GrayscaleWrapper level={0}>
+                {/* Control */}
+                <AudioPlayer ref={adplayer} />
 
-            {/* Controller */}
-            <Popover>
-                <PopoverTrigger>
-                    <Button isIconOnly className="absolute">
-                        <Icons.Toolbox />
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent>
-                    <Slider
-                        label="Element Loader"
-                        size="lg"
-                        minValue={0}
-                        maxValue={70}
-                        renderThumb={(props) => <HideAfter {...props} />}
+                {/* Controller */}
+                <Popover>
+                    <PopoverTrigger>
+                        <Button isIconOnly className="absolute">
+                            <Icons.Toolbox />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <Slider
+                            label="Element Loader"
+                            size="lg"
+                            minValue={0}
+                            maxValue={70}
+                            renderThumb={(props) => <HideAfter {...props} />}
+                            style={{
+                                transition: "all 1s",
+                            }}
+                            value={v}
+                            onChange={_v}
+                        />
+                        <Slider
+                            label="Background Size"
+                            size="lg"
+                            minValue={0}
+                            maxValue={5}
+                            renderThumb={(props) => <HideAfter {...props} />}
+                            style={{
+                                transition: "all 1s",
+                            }}
+                            value={bgProgress}
+                            onChange={setBgProgress}
+                        />
+                        <Select
+                            label="Language"
+                            selectedKeys={new Set([locale])}
+                            onSelectionChange={(v) => setLocale(Array.from(v)[0])}
+                        >
+                            {locales.map((l) => (
+                                <SelectItem key={l}>{l}</SelectItem>
+                            ))}
+                        </Select>
+                    </PopoverContent>
+                </Popover>
+
+                {/* Content */}
+                <OpController on={!showBg}>
+                    <div
                         style={{
-                            transition: "all 1s",
-                        }}
-                        value={v}
-                        onChange={_v}
-                    />
-                    <Slider
-                        label="Background Size"
-                        size="lg"
-                        minValue={0}
-                        maxValue={5}
-                        renderThumb={(props) => <HideAfter {...props} />}
-                        style={{
-                            transition: "all 1s",
-                        }}
-                        value={bgProgress}
-                        onChange={setBgProgress}
-                    />
-                    <Select
-                        label="Language"
-                        selectedKeys={new Set([locale])}
-                        onSelectionChange={(v) => setLocale(Array.from(v)[0])}
-                    >
-                        {locales.map((l) => (
-                            <SelectItem key={l}>{l}</SelectItem>
-                        ))}
-                    </Select>
-                </PopoverContent>
-            </Popover>
-
-            {/* Content */}
-            <OpController on={!showBg}>
-                <div
-                    style={{
-                        position: "fixed",
-                        height: "100vh",
-                        width: "100vw",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <GenshinLoader value={v} active={elementLoaderVisible} />
-                </div>
-            </OpController>
-
-            <OpController on={showBg}>
-                <Bg src={"bg (1).mp4"} level={bgProgress} onLoadComplete={() => setBgLoadCompleted(true)} />
-
-                <div className="h-screen w-screen flex justify-center items-center">
-                    {/*  */}
-                    <Tryshi
-                        className="flex justify-evenly items-center flex-col"
-                        style={{
-                            // width: width,
-                            // height: height,
-                            "--nextui-primary": hexToHSL(themeColor).join(" "),
+                            position: "fixed",
+                            height: "100vh",
+                            width: "100vw",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                         }}
                     >
-                        {/* <GenshinLoader value={v} active={elementLoaderVisible} /> */}
-                        {/* <BlurredBackground src={imageSrc} /> */}
+                        <GenshinLoader value={v} active={elementLoaderVisible} />
+                    </div>
+                </OpController>
 
-                        <div className="flex flex-row items-center">
-                            {/* <AnimatedRectangles value={v} reverse /> */}
-                            <div
-                                style={{
-                                    fontFamily: "DINO, Genshin, emoji",
-                                    // fontWeight: 400,
-                                    maxWidth: "80vw",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: "3em",
-                                    color: "white",
-                                    textShadow: "0px 0px 3px #000",
-                                    // lineHeight: "1em",
-                                    // textAlign: "center",
-                                    // letterSpacing: "-.05em",
-                                    // fontVariantCaps: "small-caps",
-                                }}
-                            >
-                                <span>
-                                    <p
-                                        style={{
-                                            fontSize: `${calcCustWidth() * 0.7}px`,
-                                            // marginBottom: "-.5em",
-                                        }}
-                                    >
-                                        <T c={{ jp: "こんにちは、私は", zh: "你好，我是", en: "Hello, I am" }} />
-                                    </p>
-                                    <p
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "wrap",
-                                            flexWrap: "wrap",
-                                            // gap: "2rem",
-                                        }}
-                                    >
-                                        <span style={{ fontSize: `${calcCustWidth()}px`, marginRight: ".3em" }}>
-                                            <T
-                                                c={{
-                                                    jp: (
-                                                        <>
-                                                            <Pinyinspan pinyin={"リン"}>林</Pinyinspan>
-                                                            <Pinyinspan pinyin={"ホン"}>洪</Pinyinspan>
-                                                            <Pinyinspan pinyin={"チェン"}>琛</Pinyinspan>、
-                                                        </>
-                                                    ),
-                                                    zh: "林洪琛，",
-                                                    en: "Hongchen Lin,",
-                                                }}
-                                            />
-                                        </span>
-                                        <span
+                <OpController on={showBg}>
+                    <Bg src={"bg (1).mp4"} level={bgProgress} onLoadComplete={() => setBgLoadCompleted(true)} />
+
+                    <div className="h-screen w-screen flex justify-center items-center">
+                        {/*  */}
+                        <Tryshi
+                            className="flex justify-evenly items-center flex-col"
+                            style={{
+                                // width: width,
+                                // height: height,
+                                "--nextui-primary": hexToHSL(themeColor).join(" "),
+                            }}
+                        >
+                            {/* <GenshinLoader value={v} active={elementLoaderVisible} /> */}
+                            {/* <BlurredBackground src={imageSrc} /> */}
+
+                            <div className="flex flex-row items-center">
+                                {/* <AnimatedRectangles value={v} reverse /> */}
+                                <div
+                                    style={{
+                                        fontFamily: "DINO, Genshin, emoji",
+                                        // fontWeight: 400,
+                                        maxWidth: "80vw",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "3em",
+                                        color: "white",
+                                        textShadow: "0px 0px 3px #000",
+                                        // lineHeight: "1em",
+                                        // textAlign: "center",
+                                        // letterSpacing: "-.05em",
+                                        // fontVariantCaps: "small-caps",
+                                    }}
+                                >
+                                    <span>
+                                        <p
                                             style={{
-                                                fontSize: `${calcCustWidth()}px`,
-                                                display: "flex",
-                                                alignItems: "center",
-                                                // justifyContent: "space-between",
-                                                // gap: "1rem",
-                                                // marginLeft: ".3em",
+                                                fontSize: `${calcCustWidth() * 0.7}px`,
+                                                // marginBottom: "-.5em",
                                             }}
                                         >
-                                            <span style={{}}>
-                                                <span>
-                                                    <T c={{ zh: "一位", en: "a ", jp: "" }} />
-                                                </span>
-                                                {T({ zh: " ", jp: " ", en: "" })}
-                                                <Pinyinspan
-                                                    pinyin={T({
-                                                        jp: "仮面の愚者",
-                                                        zh: "假面愚者",
-                                                        en: "Masked   Fools",
-                                                    })}
-                                                >
-                                                    {T({ jp: "開拓者", zh: "开拓者", en: "Trailblazer" })}
-                                                </Pinyinspan>
-                                                {T({ zh: "。", jp: " です。", en: "." })}
+                                            <T c={{ jp: "こんにちは、私は", zh: "你好，我是", en: "Hello, I am" }} />
+                                        </p>
+                                        <p
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "wrap",
+                                                flexWrap: "wrap",
+                                                // gap: "2rem",
+                                            }}
+                                        >
+                                            <span style={{ fontSize: `${calcCustWidth()}px`, marginRight: ".3em" }}>
+                                                <T
+                                                    c={{
+                                                        jp: (
+                                                            <>
+                                                                <Pinyinspan pinyin={"リン"}>林</Pinyinspan>
+                                                                <Pinyinspan pinyin={"ホン"}>洪</Pinyinspan>
+                                                                <Pinyinspan pinyin={"チェン"}>琛</Pinyinspan>、
+                                                            </>
+                                                        ),
+                                                        zh: "林洪琛，",
+                                                        en: "Hongchen Lin,",
+                                                    }}
+                                                />
                                             </span>
-                                        </span>
-                                    </p>
-                                </span>
+                                            <span
+                                                style={{
+                                                    fontSize: `${calcCustWidth()}px`,
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    // justifyContent: "space-between",
+                                                    // gap: "1rem",
+                                                    // marginLeft: ".3em",
+                                                }}
+                                            >
+                                                <span style={{}}>
+                                                    <span>
+                                                        <T c={{ zh: "一位", en: "a ", jp: "" }} />
+                                                    </span>
+                                                    {T({ zh: " ", jp: " ", en: "" })}
+                                                    <Pinyinspan
+                                                        pinyin={T({
+                                                            jp: "仮面の愚者",
+                                                            zh: "假面愚者",
+                                                            en: "Masked   Fools",
+                                                        })}
+                                                    >
+                                                        {T({ jp: "開拓者", zh: "开拓者", en: "Trailblazer" })}
+                                                    </Pinyinspan>
+                                                    {T({ zh: "。", jp: " です。", en: "." })}
+                                                </span>
+                                            </span>
+                                        </p>
+                                    </span>
 
-                                <div className="flex flex-col gap-2" style={{ fontFamily: "SourceHanSansSC, emoji" }}>
-                                    {T({
-                                        jp: (
-                                            <>
-                                                <p>
-                                                    すでに結末が決まっていたとしても、構うことはない。人には変えられないことがたくさんある……
-                                                </p>
-                                                <p>だが、その前に…結末に向かうまでにできることも、たくさんあるんだ。</p>
-                                                <p>そして「結末」は…それによってまったく異なる意味合いを見せる。</p>
-                                            </>
-                                        ),
-                                        zh: (
-                                            <>
-                                                <p>就算结局早已注定，那也无妨，人改变不了的事太多。</p>
-                                                <p>但在此之前，在走向结局的路上，我们能做的事同样很多。</p>
-                                                <p>而结局……也会因此展现截然不同的意义。</p>
-                                            </>
-                                        ),
-                                        en: (
-                                            <>
-                                                <p>
-                                                    Even if the ending has been predetermined, that's fine. There are
-                                                    countless things that humans cannot change.
-                                                </p>
-                                                <p>
-                                                    But before that, on the road towards the end, there are still many
-                                                    things that we can do.
-                                                </p>
-                                                <p>
-                                                    And because of this, the "end" will thus reveal a completely
-                                                    different meaning.
-                                                </p>
-                                            </>
-                                        ),
-                                    })}
-                                </div>
-                                <div style={{ width: "fit-content" }}>
-                                    <span
+                                    <div
+                                        className="flex flex-col gap-2"
                                         style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: 5,
-                                            padding: "0 10px 3px 5px",
+                                            fontFamily: "SourceHanSansSC, emoji",
+                                            fontSize: `${calcCustWidth() * 0.3}px`,
                                         }}
                                     >
-                                        <BouncingSpan>
+                                        {T({
+                                            jp: (
+                                                <>
+                                                    <p>
+                                                        すでに結末が決まっていたとしても、構うことはない。人には変えられないことがたくさんある……
+                                                    </p>
+                                                    <p>
+                                                        だが、その前に…結末に向かうまでにできることも、たくさんあるんだ。
+                                                    </p>
+                                                    <p>そして「結末」は…それによってまったく異なる意味合いを見せる。</p>
+                                                </>
+                                            ),
+                                            zh: (
+                                                <>
+                                                    <p>就算结局早已注定，那也无妨，人改变不了的事太多。</p>
+                                                    <p>但在此之前，在走向结局的路上，我们能做的事同样很多。</p>
+                                                    <p>而结局……也会因此展现截然不同的意义。</p>
+                                                </>
+                                            ),
+                                            en: (
+                                                <>
+                                                    <p>
+                                                        Even if the ending has been predetermined, that's fine. There
+                                                        are countless things that humans cannot change.
+                                                    </p>
+                                                    <p>
+                                                        But before that, on the road towards the end, there are still
+                                                        many things that we can do.
+                                                    </p>
+                                                    <p>
+                                                        And because of this, the "end" will thus reveal a completely
+                                                        different meaning.
+                                                    </p>
+                                                </>
+                                            ),
+                                        })}
+                                    </div>
+                                    <div style={{ width: "fit-content" }}>
+                                        <span
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: 5,
+                                                padding: "0 10px 3px 5px",
+                                            }}
+                                        >
+                                            <BouncingSpan>
+                                                <span
+                                                    style={{
+                                                        fontSize: `${calcCustWidth() * 0.8}px`,
+                                                    }}
+                                                >
+                                                    <Icons.HandTap />
+                                                </span>
+                                            </BouncingSpan>
                                             <span
                                                 style={{
                                                     fontSize: `${calcCustWidth() * 0.8}px`,
                                                 }}
                                             >
-                                                <Icons.HandTap />
+                                                {/* Welcome to My World */}
                                             </span>
-                                        </BouncingSpan>
-                                        <span
-                                            style={{
-                                                fontSize: `${calcCustWidth() * 0.8}px`,
-                                            }}
-                                        >
-                                            {/* Welcome to My World */}
                                         </span>
-                                    </span>
 
-                                    {/* <div
+                                        {/* <div
                                         style={{
                                             background: "white",
                                             height: (custWidth) * 0.025,
@@ -426,9 +446,9 @@ function App() {
                                             width: "100%",
                                         }}
                                     ></div> */}
-                                </div>
+                                    </div>
 
-                                {/* <Button
+                                    {/* <Button
                                     radius="full"
                                     // size="lg"
                                     variant="solid"
@@ -446,18 +466,18 @@ function App() {
                                     <span></span>
                                     <Icons.MagnifyingGlass />
                                 </Button> */}
-                                {/* <p>生命因何而沉睡？</p> */}
+                                    {/* <p>生命因何而沉睡？</p> */}
 
-                                {/* <p >WELCOME</p>
+                                    {/* <p >WELCOME</p>
                             <p>TO MY</p>
                             <p>W·O·R·L·D</p> */}
+                                </div>
+
+                                {/* <AnimatedRectangles value={v} /> */}
                             </div>
+                            {/* <Wave /> */}
 
-                            {/* <AnimatedRectangles value={v} /> */}
-                        </div>
-                        {/* <Wave /> */}
-
-                        {/* <SquareImagePuzzle ref={ref} size={width} src={imageSrc} />
+                            {/* <SquareImagePuzzle ref={ref} size={width} src={imageSrc} />
                     <div className="flex flex-col w-full items-center gap-5">
                         <Slider
                             size="sm"
@@ -509,10 +529,11 @@ function App() {
                             </Button>
                         </div>
                     </div> */}
-                    </Tryshi>
-                </div>
-            </OpController>
-        </GrayscaleWrapper>
+                        </Tryshi>
+                    </div>
+                </OpController>
+            </GrayscaleWrapper>
+        </div>
     );
 }
 

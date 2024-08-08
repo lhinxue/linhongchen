@@ -19,7 +19,7 @@ const VdC = styled.span`
     display: block;
     width: ${(props) => `${100 + props.size * 10}%`};
     height: ${(props) => `${100 + props.size * 10}%`};
-    transition: height 2s cubic-bezier(0.215, 0.61, 0.355, 1), width 2s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: height 1s cubic-bezier(0.215, 0.61, 0.355, 1), width 1s cubic-bezier(0.215, 0.61, 0.355, 1);
     left: 50%;
     transform: translateX(-50%);
 `;
