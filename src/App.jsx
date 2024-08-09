@@ -19,6 +19,7 @@ import { useCustomWidth } from "./useFitSize";
 import { useLang } from "./Context";
 import T from "./T";
 import "./assets/font/font.css";
+import { Page, WORLD } from "./StyledComponent";
 
 const bounce = keyframes`
 0% {
@@ -71,6 +72,77 @@ const bounce = keyframes`
   }
 `;
 
+const OnHoverAppear = styled.div`
+    opacity: 0.1;
+    &:hover {
+        opacity: 1;
+    }
+`;
+function AnimatedText() {
+    const { scrollYProgress } = useScroll();
+
+    // Define progress range for animation start and end
+    const start = 0.02;
+    const end = 0.1;
+
+    // Define transformations for each element
+    const welcomeY = useTransform(scrollYProgress, [start, end], [-100, 0]);
+    const welcomeOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+
+    const toX = useTransform(scrollYProgress, [start, end], [-100, 0]);
+    const toOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+
+    const myX = useTransform(scrollYProgress, [start, end], [100, 0]);
+    const myOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+
+    const worldY = useTransform(scrollYProgress, [start, end], [100, 0]);
+    const worldOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+
+    return (
+        <>
+            <motion.span
+                style={{
+                    y: welcomeY,
+                    opacity: welcomeOpacity,
+                    flex: "1 1 100%",
+                    transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
+                }}
+            >
+                Welcome
+            </motion.span>
+            <motion.span
+                style={{
+                    x: toX,
+                    opacity: toOpacity,
+                    margin: "0 .2em",
+                    transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
+                }}
+            >
+                To
+            </motion.span>
+            <motion.span
+                style={{
+                    x: myX,
+                    opacity: myOpacity,
+                    margin: "0 .2em",
+                    transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
+                }}
+            >
+                My
+            </motion.span>
+            <motion.span
+                style={{
+                    y: worldY,
+                    opacity: worldOpacity,
+                    flex: "1 1 100%",
+                    transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
+                }}
+            >
+                <WORLD />
+            </motion.span>
+        </>
+    );
+}
 const BouncingSpan = styled.span`
     cursor: pointer;
     display: inline-block;
@@ -156,6 +228,22 @@ function App() {
         setBgProgress(newBgProgress);
     });
 
+    const start = 0.02;
+    const end = 0.1;
+
+    // Define transformations for each element
+    const welcomeY = useTransform(scrollYProgress, [start, end], [-100, 0]);
+    const page1Opacity = useTransform(scrollYProgress, [0.02, 0.1], [1, 0]);
+
+    const toX = useTransform(scrollYProgress, [start, end], [-100, 0]);
+    const toOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+
+    const myX = useTransform(scrollYProgress, [start, end], [100, 0]);
+    const myOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+
+    const worldY = useTransform(scrollYProgress, [start, end], [100, 0]);
+    const worldOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
+
     useEffect(() => {
         // setImageSrc(imageList[0]);
     }, []);
@@ -212,48 +300,61 @@ function App() {
                 <AudioPlayer ref={adplayer} />
 
                 {/* Controller */}
-                <Popover>
-                    <PopoverTrigger>
-                        <Button isIconOnly className="absolute">
-                            <Icons.Toolbox />
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                        <Slider
-                            label="Element Loader"
-                            size="lg"
-                            minValue={0}
-                            maxValue={70}
-                            renderThumb={(props) => <HideAfter {...props} />}
-                            style={{
-                                transition: "all 1s",
-                            }}
-                            value={v}
-                            onChange={_v}
-                        />
-                        <Slider
-                            label="Background Size"
-                            size="lg"
-                            minValue={0}
-                            maxValue={5}
-                            renderThumb={(props) => <HideAfter {...props} />}
-                            style={{
-                                transition: "all 1s",
-                            }}
-                            value={bgProgress}
-                            onChange={setBgProgress}
-                        />
-                        <Select
-                            label="Language"
-                            selectedKeys={new Set([locale])}
-                            onSelectionChange={(v) => setLocale(Array.from(v)[0])}
-                        >
-                            {locales.map((l) => (
-                                <SelectItem key={l}>{l}</SelectItem>
-                            ))}
-                        </Select>
-                    </PopoverContent>
-                </Popover>
+                <OnHoverAppear
+                    style={{
+                        position: "fixed",
+                        zIndex: 999,
+                        background: "white",
+                        padding: 20,
+                    }}
+                >
+                    <Slider
+                        label="Element Loader"
+                        size="sm"
+                        minValue={0}
+                        maxValue={70}
+                        renderThumb={(props) => <HideAfter {...props} />}
+                        style={{
+                            transition: "all 1s",
+                        }}
+                        value={v}
+                        onChange={_v}
+                    />
+                    <Slider
+                        label="Background Size"
+                        size="sm"
+                        minValue={0}
+                        maxValue={5}
+                        renderThumb={(props) => <HideAfter {...props} />}
+                        style={{
+                            transition: "all 1s",
+                        }}
+                        value={bgProgress}
+                        onChange={setBgProgress}
+                    />
+                    <Select
+                        label="Language"
+                        selectedKeys={new Set([locale])}
+                        onSelectionChange={(v) => setLocale(Array.from(v)[0])}
+                    >
+                        {locales.map((l) => (
+                            <SelectItem key={l}>{l}</SelectItem>
+                        ))}
+                    </Select>
+                    <Select label="Scroll To">
+                        {[0, 0.1].map((l) => (
+                            <SelectItem
+                                key={l}
+                                onClick={() => {
+                                    const targetScrollPosition = document.documentElement.scrollHeight * l;
+                                    window.scrollTo({ top: targetScrollPosition, behavior: "smooth" });
+                                }}
+                            >
+                                {l}
+                            </SelectItem>
+                        ))}
+                    </Select>
+                </OnHoverAppear>
 
                 {/* Content */}
                 <OpController on={!showBg}>
@@ -276,12 +377,14 @@ function App() {
 
                     <div className="h-screen w-screen flex justify-center items-center">
                         {/*  */}
-                        <Tryshi
-                            className="flex justify-evenly items-center flex-col"
+                        <motion.div
+                            className="absolute flex justify-evenly items-center flex-col"
                             style={{
                                 // width: width,
                                 // height: height,
                                 "--nextui-primary": hexToHSL(themeColor).join(" "),
+                                opacity: page1Opacity,
+                                transition: "opacity 1s ease-in-out",
                             }}
                         >
                             {/* <GenshinLoader value={v} active={elementLoaderVisible} /> */}
@@ -370,7 +473,7 @@ function App() {
                                     <div
                                         className="flex flex-col gap-2"
                                         style={{
-                                            fontFamily: "SourceHanSansSC, emoji",
+                                            fontFamily: "StarRail-EN, SourceHanSansSC, StarRail-ZH",
                                             fontSize: `${calcCustWidth() * 0.3}px`,
                                         }}
                                     >
@@ -529,7 +632,35 @@ function App() {
                             </Button>
                         </div>
                     </div> */}
-                        </Tryshi>
+                        </motion.div>
+                        <Page className="absolute flex justify-evenly items-center flex-col">
+                            <div
+                                style={{
+                                    paddingBottom: "10vh",
+                                    fontFamily: "DINO, Genshin, emoji",
+                                    // fontWeight: 400,
+                                    maxWidth: "80vw",
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    color: "white",
+                                    textShadow: "0px 0px 3px #000",
+                                    fontSize: `${calcCustWidth() * 1.3}px`,
+                                    flexWrap: "wrap",
+                                    justifyContent: "center",
+                                    textAlign: "center",
+                                }}
+                            >
+                                {/* <span>Welcome</span>
+                                <span>
+                                    <span>To</span>
+                                    <span>My</span>
+                                </span>
+                                <span>W·O·R·L·D</span> */}
+                                <AnimatedText />
+                            </div>
+                        </Page>
+
+                        <Page>opacity?</Page>
                     </div>
                 </OpController>
             </GrayscaleWrapper>
