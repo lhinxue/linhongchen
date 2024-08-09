@@ -78,7 +78,7 @@ const OnHoverAppear = styled.div`
         opacity: 1;
     }
 `;
-function AnimatedText() {
+function AnimatedText({ fontSize }) {
     const { scrollYProgress } = useScroll();
 
     // Define progress range for animation start and end
@@ -118,7 +118,7 @@ function AnimatedText() {
                     transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
                 }}
             >
-                To
+                to
             </motion.span>
             <motion.span
                 style={{
@@ -135,10 +135,11 @@ function AnimatedText() {
                     y: worldY,
                     opacity: worldOpacity,
                     flex: "1 1 100%",
+                    fontSize: `${fontSize * 1.3}px`,
                     transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
                 }}
             >
-                <WORLD />
+                <WORLD fontSize={fontSize} />
             </motion.span>
         </>
     );
@@ -637,14 +638,14 @@ function App() {
                             <div
                                 style={{
                                     paddingBottom: "10vh",
-                                    fontFamily: "DINO, Genshin, emoji",
-                                    // fontWeight: 400,
+                                    fontFamily: "DINO",
+                                    // fontWeight: 800,
                                     maxWidth: "80vw",
                                     display: "flex",
                                     flexDirection: "row",
                                     color: "white",
                                     textShadow: "0px 0px 3px #000",
-                                    fontSize: `${calcCustWidth() * 1.3}px`,
+                                    fontSize: `${calcCustWidth() * 1.1}px`,
                                     flexWrap: "wrap",
                                     justifyContent: "center",
                                     textAlign: "center",
@@ -656,7 +657,7 @@ function App() {
                                     <span>My</span>
                                 </span>
                                 <span>W·O·R·L·D</span> */}
-                                <AnimatedText />
+                                <AnimatedText fontSize={calcCustWidth() * 1.2} />
                             </div>
                         </Page>
 
