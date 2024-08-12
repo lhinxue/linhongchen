@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import utils from "./utils";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const Container = styled.div`
     position: fixed;
@@ -14,15 +15,13 @@ const Container = styled.div`
     transition: opacity 1.5s ease;
 `;
 
-const VdC = styled.span`
+const VdC = motion(styled.span`
     position: relative;
     display: block;
-    width: ${(props) => `${100 + props.size * 10}%`};
-    height: ${(props) => `${100 + props.size * 10}%`};
     transition: height 1s cubic-bezier(0.215, 0.61, 0.355, 1), width 1s cubic-bezier(0.215, 0.61, 0.355, 1);
     left: 50%;
     transform: translateX(-50%);
-`;
+`);
 
 const Vdo = styled.video`
     height: 100%;
@@ -30,8 +29,12 @@ const Vdo = styled.video`
     object-fit: cover;
 `;
 
-function Bg({ src, level, opacity = 1, onLoadComplete = utils.doNothing }) {
+function Bg({ src, sp, maxScale, opacity = 1, onLoadComplete = utils.doNothing }) {
+    const [sp1, sp2] = sp;
     const videoRef = useRef(null);
+    const { scrollYProgress } = useScroll();
+    const height = useTransform(scrollYProgress, [sp1, sp2], [`${100 + 10 * maxScale}%`, "100%"]);
+    const width = useTransform(scrollYProgress, [sp1, sp2], [`${100 + 10 * maxScale}%`, "100%"]);
 
     useEffect(() => {
         const loadVideo = async () => {
@@ -77,8 +80,8 @@ function Bg({ src, level, opacity = 1, onLoadComplete = utils.doNothing }) {
 
     return (
         <Container opacity={opacity}>
-            <VdC size={level}>
-                <Vdo ref={videoRef} autoPlay muted controls={false} size={level} loop />
+            <VdC style={{ height, width }}>
+                <Vdo ref={videoRef} autoPlay muted controls={false} loop />
             </VdC>
         </Container>
     );
