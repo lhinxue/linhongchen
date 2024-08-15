@@ -1,5 +1,6 @@
 import { useScroll, useTransform, motion } from "framer-motion";
 import { WORLD } from "./StyledComponent";
+import T from "./T";
 
 function AnimatedText({ fontSize, sp }) {
     const { scrollYProgress } = useScroll();
@@ -20,51 +21,45 @@ function AnimatedText({ fontSize, sp }) {
     // const myOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
 
     const worldY = useTransform(scrollYProgress, [sp1, sp2, sp3, sp4], [100, 0, 0, 100]);
+
     // const worldOpacity = useTransform(scrollYProgress, [start, end], [0, 1]);
 
     return (
         <>
             <motion.span
                 style={{
-                    y: welcomeY,
-                    // opacity: welcomeOpacity,
-                    flex: "1 1 100%",
+                    x: toX,
                     transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
                 }}
             >
-                Welcome
+                <pre style={{ fontFamily: "inherit" }}>{T({ jp: "……人々", zh: "……人们", en: "... Why do " })}</pre>
             </motion.span>
             <motion.span
                 style={{
-                    x: toX,
-                    // opacity: toOpacity,
-                    margin: "0 .2em",
+                    y: welcomeY,
+                    // opacity: welcomeOpacity,
+                    // flex: "1 1 100%",
                     transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
                 }}
             >
-                to
+                <pre style={{ fontFamily: "inherit" }}>{T({ jp: "はなぜ眠る", zh: "为何会", en: "people " })}</pre>
+            </motion.span>
+
+            <motion.span
+                style={{
+                    y: worldY,
+                    transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
+                }}
+            >
+                <pre style={{ fontFamily: "inherit" }}>{T({ jp: "ことを選ぶ", zh: "选择", en: "choose " })}</pre>
             </motion.span>
             <motion.span
                 style={{
                     x: myX,
-                    // opacity: myOpacity,
-                    margin: "0 .2em",
                     transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
                 }}
             >
-                My
-            </motion.span>
-            <motion.span
-                style={{
-                    y: worldY,
-                    // opacity: worldOpacity,
-                    flex: "1 1 100%",
-                    fontSize: `${fontSize}px`,
-                    // letterSpacing: ".1em",
-                    transition: "opacity 1s ease-in-out, transform 1s ease-in-out",
-                }}
-            >
-                W.O.R.L.D
+                <pre style={{ fontFamily: "inherit" }}>{T({ jp: "のか？", zh: "沉睡？", en: "to slumber?" })}</pre>
             </motion.span>
         </>
     );
@@ -79,20 +74,20 @@ export default function Page2({ sp }) {
             <div
                 style={{
                     paddingBottom: "10vh",
-                    fontFamily: "DINO",
+                    fontFamily: "DINO, Genshin",
                     // fontWeight: 800,
                     maxWidth: "80vw",
                     display: "flex",
                     flexDirection: "row",
                     color: "white",
                     textShadow: "0px 0px 3px #000",
-                    fontSize: `${calcCustWidth() * 1.1}px`,
+                    fontSize: `${calcCustWidth() * 0.8}px`,
                     flexWrap: "wrap",
                     justifyContent: "center",
                     textAlign: "center",
                 }}
             >
-                <AnimatedText fontSize={calcCustWidth() * 1.2} sp={sp} />
+                <AnimatedText fontSize={calcCustWidth() * 0.8} sp={sp} />
             </div>
         </div>
     );
