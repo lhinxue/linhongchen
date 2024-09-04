@@ -47,12 +47,12 @@ export default function AppContainer({ children, pages = [], onBgLoadCompleted }
         <div id="app">
             <RootStyle pageCount={pages.length} />
             {children}
-            <Bg
+            {/* <Bg
                 src={"bg (1).mp4"}
-                sp={[1 / totalSections, 2 / totalSections]}
+                sp={[0, 1]}
                 maxScale={5}
                 onLoadComplete={() => onBgLoadCompleted(true)}
-            />
+            /> */}
 
             {pages.map((page, index) => (
                 <AppPage

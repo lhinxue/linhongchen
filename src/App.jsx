@@ -1,9 +1,22 @@
 /* eslint-disable react/jsx-key */
-import { Button, Input, Popover, PopoverContent, PopoverTrigger, Select, SelectItem, Slider } from "@nextui-org/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    CardHeader,
+    Image,
+    Input,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    Select,
+    SelectItem,
+    Slider,
+} from "@nextui-org/react";
 import * as Icons from "@phosphor-icons/react";
 import { AnimatePresence, animate, motion, useAnimation, useScroll, useTransform } from "framer-motion";
 import { createRef, useEffect, useRef, useState } from "react";
-import styled, { keyframes } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import BlurredBackground from "./components/BlurredBackground";
 import GrayscaleWrapper from "./components/GrayscaleWrapper";
 import useImageTheme from "./hooks/useImageTheme";
@@ -134,7 +147,17 @@ const HideAfter = styled.span`
         display: none;
     }
 `;
+const RootStyle = createGlobalStyle`
+#root {
+    background-color: #333;
+}
 
+#app {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+}
+`;
 function App() {
     const [grayscale, setGrayscale] = useState(1);
     const [bgProgress, setBgProgress] = useState(5);
@@ -212,7 +235,7 @@ function App() {
 
     const Page1 = () => (
         <motion.div
-            className="absolute flex justify-evenly items-center flex-col"
+            className="flex justify-evenly items-center flex-col"
             style={{
                 // width: width,
                 // height: height,
@@ -1021,6 +1044,28 @@ function App() {
         );
     };
 
+    const Page4 = () => {
+        return (
+            <span>
+                <Card className="py-4">
+                    <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+                        <p className="text-tiny uppercase font-bold">Daily Mix</p>
+                        <small className="text-default-500">12 Tracks</small>
+                        <h4 className="font-bold text-large">Frontend Radio</h4>
+                    </CardHeader>
+                    <CardBody className="overflow-visible py-2">
+                        <Image
+                            alt="Card background"
+                            className="object-cover rounded-xl"
+                            src="https://nextui.org/images/hero-card-complete.jpeg"
+                            width={270}
+                        />
+                    </CardBody>
+                </Card>
+            </span>
+        );
+    };
+
     return (
         <>
             <OnHoverAppear
@@ -1095,22 +1140,30 @@ function App() {
             </OpController>
 
             <OpController on={showBg}>
+                <RootStyle />
+                <Bg src={"bg (1).mp4"} sp={[0, 1]} maxScale={5} onLoadComplete={() => setBgLoadCompleted(true)} />
+                <div
+                    style={{
+                        width: "900px",
+                        maxWidth: "80vw",
+                    }}
+                >
+                    <Page1 />
+                </div>
+
                 {/* <div className="h-screen w-screen flex justify-center items-center">
 
                         <Page>opacity?</Page>
                     </div> */}
-                <AppContainer
+                {/* <AppContainer
                     onBgLoadCompleted={() => setBgLoadCompleted(true)}
                     // bg={<Bg src={"bg (1).mp4"} level={bgProgress} onLoadComplete={() => setBgLoadCompleted(true)} />}
-                    pages={[Page1, Page2, Page3, Page2]}
+                    pages={[Page1, Page2, Page3, Page4]}
                 >
-                    {/* Control */}
                     <AudioPlayer ref={adplayer} />
 
-                    {/* Controller */}
-
-                    {/* Content */}
-                </AppContainer>
+                    
+                </AppContainer> */}
             </OpController>
         </>
     );

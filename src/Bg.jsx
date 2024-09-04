@@ -3,7 +3,7 @@ import styled from "styled-components";
 import utils from "./utils";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-const Container = styled.div`
+const Container = motion(styled.div`
     position: fixed;
     top: 0;
     left: 0;
@@ -13,7 +13,7 @@ const Container = styled.div`
     z-index: -1;
     opacity: ${(props) => props.opacity};
     transition: opacity 1.5s ease;
-`;
+`);
 
 const VdC = motion(styled.span`
     position: relative;
@@ -79,7 +79,7 @@ function Bg({ src, sp, maxScale, opacity = 1, onLoadComplete = utils.doNothing }
     }, [src]);
 
     return (
-        <Container opacity={opacity}>
+        <Container opacity={opacity} className="bg">
             <VdC style={{ height, width }}>
                 <Vdo ref={videoRef} autoPlay muted controls={false} loop />
             </VdC>
