@@ -7,6 +7,7 @@ import styled from "styled-components";
 import GenshinLoader from "./components/GenshinLoader";
 import { wait } from "./utils/system";
 import pages from "./assets/configs/pages";
+import VideoBackground from "./components/VideoBackground";
 
 const AppContainer = styled.div`
     height: 100vh;
@@ -23,6 +24,8 @@ function App() {
     const [preLoadCompleted, _preLoadCompleted] = useState(false);
     const [preLoadProgress, _preLoadProgress] = useState(0);
     const [preLoadAnimationProgress, _preLoadAnimationProgress] = useState(0);
+    const [bgLoaded, _bgLoaded] = useState(false);
+    const [videoScale, _videoScale] = useState(5);
 
     const onPageScroll = () => {
         if (currentPage < 1) {
@@ -44,7 +47,6 @@ function App() {
     };
 
     const preLoad = async () => {
-        await wait(3000);
         _preLoadProgress(0.5);
         await wait(1000);
         _preLoadProgress(1);
@@ -61,16 +63,21 @@ function App() {
     };
 
     useEffect(() => {
-        preLoad();
-    }, []);
+        if (bgLoaded) preLoad();
+    }, [bgLoaded]);
 
     useEffect(() => {
         setAnimationProgress(preLoadProgress);
     }, [preLoadProgress]);
 
+    useEffect(() => {
+        _videoScale((1 - currentPage / (pages.length - 1)) * 5);
+    }, [currentPage]);
+
     return (
         <>
             <GenshinLoader progress={preLoadAnimationProgress} completed={preLoadCompleted} />
+            <VideoBackground src={"bg.webm"} scale={videoScale} onLoadComplete={() => _bgLoaded(true)} />
             <AppContainer>
                 <Pages ref={pageManager} steps={pages} onChange={_currentPage}>
                     {pages.map((p, i) => (

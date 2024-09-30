@@ -7,4 +7,6 @@ const wait = (ms) =>
         }, ms);
     });
 
-export { openLink, wait };
+const doNothing = () => {};
+
+export { openLink, wait, doNothing };

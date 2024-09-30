@@ -683,7 +683,7 @@ export function Pyro(props) {
     );
 }
 
-export const Container = motion(styled.div`
+export const Container = motion.create(styled.div`
     position: fixed;
     height: 100vh;
     width: 100vw;
@@ -711,8 +711,8 @@ const GenshinLoader = ({ progress, gap = 200, completed = false }) => {
             containerControls.start({
                 scale: 1.2,
                 opacity: 0,
+                visibility: "hidden",
                 transition: { duration: 1 },
-                transitionEnd: { visibility: "hidden" },
             });
         }
     }, [completed, containerControls]);
