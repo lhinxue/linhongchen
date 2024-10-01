@@ -2,23 +2,11 @@
 import { useContext, useEffect } from "react";
 import { useAppConfig } from "../contexts/AppConfig";
 import styled from "styled-components";
-import { Dropdown, FloatButton } from "antd";
+import { Dropdown, FloatButton, Typography } from "antd";
 import * as Icons from "@phosphor-icons/react";
 import Locale from "../utils/localeManagement";
 import supported_language from "../assets/configs/supported_language";
-
-const Container = styled.span`
-    position: fixed;
-
-    & .ant-float-btn-body {
-        background-color: inherit !important;
-    }
-
-    & .ant-float-btn {
-        inset-inline-end: 16px;
-        inset-block-start: 16px;
-    }
-`;
+import Text from "./Text";
 
 const LocaleController = () => {
     const { locale, _locale } = useAppConfig();
@@ -29,11 +17,16 @@ const LocaleController = () => {
     };
 
     return (
-        <Container>
-            <Dropdown arrow menu={{ items: supported_language, onClick: save, selectedKeys: [locale] }}>
-                <FloatButton icon={<Icons.Translate />} />
-            </Dropdown>
-        </Container>
+        <span>
+            {supported_language.map((v, i) => (
+                <>
+                    <Text link active={locale === v.key} onClick={() => save(v)}>
+                        {v.label}
+                    </Text>
+                    {i !== supported_language.length - 1 && <Text>|</Text>}
+                </>
+            ))}
+        </span>
     );
 };
 

@@ -86,7 +86,7 @@ function App() {
                     ))}
                 </Pages>
             </AppContainer>
-            <LocaleController />
+            
         </>
     );
 }
