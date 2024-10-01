@@ -9,4 +9,6 @@ const wait = (ms) =>
 
 const doNothing = () => {};
 
-export { openLink, wait, doNothing };
+const atMost = (v, limit) => (v > limit ? limit : v);
+
+export { openLink, wait, doNothing, atMost };

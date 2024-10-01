@@ -8,6 +8,7 @@ import GenshinLoader from "./components/GenshinLoader";
 import { wait } from "./utils/system";
 import pages from "./assets/configs/pages";
 import VideoBackground from "./components/VideoBackground";
+import Cover from "./pages/Cover";
 
 const AppContainer = styled.div`
     height: 100vh;
@@ -38,7 +39,7 @@ function App() {
     const renderPage = (p) => {
         switch (p.key) {
             case "cover":
-                return <div>cover</div>;
+                return <Cover/>;
             case "footer":
                 return <div>footer</div>;
             default:
@@ -71,7 +72,7 @@ function App() {
     }, [preLoadProgress]);
 
     useEffect(() => {
-        _videoScale((1 - currentPage / (pages.length - 1)) * 5);
+        _videoScale((1 - currentPage / (pages.length - 1)) * 4);
     }, [currentPage]);
 
     return (

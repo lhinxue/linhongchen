@@ -1,7 +1,12 @@
+@font-face {
+    font-family: Genshin;
+    src: url(./assets/fonts/zh-cn.ttf);
+}
 
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: 0;
+    font-family: Genshin;
 }

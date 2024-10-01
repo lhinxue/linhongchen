@@ -3,6 +3,7 @@ import { Children, cloneElement, forwardRef, useEffect, useImperativeHandle, use
 import styled from "styled-components";
 import ScrollArea from "./ScrollArea";
 import useContent from "../hooks/useContent";
+import { useWindowSize } from "@uidotdev/usehooks";
 
 const Container = styled.div`
     height: 100vh;
@@ -15,14 +16,14 @@ const Container = styled.div`
 
 const Steps = styled.div`
     position: fixed;
-    height: 100vh;
-    right: 10px;
-    top: 0;
+    ${(p) => (p.width > p.height ? "height" : "width")}: 100%;
+    ${(p) => (p.width > p.height ? "right" : "bottom")}: 10px;
+    ${(p) => (p.width > p.height ? "top : 0" : "")};
     display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: ${(p) => (p.width > p.height ? "column" : "row")};
     justify-content: center;
-    gap: 5px;
+    gap: 10px;
 
     & button {
         min-width: 15px !important;
@@ -35,6 +36,8 @@ const Steps = styled.div`
 const Pages = forwardRef(({ children, onChange, steps, showSteps }, ref) => {
     const child = useRef([]);
     const self = useRef(undefined);
+
+    const { width, height } = useWindowSize();
 
     const content = useContent();
 
@@ -79,9 +82,13 @@ const Pages = forwardRef(({ children, onChange, steps, showSteps }, ref) => {
                     {Children.map(children, (c, i) => cloneElement(c, { ref: (e) => (child.current[i] = e) }))}
                 </ScrollArea>
             </Container>
-            <Steps>
+            <Steps width={width} height={height}>
                 {(steps ?? []).map((v, i) => (
-                    <Tooltip key={i} title={content?.[v.key]?.title ?? content?.pages[v.key]?.title} placement="left">
+                    <Tooltip
+                        key={i}
+                        title={content?.[v.key]?.title ?? content?.pages[v.key]?.title}
+                        placement={width > height ? "left" : "top"}
+                    >
                         <Button shape="circle" type={i === step ? "primary" : "default"} onClick={() => scrollTo(i)} />
                     </Tooltip>
                 ))}
