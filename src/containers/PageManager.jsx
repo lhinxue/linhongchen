@@ -9,8 +9,6 @@ const Container = styled.div`
     height: 100vh;
 
     & .page {
-        width: 100%;
-        min-height: 50vh;
     }
 `;
 

@@ -15,6 +15,7 @@ const Container = styled.div`
     width: 90vw;
     gap: 6vh;
     margin-bottom: 5vh;
+    text-shadow: 0 0 2px black;
 
     & h1 {
         font-size: ${(p) => atMost(p.size / 8, 50)}px;
@@ -68,7 +69,7 @@ const Blockquote = styled.div`
     }
 `;
 
-const Cover = () => {
+const Cover = ({ scrollTo }) => {
     const { width } = useWindowSize();
 
     return (
@@ -90,7 +91,9 @@ const Cover = () => {
                 </p>
                 <p>而结局……也会因此展现截然不同的意义。</p>
             </Blockquote>
-            <Text link>Know more.</Text>
+            <Text link onClick={() => scrollTo(1)}>
+                → 了解更多
+            </Text>
         </Container>
     );
 };

@@ -6,11 +6,12 @@ const Container = styled.span`
     font-weight: bold;
     text-decoration: underline;
     text-decoration: line-through; */
-    ${(p) => p.active && "color: #63ae56;"}
+    ${(p) => p.active && "color: hsl(111 55% 50% / 1);"}
     ${(p) => p.link && "text-decoration: underline; cursor: pointer;"}
     transition: all .3s ease-in-out;
 
     &:hover {
+        
         ${(p) => p.link && "opacity: .8;"}
     }
 `;

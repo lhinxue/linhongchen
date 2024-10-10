@@ -9,6 +9,7 @@ import { wait } from "./utils/system";
 import pages from "./assets/configs/pages";
 import VideoBackground from "./components/VideoBackground";
 import Cover from "./pages/Cover";
+import Gallery from "./pages/Gallery";
 
 const AppContainer = styled.div`
     height: 100vh;
@@ -28,7 +29,7 @@ function App() {
     const [bgLoaded, _bgLoaded] = useState(false);
     const [videoScale, _videoScale] = useState(5);
 
-    const onPageScroll = () => {
+    const scrollTo = () => {
         if (currentPage < 1) {
             pageManager.current.scrollTo(currentPage + 1);
         } else {
@@ -36,14 +37,14 @@ function App() {
         }
     };
 
-    const renderPage = (p) => {
+    const renderPage = (p, scrollTo) => {
         switch (p.key) {
             case "cover":
-                return <Cover/>;
+                return <Cover scrollTo={scrollTo} />;
             case "footer":
                 return <div>footer</div>;
             default:
-                return <div>page</div>;
+                return <Gallery page={p.key} />;
         }
     };
 
@@ -82,11 +83,10 @@ function App() {
             <AppContainer>
                 <Pages ref={pageManager} steps={pages} onChange={_currentPage}>
                     {pages.map((p, i) => (
-                        <Page key={i}>{renderPage(p)}</Page>
+                        <Page key={i}>{renderPage(p, scrollTo)}</Page>
                     ))}
                 </Pages>
             </AppContainer>
-            
         </>
     );
 }
