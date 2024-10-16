@@ -9,6 +9,15 @@ export default [
         key: "p2",
     },
     {
+        key: "p3",
+    },
+    {
+        key: "p4",
+    },
+    {
+        key: "p5",
+    },
+    {
         key: "footer",
     },
 ];
