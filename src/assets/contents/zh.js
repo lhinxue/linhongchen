@@ -1,3 +1,5 @@
+import pageType from "../configs/pageType";
+
 export default {
     cover: {
         title: "封面",
@@ -9,7 +11,7 @@ export default {
             subtitle: "我是什么东西",
             content: [
                 {
-                    type: "imageWiki",
+                    type: pageType.ImageWiki,
                     img: {
                         src: "",
                         alt: "这个人因为害羞而不愿意展示自己。",
@@ -30,7 +32,7 @@ export default {
             subtitle: "<strike>知识</strike>钱不是万能的；没有<strike>知识</strike>钱是万万不能的。",
             content: [
                 {
-                    type: "cardLibrary",
+                    type: pageType.CardLibrary,
                     cards: [
                         {
                             img: {
@@ -77,7 +79,7 @@ export default {
             subtitle: "今天是昨天的明天",
             content: [
                 {
-                    type: "timeline",
+                    type: pageType.Timeline,
                     events: [
                         {
                             timestamp: "二〇〇〇年，十一月",
@@ -112,7 +114,7 @@ export default {
             subtitle: "作品胜于雄辩",
             content: [
                 {
-                    type: "cardList",
+                    type: pageType.BlockList,
                     list: [
                         {
                             title: "Outlook 插件",
@@ -140,9 +142,51 @@ export default {
         },
         p5: {
             key: "p5",
-            title: "兴趣爱好",
-            subtitle: "作品胜于雄辩",
-            content: [],
+            title: "心之所向", //Ambitions
+            subtitle: "我也曾幻想成为万众瞩目的英雄",
+            content: [
+                {
+                    type: pageType.CardLibrary,
+                    itemWidth: 300,
+                    cards: [
+                        {
+                            title: "钢琴家",
+                            description:
+                                "<p>我小的时候曾被父母送去学钢琴。要说我爱死了弹钢琴那是绝对不可能的，但若是说讨厌钢琴，那不如说我是讨厌枯燥的练习生涯。</p><p>我曾去参观音乐会，看着那些钢琴天才在舞台上手指飞舞，敲打黑白键，美妙的乐声传出，余音绕梁，令人赞叹。</p><p> 可惜啊，时过境迁，我终究是选择更加现实更容易找到工作的专业。</p>",
+                            tags: ["梦想", "已放弃"],
+                        },
+                        {
+                            title: "钢琴家",
+                            description:
+                                "<p>我也曾学习画画。我喜欢那种将眼中所见，心中所想的事情画出来的感觉——或者说，有些自己的奇思妙想，用语言难以描述，但是用画就可以。</p><p> 可惜啊，大多数时候我学习都是为了考试而生的素描，来来去去就是画盘子画水果，甚至人像都画的很少，让我怀疑是不是被那兴趣班骗了钱了。</p>",
+                            tags: ["梦想", "已放弃"],
+                        },
+                        {
+                            title: "Card title",
+                            description: "This is the description",
+                        },
+
+                        // {
+                        //     img: {
+                        //         src: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+                        //         alt: "example",
+                        //     },
+                        //     title: "Card title",
+                        //     description: "This is the description",
+                        //     progress: 10,
+                        // },
+                        // {
+                        //     img: {
+                        //         src: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+                        //         alt: "example",
+                        //     },
+                        //     title: "Card title",
+                        //     description: "This is the description",
+                        //     progress: 90,
+                        // },
+                    ],
+                },
+            ],
         },
     },
     footer: {

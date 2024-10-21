@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { Avatar, Button, Card, Progress, Timeline as AntdTimeline, Typography } from "antd";
+import FadeDown from "../animations/FadeDown";
+import FadeUp from "../animations/FadeUp";
 
 const Container = styled.div`
     max-width: 800px;
@@ -20,7 +22,7 @@ const Container = styled.div`
     & .content {
         padding-top: 30px;
     }
-    & .content > p {
+    & .content p {
         margin: 2px 0;
     }
 
@@ -31,12 +33,16 @@ const Container = styled.div`
 
 const Item = ({ data }) => (
     <>
-        <div className="timestamp">{data.timestamp}</div>
-        <div className="title">{data.title}</div>
+        <FadeUp>
+            <div className="timestamp">{data.timestamp}</div>
+            <div className="title">{data.title}</div>
+        </FadeUp>
         <div className="content">
-            {data.content.map((p) => (
-                <p dangerouslySetInnerHTML={{ __html: p }} />
-            ))}
+            <FadeUp>
+                {data.content.map((p) => (
+                    <p dangerouslySetInnerHTML={{ __html: p }} />
+                ))}
+            </FadeUp>
         </div>
     </>
 );

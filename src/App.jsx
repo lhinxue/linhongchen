@@ -10,6 +10,8 @@ import pages from "./assets/configs/pages";
 import VideoBackground from "./components/VideoBackground";
 import Cover from "./pages/Cover";
 import Gallery from "./pages/Gallery";
+import Footer from "./pages/Footer";
+import { Fade } from "react-awesome-reveal";
 
 const AppContainer = styled.div`
     height: 100vh;
@@ -42,7 +44,7 @@ function App() {
             case "cover":
                 return <Cover scrollTo={scrollTo} />;
             case "footer":
-                return <div>footer</div>;
+                return <Footer />;
             default:
                 return <Gallery page={p.key} />;
         }
@@ -81,11 +83,13 @@ function App() {
             <GenshinLoader progress={preLoadAnimationProgress} completed={preLoadCompleted} />
             <VideoBackground src={"bg.webm"} scale={videoScale} onLoadComplete={() => _bgLoaded(true)} />
             <AppContainer>
-                <Pages ref={pageManager} steps={pages} onChange={_currentPage}>
-                    {pages.map((p, i) => (
-                        <Page key={i}>{renderPage(p, scrollTo)}</Page>
-                    ))}
-                </Pages>
+                {preLoadCompleted && (
+                    <Pages ref={pageManager} steps={pages} onChange={_currentPage}>
+                        {pages.map((p, i) => (
+                            <Page key={i}>{renderPage(p, scrollTo)}</Page>
+                        ))}
+                    </Pages>
+                )}
             </AppContainer>
         </>
     );
