@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
     font-family: Genshin;
     src: url(./assets/fonts/zh-cn.ttf);

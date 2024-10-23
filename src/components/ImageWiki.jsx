@@ -1,3 +1,4 @@
+import styled from "styled-components";
 import FadeUp from "../animations/FadeUp";
 
 const Container = styled.div`
@@ -6,12 +7,13 @@ const Container = styled.div`
     justify-content: space-between;
     margin: auto;
     gap: 20px;
+    align-items: center;
 
-    & .text {
+    & > div:first-child {
         flex: 1;
     }
 
-    & .img {
+    & > div:last-child {
         width: 300px;
         min-height: 300px;
         max-height: 80vh;
@@ -26,7 +28,7 @@ const Container = styled.div`
         flex-direction: column-reverse;
         align-items: center;
 
-        & .img {
+        & > div:last-child {
             width: 100%;
         }
     }
@@ -35,7 +37,7 @@ const Container = styled.div`
 export default function ImageWiki({ c }) {
     return (
         <Container>
-            <div className="text">
+            <div>
                 <FadeUp>
                     {c.text.map((p) => (
                         <p dangerouslySetInnerHTML={{ __html: p }} />
@@ -43,7 +45,7 @@ export default function ImageWiki({ c }) {
                 </FadeUp>
             </div>
             <FadeUp>
-                <div className="img">{c.img.alt}</div>
+                <div>{c.img.alt}</div>
             </FadeUp>
         </Container>
     );

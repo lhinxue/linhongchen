@@ -1,12 +1,7 @@
-// new Intl.Locale(navigator.language).language
-import { useContext, useEffect } from "react";
 import { useAppConfig } from "../contexts/AppConfig";
-import styled from "styled-components";
-import { Dropdown, FloatButton, Typography } from "antd";
-import * as Icons from "@phosphor-icons/react";
 import Locale from "../utils/localeManagement";
 import supported_language from "../assets/configs/supported_language";
-import Text from "./Text";
+import { BreadcrumbItem, Breadcrumbs } from "@nextui-org/react";
 
 const LocaleController = () => {
     const { locale, _locale } = useAppConfig();
@@ -17,16 +12,13 @@ const LocaleController = () => {
     };
 
     return (
-        <span>
-            {supported_language.map((v, i) => (
-                <>
-                    <Text link active={locale === v.key} onClick={() => save(v)}>
-                        {v.label}
-                    </Text>
-                    {i !== supported_language.length - 1 && <Text>|</Text>}
-                </>
+        <Breadcrumbs separator="·">
+            {supported_language.map((v) => (
+                <BreadcrumbItem key={v.key} isCurrent={locale === v.key} onClick={() => save(v)}>
+                    {v.label}
+                </BreadcrumbItem>
             ))}
-        </span>
+        </Breadcrumbs>
     );
 };
 

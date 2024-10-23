@@ -1,15 +1,12 @@
-import { Button, Tooltip } from "antd";
 import { Children, cloneElement, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import styled from "styled-components";
 import ScrollArea from "./ScrollArea";
 import useContent from "../hooks/useContent";
 import { useWindowSize } from "@uidotdev/usehooks";
+import { Button, Tooltip } from "@nextui-org/react";
 
 const Container = styled.div`
     height: 100vh;
-
-    & .page {
-    }
 `;
 
 const Steps = styled.div`
@@ -31,14 +28,11 @@ const Steps = styled.div`
     }
 `;
 
-const Pages = forwardRef(({ children, onChange, steps, showSteps }, ref) => {
+const Pages = forwardRef(({ children, onChange, steps }, ref) => {
     const child = useRef([]);
     const self = useRef(undefined);
-
     const { width, height } = useWindowSize();
-
     const content = useContent();
-
     const [index, _index] = useState(0);
     const [step, _step] = useState(0);
 
@@ -70,7 +64,6 @@ const Pages = forwardRef(({ children, onChange, steps, showSteps }, ref) => {
         if (typeof onChange === "function") onChange(index);
     }, [index]);
 
-
     useImperativeHandle(ref, () => ({ scrollTo }));
 
     return (
@@ -84,10 +77,10 @@ const Pages = forwardRef(({ children, onChange, steps, showSteps }, ref) => {
                 {(steps ?? []).map((v, i) => (
                     <Tooltip
                         key={i}
-                        title={content?.[v.key]?.title ?? content?.pages[v.key]?.title}
+                        content={content?.[v.key]?.title ?? content?.pages[v.key]?.title}
                         placement={width > height ? "left" : "top"}
                     >
-                        <Button shape="circle" type={i === step ? "primary" : "default"} onClick={() => scrollTo(i)} />
+                        <Button isIconOnly color={i === step ? "primary" : "default"} onClick={() => scrollTo(i)} />
                     </Tooltip>
                 ))}
             </Steps>

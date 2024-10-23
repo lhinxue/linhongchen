@@ -1,10 +1,20 @@
 import { useWindowSize } from "@uidotdev/usehooks";
 import styled from "styled-components";
 import { atMost } from "../utils/system";
-import * as Icons from "@phosphor-icons/react";
 import { Button, ConfigProvider } from "antd";
 import Text from "../components/Text";
 import FadeUp from "../animations/FadeUp";
+import {
+    RiBilibiliLine,
+    RiGithubLine,
+    RiLinkedinBoxLine,
+    RiLinkedinLine,
+    RiMailLine,
+    RiMetaLine,
+    RiTwitterLine,
+    RiTwitterXLine,
+    RiWechatLine,
+} from "@remixicon/react";
 
 const Container = styled.div`
     color: white;
@@ -80,6 +90,32 @@ const CenteredText = ({ c }) => {
     return <Centered after={c.charAt(c.length - 1)}>{c.slice(0, -1)}</Centered>;
 };
 
+const LinkButtons = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+
+    & > div {
+        height: 30px;
+        height: 30px;
+        width: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        & > svg {
+            overflow: visible;
+            width: 20px;
+            height: 20px;
+            & path {
+                filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.8));
+            }
+        }
+    }
+`;
+
 export default function Footer() {
     const { width } = useWindowSize();
     return (
@@ -94,32 +130,22 @@ export default function Footer() {
             </div>
 
             <div className="contacts">
+                
                 <p>远离故土的笼中鸟</p>
                 <p>地球，太阳系，猎户臂，银河系，本地群，室女超星团，可观测宇宙</p>
-                <div>
-                    <ConfigProvider
-                        theme={{
-                            components: {
-                                Button: {
-                                    textTextColor: "rgb(255, 255, 255)",
-                                },
-                            },
-                        }}
-                    >
-                        {[
-                            { name: "Github", link: "" },
-                            { name: "Linkedin", link: "" },
-                            { name: "Meta", link: "" },
-                            { name: "Twitter", link: "" },
-                            { name: "Wechat", link: "" },
-                        ].map((v, i) => (
-                            <>
-                                <Text>{v.name}</Text>
-                                {i !== 5 - 1 && <Text> | </Text>}
-                            </>
-                        ))}
-                    </ConfigProvider>
-                </div>
+                <LinkButtons>
+                    {[
+                        { name: "Bilibili", icon: <RiBilibiliLine />, link: "" },
+                        { name: "Email", icon: <RiMailLine />, link: "" },
+                        { name: "Github", icon: <RiGithubLine />, link: "" },
+                        { name: "Linkedin", icon: <RiLinkedinBoxLine />, link: "" },
+                        { name: "Meta", icon: <RiMetaLine />, link: "" },
+                        { name: "Twitter", icon: <RiTwitterXLine />, link: "" },
+                        { name: "Wechat", icon: <RiWechatLine />, link: "" },
+                    ].map((v, i) => (
+                        <div>{v.icon}</div>
+                    ))}
+                </LinkButtons>
             </div>
         </Container>
     );

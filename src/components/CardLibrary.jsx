@@ -1,8 +1,10 @@
+import { Button, Card, CardFooter, CardHeader, CircularProgress, Image } from "@nextui-org/react";
 import { Card as AntdCard, Progress, Tag } from "antd";
 import { useState } from "react";
 import styled from "styled-components";
-import Masonry from "../containers/Masonry";
+
 import FadeUp from "../animations/FadeUp";
+import Masonry from "../containers/Masonry";
 
 function valueToPastelColor(value, pastelLevel = 80) {
     // Clamp value between 0 and 100
@@ -39,8 +41,9 @@ const Container = styled.div`
     max-width: ; */
     max-width: 1200px;
 
-    & .ant-card {
+    & .Card {
         /* width: ${(props) => props.itemWidth}px; */
+        width: 100%;
     }
 
     & .ant-card-meta {
@@ -81,10 +84,33 @@ const Tags = styled.div`
     flex-wrap: wrap;
 `;
 
-const Card = ({ card }) => {
+const Crd = ({ card }) => {
     return (
-        <Item>
-            <AntdCard cover={<img alt={card.img?.alt} src={card.img?.src} />}>
+        <Card isFooterBlurred className="Card px-2 py-1">
+            <CardHeader className="font-medium text-xl" style={{ marginBottom: card.img ? 120 : 0 }}>
+                {card.title}
+            </CardHeader>
+            <Image
+                isZoomed
+                removeWrapper
+                className="z-0 w-full h-full object-cover absolute top-0 left-0"
+                alt={card.img?.alt}
+                src={card.img?.src}
+            />
+            <CardFooter className="">
+                <div className="flex flex-grow gap-2 items-center">
+                    <span className="text-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
+                </div>
+                {card.progress && (
+                    <CircularProgress
+                        size="lg"
+                        value={card.progress}
+                        strokeColor={valueToPastelColor(card.progress)}
+                        showValueLabel
+                    />
+                )}
+            </CardFooter>
+            {/* <Card cover={<img alt={card.img?.alt} src={card.img?.src} />}>
                 {card.tags && (
                     <Tags>
                         {card.tags.map((tag) => (
@@ -92,7 +118,6 @@ const Card = ({ card }) => {
                         ))}
                     </Tags>
                 )}
-                {/* <Tag>Dream</Tag> */}
                 <AntdCard.Meta
                     title={card.title}
                     description={<span dangerouslySetInnerHTML={{ __html: card.description }} />}
@@ -107,8 +132,8 @@ const Card = ({ card }) => {
                         ) : null
                     }
                 />
-            </AntdCard>
-        </Item>
+            </Card> */}
+        </Card>
     );
 };
 
@@ -119,7 +144,7 @@ export default function CardLibrary({ cards, itemWidth }) {
                 {cards.map((card) => (
                     <FadeUp>
                         <Item>
-                            <Card card={card} />
+                            <Crd card={card} />
                         </Item>
                     </FadeUp>
                 ))}

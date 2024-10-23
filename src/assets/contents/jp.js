@@ -121,7 +121,7 @@ export default {
                             tags: ["OfficeJS", "Microsoft Office", "Microsoft Graph"],
                             progress: {
                                 label: "项目贡献",
-                                percent: 90,
+                                percent: 95,
                             },
                             content: [
                                 "一款基本由我独立完成的Outlook插件。其使用了基础的OfficeJS技术，同时使用了微软的Graph API以达成了“实时发送，并保存邮件”的能力。",
