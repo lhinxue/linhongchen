@@ -5,6 +5,7 @@ import styled from "styled-components";
 import FadeDown from "../animations/FadeDown";
 import FadeUp from "../animations/FadeUp";
 import LocaleController from "../components/LocaleController";
+import useContent from "../hooks/useContent";
 import { atMost } from "../utils/system";
 
 const Container = styled.div`
@@ -62,29 +63,33 @@ const Blockquote = styled.div`
 
 const Cover = ({ scrollTo }) => {
     const { width } = useWindowSize();
+    const content = useContent();
 
     return (
         <Container size={width} className="dark">
             <div className="flex flex-col">
                 <FadeDown>
-                    <h3>Hi, I'm</h3>
+                    <h3>{content?.cover?.greeting}</h3>
                     <h1>Lin Hongchen,</h1>
-                    <h2>a Traiblazer</h2>
+                    <h2>{content?.cover?.identity}</h2>
                 </FadeDown>
             </div>
             <FadeUp>
                 <div className="flex flex-col gap-2">
                     <LocaleController />
-                    <p>24岁单身人士。生理性别男，心理性别男。喜欢吃饭睡觉玩游戏。没有梦想。</p>
+                    {(content?.cover?.intro ?? []).map((v) => (
+                        <p>{v}</p>
+                    ))}
                 </div>
                 <Blockquote>
-                    <p>
-                        就算结局早已注定，那也无妨，人改变不了的事太多。但在此之前，在走向结局的路上，我们能做的事同样很多。
-                    </p>
-                    <p>而结局……也会因此展现截然不同的意义。</p>
+                    <FadeUp>
+                        {(content?.cover?.quote ?? []).map((v) => (
+                            <p>{v}</p>
+                        ))}
+                    </FadeUp>
                 </Blockquote>
                 <Button variant="light" color="default" onClick={() => scrollTo(1)}>
-                    → 了解更多
+                    → {content?.cover?.knowMore}
                 </Button>
             </FadeUp>
         </Container>

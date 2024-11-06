@@ -1,20 +1,13 @@
+import { RiBilibiliLine, RiGithubLine, RiLinkedinBoxLine, RiLinkedinLine, RiMailLine, RiMetaLine, RiTwitterLine, RiTwitterXLine, RiWechatLine } from "@remixicon/react";
 import { useWindowSize } from "@uidotdev/usehooks";
-import styled from "styled-components";
-import { atMost } from "../utils/system";
 import { Button, ConfigProvider } from "antd";
-import Text from "../components/Text";
+import styled from "styled-components";
+
 import FadeUp from "../animations/FadeUp";
-import {
-    RiBilibiliLine,
-    RiGithubLine,
-    RiLinkedinBoxLine,
-    RiLinkedinLine,
-    RiMailLine,
-    RiMetaLine,
-    RiTwitterLine,
-    RiTwitterXLine,
-    RiWechatLine,
-} from "@remixicon/react";
+import Flip from "../animations/Flip";
+import Text from "../components/Text";
+import useContent from "../hooks/useContent";
+import { atMost } from "../utils/system";
 
 const Container = styled.div`
     color: white;
@@ -46,29 +39,9 @@ const Container = styled.div`
         & h1 {
             font-size: ${(p) => atMost(p.size / 10, 30)}px;
             margin: 0;
-
-            &.hidden {
-                position: relative;
-            }
-
-            &.hidden::before {
-                transition: opacity 1s ease-in-out;
-                content: " ";
-                background-color: white;
-                position: absolute;
-                display: block;
-                height: 100%;
-                padding: 5px 10px;
-                left: -10px;
-                top: -5px;
-                width: 100%;
-                border-radius: 10px;
-                z-index: 10;
-            }
-
-            &.hidden:hover::before {
-                opacity: 0;
-            }
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         & h2 {
@@ -77,18 +50,6 @@ const Container = styled.div`
         }
     }
 `;
-
-const Centered = styled.span`
-    text-align: center;
-    &::after {
-        content: "${(p) => p.after}";
-        position: absolute;
-    }
-`;
-
-const CenteredText = ({ c }) => {
-    return <Centered after={c.charAt(c.length - 1)}>{c.slice(0, -1)}</Centered>;
-};
 
 const LinkButtons = styled.div`
     display: flex;
@@ -118,21 +79,32 @@ const LinkButtons = styled.div`
 
 export default function Footer() {
     const { width } = useWindowSize();
+    const content = useContent();
     return (
         <Container size={width}>
             <div className="qa">
                 <FadeUp>
-                    <h1>……生命因何而沉睡？</h1>
-                    <h2>因为我们害怕从「梦」中醒来？</h2>
-                    <h2>因为睡眠是死亡的预演，我们尚未准备好迎接死亡？</h2>
-                    <h1 className="hidden">因为总有一天，我们会从梦中醒来</h1>
+                    <h1>{content?.footer?.question}</h1>
                 </FadeUp>
+                {(content?.footer?.answers ?? []).map((v, i) => (
+                    <FadeUp delay={2000 * (i + 1)}>
+                        <h2>{v}</h2>
+                    </FadeUp>
+                ))}
+                <h1>
+                    {(content?.footer?.answer ?? []).map((v, i) => (
+                        <Flip delay={(i + 1) * 1000 + 2000 * (1 + (content?.footer?.answers?.length ?? 0))}>
+                            {v.split("").map((c, j) => (
+                                <span key={j}>{c}</span>
+                            ))}
+                        </Flip>
+                    ))}
+                </h1>
             </div>
 
             <div className="contacts">
-                
-                <p>远离故土的笼中鸟</p>
-                <p>地球，太阳系，猎户臂，银河系，本地群，室女超星团，可观测宇宙</p>
+                <p>{content?.footer?.comment}</p>
+                <p>{content?.footer?.address}</p>
                 <LinkButtons>
                     {[
                         { name: "Bilibili", icon: <RiBilibiliLine />, link: "" },

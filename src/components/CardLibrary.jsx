@@ -1,10 +1,9 @@
-import { Button, Card, CardFooter, CardHeader, CircularProgress, Image } from "@nextui-org/react";
-import { Card as AntdCard, Progress, Tag } from "antd";
-import { useState } from "react";
+import { Card, CardBody, CardFooter, CardHeader, Chip, Image } from "@nextui-org/react";
 import styled from "styled-components";
 
 import FadeUp from "../animations/FadeUp";
 import Masonry from "../containers/Masonry";
+import Progress from "./Progress";
 
 function valueToPastelColor(value, pastelLevel = 80) {
     // Clamp value between 0 and 100
@@ -32,17 +31,9 @@ function valueToPastelColor(value, pastelLevel = 80) {
 }
 
 const Container = styled.div`
-    /* display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
-
-    max-width: ; */
     max-width: 1200px;
 
     & .Card {
-        /* width: ${(props) => props.itemWidth}px; */
         width: 100%;
     }
 
@@ -82,57 +73,52 @@ const Tags = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 3px;
 `;
 
 const Crd = ({ card }) => {
     return (
         <Card isFooterBlurred className="Card px-2 py-1">
-            <CardHeader className="font-medium text-xl" style={{ marginBottom: card.img ? 120 : 0 }}>
-                {card.title}
-            </CardHeader>
-            <Image
-                isZoomed
-                removeWrapper
-                className="z-0 w-full h-full object-cover absolute top-0 left-0"
-                alt={card.img?.alt}
-                src={card.img?.src}
-            />
-            <CardFooter className="">
-                <div className="flex flex-grow gap-2 items-center">
-                    <span className="text-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
-                </div>
-                {card.progress && (
-                    <CircularProgress
-                        size="lg"
-                        value={card.progress}
-                        strokeColor={valueToPastelColor(card.progress)}
-                        showValueLabel
-                    />
-                )}
-            </CardFooter>
-            {/* <Card cover={<img alt={card.img?.alt} src={card.img?.src} />}>
+            <CardHeader className="flex flex-col items-start gap-2 font-medium text-xl shadow-[0px_0px_10px_13px_#ffffff]">
+                <div className="flex-1 text-lg">{card.title}</div>
                 {card.tags && (
                     <Tags>
-                        {card.tags.map((tag) => (
-                            <Tag>{tag}</Tag>
+                        {card.tags.map((t) => (
+                            <Chip key={t} size="sm" variant="flat">
+                                {t}
+                            </Chip>
                         ))}
                     </Tags>
                 )}
-                <AntdCard.Meta
-                    title={card.title}
-                    description={<span dangerouslySetInnerHTML={{ __html: card.description }} />}
-                    avatar={
-                        card.progress ? (
-                            <Progress
-                                type="circle"
-                                percent={card.progress}
-                                size={50}
-                                strokeColor={valueToPastelColor(card.progress)}
-                            />
-                        ) : null
-                    }
-                />
-            </Card> */}
+                {card.progress && (
+                    <Progress
+                        value={card.progress}
+                        label={"熟练度"}
+                        colored
+                        style={{
+                            position: "absolute",
+                            right: 5,
+                            top: 10,
+                        }}
+                    />
+                )}
+            </CardHeader>
+            {card.img && (
+                <CardBody className="overflow-hidden" style={{ minHeight: card.img ? 200 : 0 }}>
+                    <Image
+                        isZoomed
+                        removeWrapper
+                        className="z-0 w-full h-full object-cover absolute top-0 left-0"
+                        alt={card.img?.alt}
+                        src={card.img?.src}
+                    />
+                </CardBody>
+            )}
+            <CardFooter className="shadow-[0px_0px_10px_13px_#ffffff]">
+                <div className="flex flex-grow gap-2 items-center">
+                    <span className="text-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
+                </div>
+            </CardFooter>
         </Card>
     );
 };

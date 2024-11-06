@@ -12,9 +12,9 @@ const animate = () => keyframes`
     }
 `;
 
-export default function Flip({ children }) {
+export default function Flip({ children, delay }) {
     return (
-        <Reveal keyframes={animate()} cascade damping={0.07}>
+        <Reveal keyframes={animate()} cascade damping={0.07} delay={delay}>
             {children}
         </Reveal>
     );

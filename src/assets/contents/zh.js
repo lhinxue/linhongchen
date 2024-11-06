@@ -3,6 +3,13 @@ import pageType from "../configs/pageType";
 export default {
     cover: {
         title: "封面",
+        greeting: "Hi, I'm",
+        identity: "a Traiblazer",
+        intro: ["24岁单身人士。生理性别男，心理性别男。喜欢吃饭睡觉玩游戏。没有梦想。"],
+        quote: ["就算结局早已注定，那也无妨，人改变不了的事太多。但在此之前，在走向结局的路上，我们能做的事同样很多。",
+            "而结局……也会因此展现截然不同的意义"
+        ],
+        knowMore: "了解更多"
     },
     pages: {
         p1: {
@@ -36,16 +43,17 @@ export default {
                     cards: [
                         {
                             img: {
-                                src: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                                 alt: "example",
                             },
                             title: "Card title",
                             description: "This is the description",
                             progress: 50,
+                            tags: ["梦想", "已放弃"],
                         },
                         {
                             img: {
-                                src: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                                 alt: "example",
                             },
                             title: "Card title",
@@ -53,7 +61,7 @@ export default {
                         },
                         {
                             img: {
-                                src: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                                 alt: "example",
                             },
                             title: "Card title",
@@ -62,7 +70,7 @@ export default {
                         },
                         {
                             img: {
-                                src: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                                 alt: "example",
                             },
                             title: "Card title",
@@ -168,7 +176,7 @@ export default {
 
                         // {
                         //     img: {
-                        //         src: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+                        //         src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                         //         alt: "example",
                         //     },
                         //     title: "Card title",
@@ -177,7 +185,7 @@ export default {
                         // },
                         // {
                         //     img: {
-                        //         src: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+                        //         src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                         //         alt: "example",
                         //     },
                         //     title: "Card title",
@@ -191,5 +199,10 @@ export default {
     },
     footer: {
         title: "结语",
+        question: "……生命因何而沉睡？",
+        answers: ["因为我们害怕从「梦」中醒来？", "因为睡眠是死亡的预演，我们尚未准备好迎接死亡？"],
+        answer: ["因为总有一天，", "我们会从梦中醒来"],
+        comment: "远离故土的笼中鸟",
+        address: "地球，太阳系，猎户臂，银河系，本地群，室女超星团，可观测宇宙"
     },
 };
