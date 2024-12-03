@@ -25,7 +25,7 @@ const Container = styled.div`
 
     & > .contacts {
         position: absolute;
-        bottom: 0;
+        bottom: -4vh;
         text-align: center;
     }
 

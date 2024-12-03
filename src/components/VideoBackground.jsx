@@ -76,7 +76,7 @@ const VideoBackground = ({ src, scale, opacity = 1, onLoadComplete = doNothing }
 
     return (
         <Container opacity={opacity} className="bg">
-            <VdC style={{ height: `${100 + 10 * scale}%`, width: `${100 + 10 * scale}%` }}>
+            <VdC style={{ height: `${101 + 10 * scale}%`, width: `${101 + 10 * scale}%` }}>
                 <Vdo ref={videoRef} autoPlay muted controls={false} loop />
             </VdC>
         </Container>

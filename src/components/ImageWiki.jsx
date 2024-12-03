@@ -1,4 +1,6 @@
+import { Chip } from "@nextui-org/react";
 import styled from "styled-components";
+
 import FadeUp from "../animations/FadeUp";
 
 const Container = styled.div`
@@ -22,6 +24,11 @@ const Container = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        border: 3px solid #fafafa;
+
+        & .alt-text {
+            background-color: #fafafa;
+        }
     }
 
     @media (max-width: 500px) {
@@ -45,7 +52,9 @@ export default function ImageWiki({ c }) {
                 </FadeUp>
             </div>
             <FadeUp>
-                <div>{c.img.alt}</div>
+                <Chip variant="dot" className="alt-text">
+                    {c.img.alt}
+                </Chip>
             </FadeUp>
         </Container>
     );

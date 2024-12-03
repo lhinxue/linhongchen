@@ -1,8 +1,12 @@
 import { Card, CardBody, CardFooter, CardHeader, Chip, Image } from "@nextui-org/react";
+import parse from "html-react-parser";
+import { Fade } from "react-awesome-reveal";
 import styled from "styled-components";
 
+import FadeRight from "../animations/FadeRight";
 import FadeUp from "../animations/FadeUp";
 import Masonry from "../containers/Masonry";
+import FadeIn from "./../animations/FadeIn";
 import Progress from "./Progress";
 
 function valueToPastelColor(value, pastelLevel = 80) {
@@ -31,34 +35,20 @@ function valueToPastelColor(value, pastelLevel = 80) {
 }
 
 const Container = styled.div`
-    max-width: 1200px;
-
     & .Card {
         width: 100%;
     }
 
-    & .ant-card-meta {
-        flex-direction: row-reverse;
-        align-items: center;
-    }
-    & .ant-card-body {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-    & .ant-card-body::after,
-    & .ant-card-body::before {
-        display: none;
+    & em {
+        color: gray;
     }
 
-    & .ant-card-meta-avatar {
-        padding-right: 0px;
+    & em::before {
+        content: "「";
     }
 
-    @media (max-width: 500px) {
-        & .ant-card {
-            width: 90vw;
-        }
+    & em::after {
+        content: "」";
     }
 `;
 
@@ -74,33 +64,48 @@ const Tags = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     gap: 3px;
+    margin-left: -2px;
+`;
+
+const ProgressContainer = styled.span`
+    & .stroke-current {
+        stroke: ${(props) => valueToPastelColor(props.progress)};
+    }
 `;
 
 const Crd = ({ card }) => {
     return (
         <Card isFooterBlurred className="Card px-2 py-1">
             <CardHeader className="flex flex-col items-start gap-2 font-medium text-xl shadow-[0px_0px_10px_13px_#ffffff]">
-                <div className="flex-1 text-lg">{card.title}</div>
+                <FadeUp>
+                    <div className="flex-1 text-lg">{card.title}</div>
+                </FadeUp>
                 {card.tags && (
                     <Tags>
-                        {card.tags.map((t) => (
-                            <Chip key={t} size="sm" variant="flat">
-                                {t}
-                            </Chip>
-                        ))}
+                        <FadeUp>
+                            {card.tags.map((t) => (
+                                <Chip key={t} size="sm" variant="flat">
+                                    {t}
+                                </Chip>
+                            ))}
+                        </FadeUp>
                     </Tags>
                 )}
                 {card.progress && (
-                    <Progress
-                        value={card.progress}
-                        label={"熟练度"}
-                        colored
-                        style={{
-                            position: "absolute",
-                            right: 5,
-                            top: 10,
-                        }}
-                    />
+                    <FadeIn>
+                        <ProgressContainer progress={card.progress}>
+                            <Progress
+                                value={card.progress}
+                                label={"熟练度"}
+                                colored
+                                style={{
+                                    position: "absolute",
+                                    right: 5,
+                                    top: 10,
+                                }}
+                            />
+                        </ProgressContainer>
+                    </FadeIn>
                 )}
             </CardHeader>
             {card.img && (
@@ -115,8 +120,8 @@ const Crd = ({ card }) => {
                 </CardBody>
             )}
             <CardFooter className="shadow-[0px_0px_10px_13px_#ffffff]">
-                <div className="flex flex-grow gap-2 items-center">
-                    <span className="text-sm" dangerouslySetInnerHTML={{ __html: card.description }} />
+                <div className="flex flex-grow flex-col gap-2 text-sm">
+                    <FadeUp>{parse(card.description)}</FadeUp>
                 </div>
             </CardFooter>
         </Card>
@@ -125,7 +130,7 @@ const Crd = ({ card }) => {
 
 export default function CardLibrary({ cards, itemWidth }) {
     return (
-        <Container itemWidth={itemWidth ?? 200}>
+        <Container itemWidth={itemWidth ?? 400}>
             <Masonry>
                 {cards.map((card) => (
                     <FadeUp>

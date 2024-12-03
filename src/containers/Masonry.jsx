@@ -27,7 +27,7 @@ export default function Masonry({ children }) {
             <ReactMasonry
                 className={"Masonry"}
                 columnClassName={"MasonryColumn"}
-                breakpointCols={{ default: 5, 1400: 4, 935: 3, 630: 2, 500: 1 }}
+                breakpointCols={{ default: 4, 1400: 3, 935: 2, 630: 1 }}
             >
                 {children}
             </ReactMasonry>

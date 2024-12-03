@@ -46,36 +46,98 @@ export default {
                                 src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                                 alt: "example",
                             },
-                            title: "Card title",
-                            description: "This is the description",
-                            progress: 50,
-                            tags: ["梦想", "已放弃"],
+                            title: "Photoshop",
+                            description: "<p>一款强大的图像处理软件，广泛应用于照片编辑、海报设计、插画创作和品牌视觉设计等领域。</p><p><em>不是什么PS高手，超级画师，但做个海报还是绰绰有余的。</em></p>",
+                            progress: 30,
+                            tags: ["艺术", "设计"]
                         },
                         {
                             img: {
                                 src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                                 alt: "example",
                             },
-                            title: "Card title",
-                            description: "This is the description",
+                            title: "Adobe Premiere Pro",
+                            description: "<p>一款专业的视频剪辑和后期制作工具，用于制作电影、广告、短视频等各类视频作品，能够实现高效的多轨剪辑与特效处理。</p><p><em>并不算什么大师，但长期进行视频剪辑的我，对于PR和类似的视频剪辑软件都有着一定的经验。</em></p>",
+                            progress: 75,
+                            tags: ["艺术", "设计"]
                         },
                         {
                             img: {
                                 src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
                                 alt: "example",
                             },
-                            title: "Card title",
-                            description: "This is the description",
-                            progress: 10,
-                        },
-                        {
-                            img: {
-                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
-                                alt: "example",
-                            },
-                            title: "Card title",
-                            description: "This is the description",
+                            title: "中文",
+                            description: "<p>我是一个中国人。</p>",
                             progress: 90,
+                        },
+                        {
+                            img: {
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
+                                alt: "example",
+                            },
+                            title: "英文",
+                            description: "<p>我生活在一个英语为官方语言的国家。</p>",
+                            progress: 60,
+                        },
+                        {
+                            img: {
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
+                                alt: "example",
+                            },
+                            title: "SQL",
+                            description: "<p>一种用于管理和操作关系型数据库的语言，广泛应用于数据查询、存储、分析和维护，支持从小型应用到大型企业系统的数据处理需求。</p><p><em>比较熟练。</em></p>",
+                            progress: 80,
+                            tags: ["信息技术", "编程"]
+                        },
+                        {
+                            img: {
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
+                                alt: "example",
+                            },
+                            title: "VB & VB.NET",
+                            description: "<p>适合快速开发桌面应用的编程语言，尤其适用于企业级工具的开发、遗留系统的维护以及高效的自动化任务实现。</p><p><em>公司软件的主要构成语言。</em></p>",
+                            progress: 75,
+                            tags: ["信息技术", "编程"]
+                        },
+                        {
+                            img: {
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
+                                alt: "example",
+                            },
+                            title: "C#",
+                            description: "<p>一种现代化的编程语言，用于开发从桌面应用到游戏引擎的多种软件，支持高效的面向对象设计与强大的跨平台能力。</p><p><em>大学曾经使用过；工作中也使用过。</em></p>",
+                            progress: 50,
+                            tags: ["信息技术", "编程"]
+                        },
+                        {
+                            img: {
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
+                                alt: "example",
+                            },
+                            title: "React JS",
+                            description: "<p>一个用于构建用户界面的 JavaScript 库，以其组件化和高效的虚拟 DOM 更新机制，成为单页应用开发的首选工具之一。</p><p><em>大学毕业之后接触的前端技术。常年使用，可以说十分熟练了。</em></p>",
+                            progress: 90,
+                            tags: ["信息技术", "编程"]
+                        },
+                        {
+                            img: {
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
+                                alt: "example",
+                            },
+                            title: "Python",
+                            description: "<p>一种通用编程语言，以简洁和可读性著称，广泛用于数据分析、人工智能、自动化脚本开发和网络爬虫等多种场景。</p><p><em>太熟练了。大学学的、考的基本都是这个。</em></p>",
+                            progress: 80,
+                            tags: ["信息技术", "编程"]
+                        },
+                        {
+                            img: {
+                                src: "https://starrail.honeyhunterworld.com/img/eidolon/raindrop-key-eidolon_icon.webp",
+                                alt: "example",
+                            },
+                            title: "Flutter",
+                            description: "<p>一个开源的跨平台 UI 框架，通过一次编码即可生成适配多平台的原生应用，兼顾高性能与优美的用户界面。</p><p><em>正在学习并使用Flutter开发一个项目。</em></p>",
+                            progress: 10,
+                            tags: ["信息技术", "编程"]
                         },
                     ],
                 },
