@@ -1,5 +1,6 @@
 import { default as ReactMasonry } from "react-masonry-css";
 import styled from "styled-components";
+
 import FadeUp from "../animations/FadeUp";
 
 const Container = styled.div`
