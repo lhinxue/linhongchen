@@ -1,6 +1,5 @@
 export default [
-    { key: "jp", label: "日本语" },
-    { key: "kr", label: "韩语" },
-    { key: "fr", label: "法语" },
+    { key: "jp", label: "日本语 (Developing...)" },
+    { key: "en", label: "English (Developing...)" },
     { key: "zh", label: "中文" },
 ];

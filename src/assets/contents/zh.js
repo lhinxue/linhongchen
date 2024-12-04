@@ -1,5 +1,22 @@
 import pageType from "../configs/pageType";
 
+const today = () => {
+    const numToChinese = n => '〇一二三四五六七八九'[n];
+    const convertNumberToChinese = n => {
+        if (n <= 10) return numToChinese(n); // For 0-10
+        if (n < 20) return `十${n % 10 === 0 ? '' : numToChinese(n % 10)}`; // For 11-19
+        const tens = Math.floor(n / 10);
+        const units = n % 10;
+        return `${numToChinese(tens)}十${units === 0 ? '' : numToChinese(units)}`; // For 20-99
+    };
+
+    const date = new Date();
+    const year = date.getFullYear().toString().split('').map(numToChinese).join('');
+    const month = convertNumberToChinese(date.getMonth() + 1);
+    const day = convertNumberToChinese(date.getDate());
+    return `${year}年，${month}月${day}日`;
+};
+
 export default {
     cover: {
         title: "封面",
@@ -174,6 +191,15 @@ export default {
                                 "“有的人活着，但他已经死了；有的人死了，但他依然活着。”只要记忆尚存，他的父亲就会一直陪伴着他。",
                             ],
                         },
+                        {
+                            timestamp: today(),
+                            title: "现在",
+                            content: [
+                                // "他的父亲离开了他。他甚至没来得及见他最后一面。",
+                                // "他只记得他在亲戚的逼迫下抱着父亲的遗照游街示众，仿佛公开处刑——他只想安安静静地坐在无人的角落，沉默。",
+                                // "“有的人活着，但他已经死了；有的人死了，但他依然活着。”只要记忆尚存，他的父亲就会一直陪伴着他。",
+                            ],
+                        },
                     ],
                 },
             ],
@@ -226,14 +252,19 @@ export default {
                             tags: ["梦想", "已放弃"],
                         },
                         {
-                            title: "钢琴家",
+                            title: "画家",
                             description:
                                 "<p>我也曾学习画画。我喜欢那种将眼中所见，心中所想的事情画出来的感觉——或者说，有些自己的奇思妙想，用语言难以描述，但是用画就可以。</p><p> 可惜啊，大多数时候我学习都是为了考试而生的素描，来来去去就是画盘子画水果，甚至人像都画的很少，让我怀疑是不是被那兴趣班骗了钱了。</p>",
                             tags: ["梦想", "已放弃"],
                         },
                         {
-                            title: "Card title",
-                            description: "This is the description",
+                            title: "作家",
+                            description: "<p>这个梦想……</p>",
+                            tags: ["梦想", "持续中"],
+                        },
+                        {
+                            title: "后宫三千，千古一帝",
+                            description: "<p>做做白日梦犯法了吗？</p>",
                         },
 
                         // {

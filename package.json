@@ -3,10 +3,13 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
+    "homepage": "https://lhinxue.github.io/linhongchen",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "preview": "vite preview"
+        "preview": "vite preview",
+        "predeploy": "vite build",
+        "deploy": "gh-pages -d dist --repo https://github.com/lhinxue/linhongchen.git"
     },
     "dependencies": {
         "@emotion/react": "^11.13.3",

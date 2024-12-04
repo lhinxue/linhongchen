@@ -76,7 +76,7 @@ const ProgressContainer = styled.span`
 const Crd = ({ card }) => {
     return (
         <Card isFooterBlurred className="Card px-2 py-1">
-            <CardHeader className="flex flex-col items-start gap-2 font-medium text-xl shadow-[0px_0px_10px_13px_#ffffff]">
+            <CardHeader className="flex flex-col items-start gap-2 font-medium text-xl shadow-[0px_0px_10px_10px_#ffffff]">
                 <FadeUp>
                     <div className="flex-1 text-lg">{card.title}</div>
                 </FadeUp>
@@ -119,7 +119,7 @@ const Crd = ({ card }) => {
                     />
                 </CardBody>
             )}
-            <CardFooter className="shadow-[0px_0px_10px_13px_#ffffff]">
+            <CardFooter className="shadow-[0px_0px_10px_10px_#ffffff]">
                 <div className="flex flex-grow flex-col gap-2 text-sm">
                     <FadeUp>{parse(card.description)}</FadeUp>
                 </div>
