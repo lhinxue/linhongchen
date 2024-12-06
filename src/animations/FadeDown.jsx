@@ -13,9 +13,9 @@ const animate = (d) => keyframes`
   }
 `;
 
-export default function FadeDown({ children }) {
+export default function FadeDown({ children, delay = 200 }) {
     return (
-        <Reveal keyframes={animate(20)} cascade delay={200} damping={0.1}>
+        <Reveal keyframes={animate(20)} cascade delay={delay} damping={0.1}>
             {children}
         </Reveal>
     );

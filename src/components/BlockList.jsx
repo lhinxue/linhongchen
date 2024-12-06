@@ -23,9 +23,9 @@ export default function BlockList({ c }) {
                     <Card className="max-w-5xl w-full mx-auto my-5">
                         <CardHeader className="px-6 py-4">
                             <div className="flex-1 text-xl">
-                                <FadeUp>
+                                <FadeIn>
                                     <span>{l.title}</span>
-                                </FadeUp>
+                                </FadeIn>
                             </div>
                             <FadeIn>
                                 <Progress label={l.progress.label} value={l.progress.percent} />

@@ -4,7 +4,7 @@ import Reveal from "react-awesome-reveal";
 const animate = (d) => keyframes`
   from {
     opacity: 0;
-    transform: translateX(-${d}px);
+    transform: translateX(${d}px);
   }
 
   to {
@@ -13,7 +13,7 @@ const animate = (d) => keyframes`
   }
 `;
 
-export default function FadeRight({ children, delay = 200 }) {
+export default function FadeLeft({ children, delay = 200 }) {
     return (
         <Reveal keyframes={animate(20)} cascade delay={delay} damping={0.1}>
             {children}
