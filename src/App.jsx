@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import LocaleController from "./components/LocaleController";
+import { Page, Pages } from "./containers/PageManager";
 import styled from "styled-components";
-
-import pages from "./assets/configs/pages";
-import Background from "./components/Background";
-import Navigator from "./components/Navigator";
-import Cover from "./pages/Cover";
-import Footer from "./pages/Footer";
-import Gallery from "./pages/Gallery";
+import GenshinLoader from "./components/GenshinLoader";
 import { wait } from "./utils/system";
+import pages from "./assets/configs/pages";
+import VideoBackground from "./components/VideoBackground";
+import Cover from "./pages/Cover";
+import Gallery from "./pages/Gallery";
+import Footer from "./pages/Footer";
+import { Fade } from "react-awesome-reveal";
 
 const AppContainer = styled.div`
     height: 100vh;
@@ -76,21 +80,17 @@ function App() {
 
     return (
         <>
-            <main className="dark">
-                <Navigator />
-                <Background
-                    input={{
-                        landscape: {
-                            src: "https://fastcdn.hoyoverse.com/content-v2/hkrpg/101831/f54aaca7603e2c81de7f59f2ba27ace5_1530189916137544025.mp4",
-                            poster: "https://fastcdn.hoyoverse.com/content-v2/hkrpg/101831/f54aaca7603e2c81de7f59f2ba27ace5_1530189916137544025.mp4?x-oss-process=video/snapshot,t_1,f_jpg,m_fast",
-                        },
-                        portrait: {
-                            src: "https://fastcdn.hoyoverse.com/content-v2/hkrpg/101831/8150ed7bf869ad11a7c68a8646a850cb_416164607738221361.mp4",
-                            poster: "https://fastcdn.hoyoverse.com/content-v2/hkrpg/101831/8150ed7bf869ad11a7c68a8646a850cb_416164607738221361.mp4?x-oss-process=video/snapshot,t_1,f_jpg,m_fast",
-                        },
-                    }}
-                />
-            </main>
+            <GenshinLoader progress={preLoadAnimationProgress} completed={preLoadCompleted} />
+            <VideoBackground src={"bg.webm"} scale={videoScale} onLoadComplete={() => _bgLoaded(true)} />
+            <AppContainer>
+                {preLoadCompleted && (
+                    <Pages ref={pageManager} steps={pages} onChange={_currentPage}>
+                        {pages.map((p, i) => (
+                            <Page key={i}>{renderPage(p, scrollTo)}</Page>
+                        ))}
+                    </Pages>
+                )}
+            </AppContainer>
         </>
     );
 }
