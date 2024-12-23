@@ -1,9 +1,7 @@
-import { Accordion, AccordionItem, Button, Card, Chip } from "@nextui-org/react";
-import { Timeline as AntdTimeline, Avatar, Progress } from "antd";
-import { Fade, Flip } from "react-awesome-reveal";
+import { Card, Chip } from "@nextui-org/react";
+import { RiCalendar2Line } from "@remixicon/react";
 import styled from "styled-components";
 
-import FadeDown from "../animations/FadeDown";
 import FadeIn from "../animations/FadeIn";
 import FadeLeft from "../animations/FadeLeft";
 import FadeRight from "../animations/FadeRight";
@@ -15,9 +13,10 @@ const Container = styled.div`
 
     & .title {
         font-size: 1.3em;
-        padding: 5px 0;
         /* position: absolute; */
-        /* top: -0.25em; */
+        top: -0.25em;
+        position: relative;
+        margin-bottom: .25em;
     }
 
     & .content {
@@ -130,6 +129,33 @@ export default function Timeline({ content }) {
                     </FadeLeft>
                 </TimelineItem>
             ))}
+
+            <ol class="relative ">
+                {content.events.map((e, index) => (
+                    <li class="pb-12 ps-10 border-gray-300 border-s-3">
+                            <span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -start-3 ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                                {/* <RiCalendar2Line/> */}
+                            </span>
+
+                        <FadeIn>
+                            <div className="title">{e.title}</div>
+                        </FadeIn>
+                        <FadeRight delay={500}>
+                            <p class="italic block mb-2 text-sm  text-gray-400 ">
+                                {e.timestamp}
+                            </p>
+                        </FadeRight>
+                        <FadeUp>
+                            {e.content.map((p) => (
+                                <p
+                                    class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400"
+                                    dangerouslySetInnerHTML={{ __html: p }}
+                                />
+                            ))}
+                        </FadeUp>
+                    </li>
+                ))}
+            </ol>
         </Container>
     );
 }

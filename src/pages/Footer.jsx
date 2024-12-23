@@ -1,11 +1,9 @@
-import { RiBilibiliLine, RiGithubLine, RiLinkedinBoxLine, RiLinkedinLine, RiMailLine, RiMetaLine, RiTwitterLine, RiTwitterXLine, RiWechatLine } from "@remixicon/react";
+import { RiBilibiliLine, RiGithubLine, RiLinkedinBoxLine, RiMailLine, RiMetaLine, RiTwitterXLine, RiWechatLine } from "@remixicon/react";
 import { useWindowSize } from "@uidotdev/usehooks";
-import { Button, ConfigProvider } from "antd";
 import styled from "styled-components";
 
 import FadeUp from "../animations/FadeUp";
 import Flip from "../animations/Flip";
-import Text from "../components/Text";
 import useContent from "../hooks/useContent";
 import { atMost } from "../utils/system";
 

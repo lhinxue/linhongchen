@@ -1,4 +1,3 @@
-import { Typography } from "antd";
 import styled from "styled-components";
 
 import Flip from "../animations/Flip";
@@ -14,16 +13,16 @@ const Container = styled.span`
     }
 `;
 
-export default function Title({ c, level = 1 }) {
+export default function Title({ c }) {
     return (
         <Container>
-            <Typography.Title level={level}>
+            <h1>
                 <Flip>
                     {(c ?? "").split("").map((v, i) => (
                         <span key={i}>{v}</span>
                     ))}
                 </Flip>
-            </Typography.Title>
+            </h1>
         </Container>
     );
 }
