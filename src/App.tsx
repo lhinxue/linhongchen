@@ -1,20 +1,13 @@
-import { Switch } from "@nextui-org/react";
-
-import DarkTheme, { useDarkTheme } from "./base/DarkTheme";
+import { useDarkTheme } from "./base/DarkTheme";
 import Navigator from "./base/Navigator";
 import VideoBackground from "./base/VideoBackground";
-import Lucide from "./icons/Lucide";
-import useAppConfig from "./stores/appConfig";
 
 import "./App.css";
 
 function App() {
     const { dark } = useDarkTheme();
     return (
-        <main className={`${dark}`}>
-            <div className="fixed bottom-0 left-0 p-10">
-                <DarkTheme />
-            </div>
+        <main className={`${dark} `}>
             <Navigator
                 title="Honkai: Star Rail"
                 menu={[

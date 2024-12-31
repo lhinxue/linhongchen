@@ -21,10 +21,13 @@ function DarkTheme() {
 
     return (
         <Switch
-        endContent={<Lucide.Sun />}
-        startContent={<Lucide.Moon />}
-            isSelected={dark === "dark"}
-            onValueChange={toggle}
+            startContent={<Lucide.Sun />}
+            endContent={<Lucide.Moon />}
+            isSelected={dark !== "dark"}
+            onValueChange={() => toggle()}
+            color="default"
+            className="opacity-70 dark:opacity-90"
+            size="sm"
         />
     );
 }

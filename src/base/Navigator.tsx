@@ -1,58 +1,92 @@
-import { Button, Drawer, DrawerBody, DrawerContent, Listbox, ListboxItem, Navbar, NavbarBrand, NavbarContent, Spacer, Tab, Tabs, useDisclosure } from "@nextui-org/react";
-import { motion, scroll } from "framer-motion";
-import { ReactNode, useEffect, useState } from "react";
+import {
+    Button,
+    Drawer,
+    DrawerBody,
+    DrawerContent,
+    Listbox,
+    ListboxItem,
+    Navbar,
+    NavbarBrand,
+    NavbarContent,
+    Spacer,
+    Tab,
+    Tabs,
+    useDisclosure,
+} from "@nextui-org/react";
+import { motion } from "framer-motion";
+import { ReactNode, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSwipeable } from "react-swipeable";
 import { create } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
 
 import Lucide from "../icons/Lucide";
-import { useDarkTheme } from "./DarkTheme";
+import DarkTheme from "./DarkTheme";
+import ScrollArea from "./ScrollArea";
 
 interface PageProps {
-    id: string;
+    id?: string;
     className?: string;
-    onReveal: () => void;
+    onReveal?: () => void;
     children?: ReactNode;
+}
+
+interface MenuItem {
+    key: string;
+    title: string;
+    icon?: ReactNode;
+    content?: ReactNode;
 }
 
 interface NavigatorProps {
     title: string;
-    menu: { key: string; title: string; content: ReactNode }[];
+    menu: MenuItem[];
 }
 
 interface NavigatorStore {
-    current: String | null;
-    target: String | null;
-    navigate?: (pageId: string) => void;
-
-    setCurrent: (pageId: string | null) => void;
-    setTarget: (pageId: string | null) => void;
+    current: string;
+    scrolling: boolean;
+    setCurrent: (id: string) => void;
+    scrollTo: (id: string) => Promise<void>;
 }
 
-const useNavigator = create<NavigatorStore>((set) => ({
-    current: "cover",
-    target: null,
-    setTarget: (pageId) => set((state) => ({ ...state, target: pageId })),
-    setCurrent: (pageId) => set((state) => ({ ...state, current: pageId })),
-}));
+const useNavigator = create<NavigatorStore>()(
+    subscribeWithSelector((set) => ({
+        current: "cover",
+        scrolling: false,
+        setCurrent: (id) => set(() => ({ current: id })),
+        scrollTo: (id) =>
+            new Promise<void>((resolve) => {
+                const element = document.getElementById(id);
+
+                if (element) {
+                    const observer = new IntersectionObserver((entries, observer) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                observer.disconnect();
+                                set(() => ({ scrolling: false }));
+                                resolve();
+                            }
+                        });
+                    });
+                    set(() => ({ scrolling: true }));
+                    element.scrollIntoView({ behavior: "smooth" });
+                    observer.observe(element);
+                }
+            }),
+    }))
+);
 
 export function Page({ children, id, className = "", onReveal = () => {} }: PageProps) {
-    const { inView, ref } = useInView({
-        threshold: 0.1,
-    });
-
-    const { current, target, navigate, setTarget, setCurrent } = useNavigator();
+    const { inView, ref } = useInView({ threshold: 0.1 });
 
     useEffect(() => {
-        if (inView) {
-            // scrollTo(id);
-            onReveal();
-        }
+        if (inView) onReveal();
     }, [inView]);
 
     return (
         <>
-            <div id={id} ref={ref} className={`${className} w-screen`} style={{ minHeight: "150vh" }}>
+            <div id={id} ref={ref} className={`${className} w-screen`}>
                 {children}
             </div>
             <Spacer />
@@ -61,63 +95,37 @@ export function Page({ children, id, className = "", onReveal = () => {} }: Page
 }
 
 function Navigator({ title, menu }: NavigatorProps) {
-    const { dark } = useDarkTheme();
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const onSwipLeft = useSwipeable({ onSwipedLeft: () => onClose() });
     const onSwipRight = useSwipeable({ onSwipedRight: () => onOpen() });
 
-    const { current, navigate, setTarget } = useNavigator();
-
     const onAppear = () => {
         return {
             opacity: 1,
-            transition: { duration: 0.5 },
+            transition: { duration: 0.5, delay: 0.3, ease: "easeInOut" },
         };
     };
 
     const onDisappear = () => {
         return {
             opacity: 0,
-            transition: { duration: 0.5 },
+            transition: { duration: 0.5, delay: 0.3, ease: "easeInOut" },
         };
     };
-    const [currentPage, _currentPage] = useState(0);
+
+    const { current, setCurrent, scrollTo, scrolling } = useNavigator();
+
     useEffect(() => {
-        console.log(currentPage);
-        scrollTo(`page-${currentPage}`);
-    }, [currentPage]);
-
-    const navigates = (t) => {
-        scrollTo(t.replace("tab", "page"),true);
-    };
-    const [scrolling, _scrolling] = useState(false);
-
-    function scrollTo(pageId: string, block=false) {
-        return new Promise((resolve) => {
-            const element = document.getElementById(pageId);
-
-            if (element) {
-                const observer = new IntersectionObserver((entries, observer) => {
-                    entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            observer.disconnect(); // Stop observing once the element is in view
-                            _scrolling(false);
-                        }
-                    });
-                });
-                _scrolling(true);
-                element.scrollIntoView({ behavior: "smooth" });
-                observer.observe(element);
-            }
-        });
-    }
+        scrollTo(`page-${current}`);
+    }, [current]);
 
     return (
-        <>
+        <div className="w-screen h-screen flex flex-col">
             <Navbar
+                isBordered
                 className="text-foreground bg-background"
                 {...onSwipRight}
-                classNames={{ wrapper: "sm:px-10 px-4 ", base: " max-w-none" }}
+                classNames={{ wrapper: "sm:px-10 px-4 ", base: "top-0 max-w-none" }}
             >
                 <NavbarBrand className="flex gap-3">
                     <Button className="sm:hidden flex" variant="light" isIconOnly onPress={onOpen}>
@@ -125,14 +133,48 @@ function Navigator({ title, menu }: NavigatorProps) {
                     </Button>
                     <p className="font-bold text-inherit">{title}</p>
                 </NavbarBrand>
-                <NavbarContent className="hidden sm:flex" justify="end">
-                    <Tabs variant="underlined" selectedKey={`tab-${currentPage}`} onSelectionChange={navigates}>
-                        {menu.map((m, i) => (
-                            <Tab key={`tab-${i}`} title={m.title} />
+                <NavbarContent justify="end">
+                    <Tabs className="hidden sm:flex" variant="underlined" selectedKey={`${current}`}>
+                        {menu.map((m) => (
+                            <Tab
+                                key={m.key}
+                                title={
+                                    <div className="flex items-center space-x-2" onClick={() => scrollTo(m.key)}>
+                                        {m.icon}
+                                        {m.title && <span>{m.title}</span>}
+                                    </div>
+                                }
+                            />
                         ))}
                     </Tabs>
+                    <DarkTheme />
                 </NavbarContent>
             </Navbar>
+
+            <ScrollArea className="flex-1">
+                <Page id="page-c" className="bg-transparent  min-h-screen" onReveal={() => setCurrent("c")}></Page>
+
+                <motion.span
+                    initial={onDisappear()}
+                    animate={current !== "c" && current !== "f" ? onAppear() : onDisappear()}
+                    exit={onDisappear()}
+                >
+                    <Page className="bg-background bg-opacity-90 backdrop-blur">
+                        {menu.map((m) => (
+                            <Page
+                                key={m.key}
+                                id={`page-${m.key}`}
+                                className="min-h-screen"
+                                onReveal={() => (scrolling ? void 0 : setCurrent(m.key))}
+                            >
+                                {m.content}
+                            </Page>
+                        ))}
+                    </Page>
+                </motion.span>
+
+                <Page id="page-f" className="bg-transparent min-h-screen" onReveal={() => setCurrent("f")}></Page>
+            </ScrollArea>
 
             <Drawer
                 isOpen={isOpen}
@@ -162,22 +204,7 @@ function Navigator({ title, menu }: NavigatorProps) {
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
-
-            {/* <Page id="cover" className="bg-transparent" onReveal={() => _t("cover")}></Page> */}
-
-            {/* <motion.span
-                initial={onDisappear()}
-                animate={current === "cover" ? onAppear() : onDisappear()}
-                exit={onDisappear()}
-            >
-                
-            </motion.span> */}
-            {menu.map((m, i) => (
-                <Page id={`page-${i}`} onReveal={() => (scrolling ?  void 0:_currentPage(i))}>
-                    {m.content}
-                </Page>
-            ))}
-        </>
+        </div>
     );
 }
 
