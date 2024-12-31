@@ -1,5 +1,6 @@
 import {
     Button,
+    cn,
     Drawer,
     DrawerBody,
     DrawerContent,
@@ -8,6 +9,8 @@ import {
     Navbar,
     NavbarBrand,
     NavbarContent,
+    Radio,
+    RadioGroup,
     Spacer,
     Tab,
     Tabs,
@@ -58,7 +61,6 @@ const useNavigator = create<NavigatorStore>()(
         scrollTo: (id) =>
             new Promise<void>((resolve) => {
                 const element = document.getElementById(id);
-
                 if (element) {
                     const observer = new IntersectionObserver((entries, observer) => {
                         entries.forEach((entry) => {
@@ -96,8 +98,8 @@ export function Page({ children, id, className = "", onReveal = () => {} }: Page
 
 function Navigator({ title, menu }: NavigatorProps) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-    const onSwipLeft = useSwipeable({ onSwipedLeft: () => onClose() });
-    const onSwipRight = useSwipeable({ onSwipedRight: () => onOpen() });
+    const onSwipLeft = useSwipeable({ onSwipedLeft: () => onClose(), trackMouse: true });
+    const onSwipRight = useSwipeable({ onSwipedRight: () => onOpen(), trackMouse: true });
 
     const onAppear = () => {
         return {
@@ -123,7 +125,7 @@ function Navigator({ title, menu }: NavigatorProps) {
         <div className="w-screen h-screen flex flex-col">
             <Navbar
                 isBordered
-                className="text-foreground bg-background"
+                className="text-foreground bg-background select-none"
                 {...onSwipRight}
                 classNames={{ wrapper: "sm:px-10 px-4 ", base: "top-0 max-w-none" }}
             >
@@ -139,8 +141,8 @@ function Navigator({ title, menu }: NavigatorProps) {
                             <Tab
                                 key={m.key}
                                 title={
-                                    <div className="flex items-center space-x-2" onClick={() => scrollTo(m.key)}>
-                                        {m.icon}
+                                    <div className="flex items-center space-x-2" onClick={() => setCurrent(m.key)}>
+                                        {m.icon && <span>{m.icon}</span>}
                                         {m.title && <span>{m.title}</span>}
                                     </div>
                                 }
@@ -152,14 +154,13 @@ function Navigator({ title, menu }: NavigatorProps) {
             </Navbar>
 
             <ScrollArea className="flex-1">
-                <Page id="page-c" className="bg-transparent  min-h-screen" onReveal={() => setCurrent("c")}></Page>
-
+                <Page id="page-c" className="bg-transparent min-h-screen" onReveal={() => setCurrent("c")}></Page>
                 <motion.span
                     initial={onDisappear()}
                     animate={current !== "c" && current !== "f" ? onAppear() : onDisappear()}
                     exit={onDisappear()}
                 >
-                    <Page className="bg-background bg-opacity-90 backdrop-blur">
+                    <Page className="bg-background bg-opacity-85 backdrop-blur">
                         {menu.map((m) => (
                             <Page
                                 key={m.key}
@@ -190,15 +191,24 @@ function Navigator({ title, menu }: NavigatorProps) {
             >
                 <DrawerContent>
                     <DrawerBody {...onSwipLeft} className="px-4 py-0">
-                        <div className="flex gap-3 h-16 items-center">
+                        <div className="flex gap-3 h-16 items-center select-none">
                             <Button className="flex" variant="light" isIconOnly onPress={onClose}>
                                 <Lucide.Menu />
                             </Button>
-                            <p className="font-bold text-inherit">Honkai: Star Rail</p>
+                            <p className="font-bold text-inherit">{title}</p>
                         </div>
-                        <Listbox onAction={(key) => alert(key)}>
+                        <Listbox selectionMode="single" selectedKeys={new Set([current])}>
                             {menu.map((m) => (
-                                <ListboxItem key={m.key}>{m.title}</ListboxItem>
+                                <ListboxItem
+                                    key={m.key}
+                                    onPress={() => {
+                                        setCurrent(m.key);
+                                        onClose();
+                                    }}
+                                    startContent={m.icon}
+                                >
+                                    {m.title}
+                                </ListboxItem>
                             ))}
                         </Listbox>
                     </DrawerBody>
