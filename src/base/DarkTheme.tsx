@@ -5,14 +5,17 @@ import Lucide from "../icons/Lucide";
 
 interface DarkThemeStore {
     dark: string;
+    isDark: boolean;
     toggle: (yesNo?: boolean) => void;
 }
 
 export const useDarkTheme = create<DarkThemeStore>((set) => ({
     dark: "",
+    isDark: false,
     toggle: (yesNo?: boolean) =>
         set((state) => ({
             dark: yesNo !== undefined ? (yesNo ? "dark" : "") : state.dark === "dark" ? "" : "dark",
+            isDark: yesNo !== undefined ? yesNo : !state.dark,
         })),
 }));
 

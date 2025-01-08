@@ -1,30 +1,13 @@
-import {
-    Button,
-    cn,
-    Drawer,
-    DrawerBody,
-    DrawerContent,
-    Listbox,
-    ListboxItem,
-    Navbar,
-    NavbarBrand,
-    NavbarContent,
-    Radio,
-    RadioGroup,
-    Spacer,
-    Tab,
-    Tabs,
-    useDisclosure,
-} from "@nextui-org/react";
+import { Button, cn, Drawer, DrawerBody, DrawerContent, Listbox, ListboxItem, Navbar, NavbarBrand, NavbarContent, Radio, RadioGroup, Spacer, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import { motion } from "framer-motion";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSwipeable } from "react-swipeable";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 import Lucide from "../icons/Lucide";
-import DarkTheme from "./DarkTheme";
+import DarkTheme, { useDarkTheme } from "./DarkTheme";
 import ScrollArea from "./ScrollArea";
 
 interface PageProps {
@@ -100,6 +83,7 @@ function Navigator({ title, menu }: NavigatorProps) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const onSwipLeft = useSwipeable({ onSwipedLeft: () => onClose(), trackMouse: true });
     const onSwipRight = useSwipeable({ onSwipedRight: () => onOpen(), trackMouse: true });
+    const { dark, isDark } = useDarkTheme();
 
     const onAppear = () => {
         return {
@@ -123,19 +107,14 @@ function Navigator({ title, menu }: NavigatorProps) {
 
     return (
         <div className="w-screen h-screen flex flex-col">
-            <Navbar
-                isBordered
-                className="text-foreground bg-background select-none"
-                {...onSwipRight}
-                classNames={{ wrapper: "sm:px-10 px-4 ", base: "top-0 max-w-none" }}
-            >
-                <NavbarBrand className="flex gap-3">
+            <div className="justify-between py-3 flex items-center text-foreground bg-background select-none top-0 max-w-none sm:px-10 px-4 border-b-1 border-b-stone-200 dark:border-b-neutral-700">
+                <div className="flex gap-3 items-center">
                     <Button className="sm:hidden flex" variant="light" isIconOnly onPress={onOpen}>
                         <Lucide.Menu />
                     </Button>
                     <p className="font-bold text-inherit">{title}</p>
-                </NavbarBrand>
-                <NavbarContent justify="end">
+                </div>
+                <div className="flex gap-3 items-center">
                     <Tabs className="hidden sm:flex" variant="underlined" selectedKey={`${current}`}>
                         {menu.map((m) => (
                             <Tab
@@ -150,8 +129,8 @@ function Navigator({ title, menu }: NavigatorProps) {
                         ))}
                     </Tabs>
                     <DarkTheme />
-                </NavbarContent>
-            </Navbar>
+                </div>
+            </div>
 
             <ScrollArea className="flex-1">
                 <Page id="page-c" className="bg-transparent min-h-screen" onReveal={() => setCurrent("c")}></Page>
@@ -185,13 +164,15 @@ function Navigator({ title, menu }: NavigatorProps) {
                 placement="left"
                 backdrop="blur"
                 hideCloseButton
-                classNames={{ base: "max-w-80pc" }}
+                classNames={{ base: "max-w-80pc border-r-1" }}
                 closeButton
-                className={`text-foreground bg-background`}
+                className={`text-foreground bg-background ${dark} ${
+                    isDark ? `border-r-neutral-700` : `border-b-stone-200`
+                }`}
             >
                 <DrawerContent>
                     <DrawerBody {...onSwipLeft} className="px-4 py-0">
-                        <div className="flex gap-3 h-16 items-center select-none">
+                        <div className="flex gap-3 py-3 items-center select-none">
                             <Button className="flex" variant="light" isIconOnly onPress={onClose}>
                                 <Lucide.Menu />
                             </Button>
