@@ -1,7 +1,8 @@
 import { Corner, Root, Scrollbar, Thumb, Viewport } from "@radix-ui/react-scroll-area";
-import { ReactNode } from "react";
+import { IComponent } from "../interfaces/components";
 
-function ScrollArea({ children, className = "" }: { children: ReactNode; className?: string }) {
+
+function ScrollArea({ children, className = "" }: IComponent.Default) {
     return (
         <Root className={`${className} overflow-hidden`} style={{ height: "100%" }} type="always">
             <Viewport className=" overflow-y-auto" style={{ height: "100%" }}>

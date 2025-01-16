@@ -4,6 +4,7 @@ import VideoBackground from "./base/VideoBackground";
 
 import "./App.css";
 import Lucide from "./icons/Lucide";
+import Wiki from "./base/Wiki";
 
 function App() {
     const { dark } = useDarkTheme();
@@ -12,9 +13,26 @@ function App() {
             <Navigator
                 title="Honkai: Star Rail"
                 menu={[
-                    { key: "story", title: "Stories", icon: <Lucide.BookOpen size={16} /> },
-                    { key: "char", title: "Characters",icon: <Lucide.User2 size={16} />  },
-                    { key: "anime", title: "Anime",icon: <Lucide.ListVideo size={16} />  },
+                    {
+                        key: "story",
+                        title: "Stories",
+                        icon: <Lucide.BookOpen size={16} />,
+                        content: (
+                            <Wiki
+                                image={{
+                                    src: "https://heroui.com/images/fruit-1.jpeg",
+                                    alt: "This Man is too shy to show himself.",
+                                }}
+                                content={[
+                                    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                                    "bbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                                    "ccccccccccccccccccccc",
+                                ]}
+                            />
+                        ),
+                    },
+                    { key: "char", title: "Characters", icon: <Lucide.User2 size={16} /> },
+                    { key: "anime", title: "Anime", icon: <Lucide.ListVideo size={16} /> },
                 ]}
             />
             <VideoBackground

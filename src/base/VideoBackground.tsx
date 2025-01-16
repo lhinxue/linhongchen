@@ -1,27 +1,14 @@
 import { useWindowSize } from "@uidotdev/usehooks";
 import { create } from "zustand";
+import { IStore } from "../interfaces/stores";
+import { IComponent } from "../interfaces/components";
 
-interface VideoBackgroundStore {
-    isPlaying: boolean;
-    play: (yesNo?: boolean) => void;
-}
-
-interface VideoBackgroundSource {
-    landscape: string;
-    portrait: string;
-}
-
-interface VideoBackgroundProps {
-    src: string | VideoBackgroundSource;
-    alt?: string | VideoBackgroundSource;
-}
-
-export const useVideoBackground = create<VideoBackgroundStore>((set) => ({
+export const useVideoBackground = create<IStore.VideoBackground>((set) => ({
     isPlaying: false,
     play: (yesNo?: boolean) => set({ isPlaying: yesNo !== undefined ? (yesNo ? true : false) : true }),
 }));
 
-function VideoBackground({ src, alt }: VideoBackgroundProps) {
+function VideoBackground({ src, alt }: IComponent.VideoBackground) {
     const { width, height } = useWindowSize();
     const isLandscape = (width ?? 0) > (height ?? 0);
 

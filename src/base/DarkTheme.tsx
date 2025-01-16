@@ -2,14 +2,9 @@ import { Switch } from "@nextui-org/react";
 import { create } from "zustand";
 
 import Lucide from "../icons/Lucide";
+import { IStore } from "../interfaces/stores";
 
-interface DarkThemeStore {
-    dark: string;
-    isDark: boolean;
-    toggle: (yesNo?: boolean) => void;
-}
-
-export const useDarkTheme = create<DarkThemeStore>((set) => ({
+export const useDarkTheme = create<IStore.DarkTheme>((set) => ({
     dark: "",
     isDark: false,
     toggle: (yesNo?: boolean) =>

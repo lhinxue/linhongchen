@@ -1,12 +1,8 @@
 import { create } from "zustand";
+import { IStore } from "../interfaces/stores";
 
-interface AppConfigStore {
-    dark: string;
-    locale: string;
-    toggleDarkTheme: (yesNo?: boolean) => void;
-}
 
-const useAppConfig = create<AppConfigStore>((set) => ({
+const useAppConfig = create<IStore.AppConfig>((set) => ({
     dark: "",
     locale: "",
     toggleDarkTheme: (yesNo?: boolean) =>

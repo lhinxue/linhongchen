@@ -1,6 +1,6 @@
-import { Button, cn, Drawer, DrawerBody, DrawerContent, Listbox, ListboxItem, Navbar, NavbarBrand, NavbarContent, Radio, RadioGroup, Spacer, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import { Button, Drawer, DrawerBody, DrawerContent, Spacer, Tab, Tabs, useDisclosure } from "@nextui-org/react";
 import { motion } from "framer-motion";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSwipeable } from "react-swipeable";
 import { create } from "zustand";
@@ -9,34 +9,10 @@ import { subscribeWithSelector } from "zustand/middleware";
 import Lucide from "../icons/Lucide";
 import DarkTheme, { useDarkTheme } from "./DarkTheme";
 import ScrollArea from "./ScrollArea";
+import { IStore } from "../interfaces/stores";
+import { IComponent } from "../interfaces/components";
 
-interface PageProps {
-    id?: string;
-    className?: string;
-    onReveal?: () => void;
-    children?: ReactNode;
-}
-
-interface MenuItem {
-    key: string;
-    title: string;
-    icon?: ReactNode;
-    content?: ReactNode;
-}
-
-interface NavigatorProps {
-    title: string;
-    menu: MenuItem[];
-}
-
-interface NavigatorStore {
-    current: string;
-    scrolling: boolean;
-    setCurrent: (id: string) => void;
-    scrollTo: (id: string) => Promise<void>;
-}
-
-const useNavigator = create<NavigatorStore>()(
+const useNavigator = create<IStore.Navigator>()(
     subscribeWithSelector((set) => ({
         current: "cover",
         scrolling: false,
@@ -62,7 +38,7 @@ const useNavigator = create<NavigatorStore>()(
     }))
 );
 
-export function Page({ children, id, className = "", onReveal = () => {} }: PageProps) {
+export function Page({ children, id, className = "", onReveal = () => {} }: IComponent.Page) {
     const { inView, ref } = useInView({ threshold: 0.1 });
 
     useEffect(() => {
@@ -79,7 +55,7 @@ export function Page({ children, id, className = "", onReveal = () => {} }: Page
     );
 }
 
-function Navigator({ title, menu }: NavigatorProps) {
+function Navigator({ title, menu }: IComponent.Navigator) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const onSwipLeft = useSwipeable({ onSwipedLeft: () => onClose(), trackMouse: true });
     const onSwipRight = useSwipeable({ onSwipedRight: () => onOpen(), trackMouse: true });
@@ -107,7 +83,10 @@ function Navigator({ title, menu }: NavigatorProps) {
 
     return (
         <div className="w-screen h-screen flex flex-col">
-            <div className="justify-between py-3 flex items-center text-foreground bg-background select-none top-0 max-w-none sm:px-10 px-4 border-b-1 border-b-stone-200 dark:border-b-neutral-700">
+            <div
+                {...onSwipRight}
+                className="justify-between h-16 flex items-center text-foreground bg-background select-none top-0 max-w-none sm:px-10 px-4 border-b-1 border-b-stone-200 dark:border-b-neutral-700"
+            >
                 <div className="flex gap-3 items-center">
                     <Button className="sm:hidden flex" variant="light" isIconOnly onPress={onOpen}>
                         <Lucide.Menu />
@@ -139,7 +118,7 @@ function Navigator({ title, menu }: NavigatorProps) {
                     animate={current !== "c" && current !== "f" ? onAppear() : onDisappear()}
                     exit={onDisappear()}
                 >
-                    <Page className="bg-background bg-opacity-85 backdrop-blur">
+                    <Page className="bg-background bg-opacity-90 backdrop-blur">
                         {menu.map((m) => (
                             <Page
                                 key={m.key}
@@ -172,26 +151,33 @@ function Navigator({ title, menu }: NavigatorProps) {
             >
                 <DrawerContent>
                     <DrawerBody {...onSwipLeft} className="px-4 py-0">
-                        <div className="flex gap-3 py-3 items-center select-none">
+                        <div className="flex gap-3 h-16 items-center select-none">
                             <Button className="flex" variant="light" isIconOnly onPress={onClose}>
                                 <Lucide.Menu />
                             </Button>
                             <p className="font-bold text-inherit">{title}</p>
                         </div>
-                        <Listbox selectionMode="single" selectedKeys={new Set([current])}>
+                        <div>
                             {menu.map((m) => (
-                                <ListboxItem
+                                <Button
+                                    fullWidth
+                                    variant={m.key === current ? "flat" : "light"}
+                                    radius="none"
+                                    className="justify-start"
                                     key={m.key}
                                     onPress={() => {
-                                        setCurrent(m.key);
-                                        onClose();
+                                        if (current !== m.key) {
+                                            setCurrent(m.key);
+                                            onClose();
+                                        }
                                     }}
+                                    color={m.key === current ? "primary" : "default"}
                                     startContent={m.icon}
                                 >
                                     {m.title}
-                                </ListboxItem>
+                                </Button>
                             ))}
-                        </Listbox>
+                        </div>
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
