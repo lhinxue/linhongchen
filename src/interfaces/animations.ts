@@ -8,5 +8,6 @@ export namespace IAnimation {
         delay?: number;
         duration?: number;
         distance?: number;
+        fraction?: number;
     }
 }

@@ -5,6 +5,6 @@ export enum ContentBlockType {
 }
 
 export enum GalleryStyle {
-    Masonry = 0,
-    List = 1,
+    Masonry = "Masonry",
+    List = "List",
 }

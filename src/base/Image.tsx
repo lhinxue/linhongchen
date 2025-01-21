@@ -1,4 +1,4 @@
-import { Chip, Image as ReactImage } from "@nextui-org/react";
+import { Chip, Image as ReactImage } from "@heroui/react";
 import { IComponent } from "../interfaces/components";
 import { useState } from "react";
 

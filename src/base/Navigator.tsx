@@ -1,4 +1,4 @@
-import { Button, Drawer, DrawerBody, DrawerContent, Spacer, Tab, Tabs, useDisclosure } from "@nextui-org/react";
+import { Button, Drawer, DrawerBody, DrawerContent, Spacer, Tab, Tabs, useDisclosure } from "@heroui/react";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
@@ -7,10 +7,11 @@ import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
 import Lucide from "../icons/Lucide";
+import { IComponent } from "../interfaces/components";
+import { IStore } from "../interfaces/stores";
 import DarkTheme, { useDarkTheme } from "./DarkTheme";
 import ScrollArea from "./ScrollArea";
-import { IStore } from "../interfaces/stores";
-import { IComponent } from "../interfaces/components";
+import { PageTitle } from "./Title";
 
 const useNavigator = create<IStore.Navigator>()(
     subscribeWithSelector((set) => ({
@@ -123,9 +124,10 @@ function Navigator({ title, menu }: IComponent.Navigator) {
                             <Page
                                 key={m.key}
                                 id={`page-${m.key}`}
-                                className="min-h-screen"
+                                className="min-h-screen pb-52"
                                 onReveal={() => (scrolling ? void 0 : setCurrent(m.key))}
                             >
+                                <PageTitle>{m.title}</PageTitle>
                                 {m.content}
                             </Page>
                         ))}

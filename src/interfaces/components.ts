@@ -1,5 +1,5 @@
-import { Component } from "lucide-react";
 import { ReactNode } from "react";
+
 import { GalleryStyle } from "../enums/ContentBlockType";
 
 export namespace IComponent {
@@ -55,14 +55,17 @@ export namespace IComponent {
 
     export interface Gallery {
         style: GalleryStyle;
-        items: {
-            image?: { src: string; alt: string };
-            title: string;
-            content: string[];
-            progress?: number;
-            progressLabel?: string;
-            tags?: string[];
-        }[];
+        items: GalleryItem[];
+    }
+
+    export interface GalleryItem {
+        image?: { src: string; alt: string };
+        title: string;
+        content: string[];
+        progress?: number;
+        progressLabel?: string;
+        tags?: string[];
+        galleryStyle?: GalleryStyle;
     }
     export interface Timeline {
         items: {

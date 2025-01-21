@@ -15,9 +15,9 @@ const animate = (distance: number) => keyframes`
   }
 `;
 
-export default function FadeUp({ children, delay = 200, distance = 20 }: IAnimation.Default) {
+export default function FadeUp({ children, delay = 200, distance = 20, damping = 0.1,fraction=0 }: IAnimation.Default) {
     return (
-        <Reveal keyframes={animate(distance)} cascade delay={delay} damping={0.1}>
+        <Reveal keyframes={animate(distance)} cascade delay={delay} damping={damping} fraction={fraction}>
             {children}
         </Reveal>
     );

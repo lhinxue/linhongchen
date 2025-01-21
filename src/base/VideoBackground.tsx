@@ -1,7 +1,8 @@
 import { useWindowSize } from "@uidotdev/usehooks";
 import { create } from "zustand";
-import { IStore } from "../interfaces/stores";
+
 import { IComponent } from "../interfaces/components";
+import { IStore } from "../interfaces/stores";
 
 export const useVideoBackground = create<IStore.VideoBackground>((set) => ({
     isPlaying: false,
@@ -14,7 +15,7 @@ function VideoBackground({ src, alt }: IComponent.VideoBackground) {
 
     const { isPlaying, play } = useVideoBackground();
 
-    const videoSrc = typeof src === "string" ? src : isLandscape ? src.landscape : src.portrait;
+    const videoSrc = typeof src === "string" ? src : isLandscape ? src?.landscape : src?.portrait;
     const imageSrc = typeof alt === "string" ? alt : isLandscape ? alt?.landscape : alt?.portrait;
 
     return (
