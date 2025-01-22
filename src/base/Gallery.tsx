@@ -1,10 +1,66 @@
 import { Card, CardBody, CardFooter, CardHeader, Chip, Image } from "@heroui/react";
 import parse from "html-react-parser";
+import styled from "styled-components";
 
 import FadeUp from "../animations/FadeUp";
 import { GalleryStyle } from "../enums/ContentBlockType";
 import { IComponent } from "../interfaces/components";
-import styled from "styled-components";
+
+const Wave = styled.div`
+    position: absolute;
+    top: 0%;
+    transform: scaleX(9);
+    left: 25%;
+    width: 30%;
+    height:100%;
+    overflow: hidden;
+    &>span {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: calc(100% - 250px);
+        background: hsl(var(--heroui-primary) / 0.1);
+    }
+    /* z-index: -10; */
+    & > div {
+        position: relative;
+        top: 0;
+        width: 100%;
+        height: 250px;
+        background: hsl(var(--heroui-primary) / 0.1);
+    }
+    & > div:before,
+    & > div:after {
+        content: "";
+        position: absolute;
+        top: 0%;
+        left: 50%;
+        transform: translate(-50%, -75%);
+    }
+    & > div:before {
+        border-radius: 55%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 1);
+        animation: animate ${Math.random() * 5 + 10}s linear infinite;
+    }
+    & > div:after {
+        border-radius: 30%;
+        width: 80%;
+        height: 80%;
+        background: rgba(255, 255, 255, 0.5);
+        animation: animate ${Math.random() * 5 + 18}s linear infinite;
+    }
+
+    @keyframes animate {
+        0% {
+            transform: translate(-50%, -75%) rotate(0deg);
+        }
+        100% {
+            transform: translate(-50%, -75%) rotate(360deg);
+        }
+    }
+`;
 
 export function GalleryItem({
     title,
@@ -16,9 +72,9 @@ export function GalleryItem({
     galleryStyle,
 }: IComponent.GalleryItem) {
     return (
-        <Card className="" fullWidth>
-            <CardHeader className="pb-0 overflow-hidden relative">
-                <div className="flex flex-col gap-2">
+        <Card className="relative bg-none" fullWidth>
+            <CardHeader className="pb-2 overflow-hidden relative bg-none">
+                <div className="flex flex-col gap-3">
                     <p className="text-xl font-bold">{title}</p>
                     {tags && (
                         <div className="flex flex-row gap-2">
@@ -32,24 +88,28 @@ export function GalleryItem({
                         </div>
                     )}
                 </div>
-                {image && galleryStyle === GalleryStyle.List && (
+                {/* {image && galleryStyle === GalleryStyle.List && (
                     <div className="absolute -z-10">
                         <Image isZoomed removeWrapper src={image.src} alt={image.alt} />
                     </div>
-                )}
+                )} */}
             </CardHeader>
             {image && galleryStyle === GalleryStyle.Masonry && (
                 <CardBody className="overflow-hidden">
                     <Image isZoomed removeWrapper src={image.src} alt={image.alt} />
                 </CardBody>
             )}
-            <CardFooter className="flex flex-grow flex-col gap-2 text-sm items-start">
+            <CardFooter className="bg-none flex flex-grow flex-col gap-2 text-sm items-start pt-2 z-10">
                 {/* <FadeUp distance={5}> */}
                 {content.map((p) => (
                     <p>{parse(p)}</p>
                 ))}
                 {/* </FadeUp> */}
             </CardFooter>
+            <Wave>
+                <div />
+                <span />
+            </Wave>
         </Card>
     );
 }
@@ -68,7 +128,7 @@ const Masonry = styled.div`
             column-count: 1;
         }
 
-        & > * {
+        & > div {
             break-inside: avoid;
             padding: 8px 0;
         }
@@ -79,6 +139,9 @@ const Masonry = styled.div`
         gap: 20px;
         width: 90vw;
         max-width: 800px;
+        & > div > div {
+            padding: 8px;
+        }
     }
 `;
 

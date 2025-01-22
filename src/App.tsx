@@ -39,7 +39,7 @@ function App() {
                         icon: <Lucide.User2 size={16} />,
                         content: (
                             <Gallery
-                                style={GalleryStyle.List}
+                                style={GalleryStyle.Masonry}
                                 items={[
                                     {
                                         image: {
