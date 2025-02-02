@@ -1,7 +1,9 @@
+import { DarkThemeType, Locale } from "../enums/locale";
+
 export namespace IStore {
     export interface AppConfig {
-        dark: string;
-        locale: string;
+        dark: DarkThemeType;
+        locale: Locale;
         toggleDarkTheme: (yesNo?: boolean) => void;
     }
 

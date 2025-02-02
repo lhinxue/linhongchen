@@ -6,12 +6,12 @@ import FadeUp from "../animations/FadeUp";
 import { GalleryStyle } from "../enums/ContentBlockType";
 import { IComponent } from "../interfaces/components";
 
-const Wave = styled.div`
+const Wave = styled.div<{level:number}>`
     position: absolute;
     top: 0%;
-    transform: scaleX(9);
-    left: 25%;
-    width: 30%;
+    transform: scaleX(4);
+    left: 0%;
+    width: 100%;
     height:100%;
     overflow: hidden;
     &>span {
@@ -33,20 +33,20 @@ const Wave = styled.div`
     & > div:after {
         content: "";
         position: absolute;
-        top: 0%;
+        top: 90%;
         left: 50%;
         transform: translate(-50%, -75%);
     }
     & > div:before {
         border-radius: 55%;
         width: 100%;
-        height: 100%;
+        height: 120%;
         background: rgba(255, 255, 255, 1);
         animation: animate ${Math.random() * 5 + 10}s linear infinite;
     }
     & > div:after {
         border-radius: 30%;
-        width: 80%;
+        width: 100%;
         height: 80%;
         background: rgba(255, 255, 255, 0.5);
         animation: animate ${Math.random() * 5 + 18}s linear infinite;
@@ -66,7 +66,7 @@ export function GalleryItem({
     title,
     content,
     image,
-    progress,
+    progress=100,
     progressLabel,
     tags,
     galleryStyle,
@@ -106,7 +106,7 @@ export function GalleryItem({
                 ))}
                 {/* </FadeUp> */}
             </CardFooter>
-            <Wave>
+            <Wave level={progress}>
                 <div />
                 <span />
             </Wave>

@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import { GalleryStyle } from "../enums/ContentBlockType";
+import { IContentBlock } from "./config";
 
 export namespace IComponent {
     export interface Default {
@@ -46,6 +47,9 @@ export namespace IComponent {
     export interface Navigator {
         title: string;
         menu: MenuItem[];
+        contents: {
+            [key: string]: IContentBlock.Wiki | IContentBlock.Gallery | IContentBlock.Timeline;
+        };
     }
 
     export interface Wiki {

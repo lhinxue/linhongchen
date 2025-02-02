@@ -1,7 +1,7 @@
 export enum ContentBlockType {
-    Wiki = 0,
-    Gallery = 1,
-    Timeline = 2,
+    Wiki = "Wiki",
+    Gallery = "Gallery",
+    Timeline = "Timeline",
 }
 
 export enum GalleryStyle {

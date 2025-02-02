@@ -4,15 +4,13 @@ import { IComponent } from "./components";
 export interface IAppConfig {}
 
 export interface IAppContent {
+    title: string;
     Cover: {};
     Footer: {};
     Catalog: IComponent.MenuItem[];
     Pages: {
-        key: string;
-        title: string;
-        subtitle: string;
-        content: (IContentBlock.Wiki | IContentBlock.Gallery | IContentBlock.Timeline)[];
-    }[];
+        [key: string]: IContentBlock.Wiki | IContentBlock.Gallery | IContentBlock.Timeline;
+    };
 }
 
 export namespace IContentBlock {

@@ -1,6 +1,6 @@
 import { Button, Drawer, DrawerBody, DrawerContent, Spacer, Tab, Tabs, useDisclosure } from "@heroui/react";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSwipeable } from "react-swipeable";
 import { create } from "zustand";
@@ -12,6 +12,10 @@ import { IStore } from "../interfaces/stores";
 import DarkTheme, { useDarkTheme } from "./DarkTheme";
 import ScrollArea from "./ScrollArea";
 import { PageTitle } from "./Title";
+import { ContentBlockType, GalleryStyle } from "../enums/ContentBlockType";
+import { IContentBlock } from "../interfaces/config";
+import Wiki from "./Wiki";
+import Gallery from "./Gallery";
 
 const useNavigator = create<IStore.Navigator>()(
     subscribeWithSelector((set) => ({
@@ -56,7 +60,7 @@ export function Page({ children, id, className = "", onReveal = () => {} }: ICom
     );
 }
 
-function Navigator({ title, menu }: IComponent.Navigator) {
+function Navigator({ title, menu, contents }: IComponent.Navigator) {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const onSwipLeft = useSwipeable({ onSwipedLeft: () => onClose(), trackMouse: true });
     const onSwipRight = useSwipeable({ onSwipedRight: () => onOpen(), trackMouse: true });
@@ -81,6 +85,23 @@ function Navigator({ title, menu }: IComponent.Navigator) {
     useEffect(() => {
         scrollTo(`page-${current}`);
     }, [current]);
+
+    const ContentBlock = ({
+        content,
+    }: {
+        content: IContentBlock.Wiki | IContentBlock.Gallery | IContentBlock.Timeline;
+    }): ReactNode => {
+        switch (content.type) {
+            case ContentBlockType.Gallery:
+                return <Gallery style={content.style} items={content.items} />;
+            case ContentBlockType.Timeline:
+                return <></>;
+            case ContentBlockType.Wiki:
+                return <Wiki image={content.image} content={content.content} />;
+            default:
+                return <></>;
+        }
+    };
 
     return (
         <div className="w-screen h-screen flex flex-col">
@@ -128,7 +149,7 @@ function Navigator({ title, menu }: IComponent.Navigator) {
                                 onReveal={() => (scrolling ? void 0 : setCurrent(m.key))}
                             >
                                 <PageTitle>{m.title}</PageTitle>
-                                {m.content}
+                                <ContentBlock content={contents[m.key]} />
                             </Page>
                         ))}
                     </Page>
