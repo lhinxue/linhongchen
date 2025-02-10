@@ -9,8 +9,13 @@ const useContent = (): IAppContent => {
     const { locale } = useAppConfig();
     const [content, _content] = useState<IAppContent>(contents[Locale.zh]);
     useEffect(() => {
-        _content(contents[locale]);
+        if (contents[locale]) {
+            _content(contents[locale]);
+        }
     }, [locale]);
+    useEffect(() => {
+        console.log(locale, content);
+    }, [content]);
     return content;
 };
 

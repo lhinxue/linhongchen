@@ -1,6 +1,6 @@
 export enum Locale {
     zh = "zh",
-    en = "en",
+    // en = "en",
 }
 
 export enum DarkThemeType {

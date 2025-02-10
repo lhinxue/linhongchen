@@ -1,79 +1,24 @@
-import { Card, CardBody, CardFooter, CardHeader, Chip, Image } from "@heroui/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Chip, CircularProgress, Image } from "@heroui/react";
 import parse from "html-react-parser";
 import styled from "styled-components";
 
 import FadeUp from "../animations/FadeUp";
 import { GalleryStyle } from "../enums/ContentBlockType";
+import Lucide from "../icons/Lucide";
 import { IComponent } from "../interfaces/components";
-
-const Wave = styled.div<{level:number}>`
-    position: absolute;
-    top: 0%;
-    transform: scaleX(4);
-    left: 0%;
-    width: 100%;
-    height:100%;
-    overflow: hidden;
-    &>span {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        height: calc(100% - 250px);
-        background: hsl(var(--heroui-primary) / 0.1);
-    }
-    /* z-index: -10; */
-    & > div {
-        position: relative;
-        top: 0;
-        width: 100%;
-        height: 250px;
-        background: hsl(var(--heroui-primary) / 0.1);
-    }
-    & > div:before,
-    & > div:after {
-        content: "";
-        position: absolute;
-        top: 90%;
-        left: 50%;
-        transform: translate(-50%, -75%);
-    }
-    & > div:before {
-        border-radius: 55%;
-        width: 100%;
-        height: 120%;
-        background: rgba(255, 255, 255, 1);
-        animation: animate ${Math.random() * 5 + 10}s linear infinite;
-    }
-    & > div:after {
-        border-radius: 30%;
-        width: 100%;
-        height: 80%;
-        background: rgba(255, 255, 255, 0.5);
-        animation: animate ${Math.random() * 5 + 18}s linear infinite;
-    }
-
-    @keyframes animate {
-        0% {
-            transform: translate(-50%, -75%) rotate(0deg);
-        }
-        100% {
-            transform: translate(-50%, -75%) rotate(360deg);
-        }
-    }
-`;
 
 export function GalleryItem({
     title,
     content,
     image,
-    progress=100,
+    progress = 100,
     progressLabel,
     tags,
     galleryStyle,
 }: IComponent.GalleryItem) {
     return (
         <Card className="relative bg-none" fullWidth>
-            <CardHeader className="pb-2 overflow-hidden relative bg-none">
+            <CardHeader className="pb-2 overflow-hidden relative bg-none justify-between items-start">
                 <div className="flex flex-col gap-3">
                     <p className="text-xl font-bold">{title}</p>
                     {tags && (
@@ -88,6 +33,11 @@ export function GalleryItem({
                         </div>
                     )}
                 </div>
+                <CircularProgress showValueLabel value={progress} size="md" valueLabel={<Lucide.Percent size={16} />} />
+                {/* <span className="flex flex-col items-end">
+                    <span className="text-sm">{progressLabel}</span>
+                    
+                </span> */}
                 {/* {image && galleryStyle === GalleryStyle.List && (
                     <div className="absolute -z-10">
                         <Image isZoomed removeWrapper src={image.src} alt={image.alt} />
@@ -106,10 +56,6 @@ export function GalleryItem({
                 ))}
                 {/* </FadeUp> */}
             </CardFooter>
-            <Wave level={progress}>
-                <div />
-                <span />
-            </Wave>
         </Card>
     );
 }

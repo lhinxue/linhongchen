@@ -6,16 +6,16 @@ import { useSwipeable } from "react-swipeable";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
+import { ContentBlockType, GalleryStyle } from "../enums/ContentBlockType";
 import Lucide from "../icons/Lucide";
 import { IComponent } from "../interfaces/components";
+import { IContentBlock } from "../interfaces/config";
 import { IStore } from "../interfaces/stores";
 import DarkTheme, { useDarkTheme } from "./DarkTheme";
+import Gallery from "./Gallery";
 import ScrollArea from "./ScrollArea";
 import { PageTitle } from "./Title";
-import { ContentBlockType, GalleryStyle } from "../enums/ContentBlockType";
-import { IContentBlock } from "../interfaces/config";
 import Wiki from "./Wiki";
-import Gallery from "./Gallery";
 
 const useNavigator = create<IStore.Navigator>()(
     subscribeWithSelector((set) => ({
@@ -117,17 +117,18 @@ function Navigator({ title, menu, contents }: IComponent.Navigator) {
                 </div>
                 <div className="flex gap-3 items-center">
                     <Tabs className="hidden sm:flex" variant="underlined" selectedKey={`${current}`}>
-                        {menu.map((m) => (
-                            <Tab
-                                key={m.key}
-                                title={
-                                    <div className="flex items-center space-x-2" onClick={() => setCurrent(m.key)}>
-                                        {m.icon && <span>{m.icon}</span>}
-                                        {m.title && <span>{m.title}</span>}
-                                    </div>
-                                }
-                            />
-                        ))}
+                        {menu &&
+                            menu.map((m) => (
+                                <Tab
+                                    key={m.key}
+                                    title={
+                                        <div className="flex items-center space-x-2" onClick={() => setCurrent(m.key)}>
+                                            {m.icon && <span>{m.icon}</span>}
+                                            {m.title && <span>{m.title}</span>}
+                                        </div>
+                                    }
+                                />
+                            ))}
                     </Tabs>
                     <DarkTheme />
                 </div>
@@ -141,7 +142,8 @@ function Navigator({ title, menu, contents }: IComponent.Navigator) {
                     exit={onDisappear()}
                 >
                     <Page className="bg-background bg-opacity-90 backdrop-blur">
-                        {menu.map((m) => (
+                        {menu &&
+                            menu.map((m) => (
                             <Page
                                 key={m.key}
                                 id={`page-${m.key}`}
@@ -181,7 +183,8 @@ function Navigator({ title, menu, contents }: IComponent.Navigator) {
                             <p className="font-bold text-inherit">{title}</p>
                         </div>
                         <div>
-                            {menu.map((m) => (
+                            {menu &&
+                            menu.map((m) => (
                                 <Button
                                     fullWidth
                                     variant={m.key === current ? "flat" : "light"}

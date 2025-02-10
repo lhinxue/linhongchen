@@ -8,6 +8,7 @@ import "./App.css";
 function App() {
     const { dark } = useDarkTheme();
     const content = useContent();
+    console.log(content.Catalog)
     return (
         <main className={`${dark} `}>
             <Navigator title="Honkai: Star Rail" menu={content.Catalog} contents={content.Pages} />
