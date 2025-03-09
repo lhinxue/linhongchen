@@ -1,5 +1,6 @@
-import { Button, Drawer, DrawerBody, DrawerContent, Spacer, Tab, Tabs, useDisclosure } from "@heroui/react";
+import { Button, Drawer, DrawerBody, DrawerContent, Spacer, Tab, Tabs, Tooltip, useDisclosure } from "@heroui/react";
 import { motion } from "framer-motion";
+import { transform } from "lodash";
 import { ReactNode, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSwipeable } from "react-swipeable";
@@ -80,6 +81,22 @@ function Navigator({ title, menu, contents }: IComponent.Navigator) {
         };
     };
 
+    const onHeaderAppear = () => {
+        return {
+            opacity: 1,
+            transform: "translateY(0)",
+            transition: { duration: 0.5, delay: 0, ease: "easeInOut" },
+        };
+    };
+
+    const onHeaderDisappear = () => {
+        return {
+            opacity: 0,
+            transform: "translateY(-100%)",
+            transition: { duration: 0.5, delay: 0, ease: "easeInOut" },
+        };
+    };
+
     const { current, setCurrent, scrollTo, scrolling } = useNavigator();
 
     useEffect(() => {
@@ -105,34 +122,43 @@ function Navigator({ title, menu, contents }: IComponent.Navigator) {
 
     return (
         <div className="w-screen h-screen flex flex-col">
-            <div
+            <motion.div
                 {...onSwipRight}
-                className="justify-between h-16 flex items-center text-foreground bg-background select-none top-0 max-w-none sm:px-10 px-4 border-b-1 border-b-stone-200 dark:border-b-neutral-700"
+                initial={onHeaderDisappear()}
+                animate={current !== "c" ? onHeaderAppear() : onHeaderDisappear()}
+                exit={onHeaderDisappear()}
+                className={`justify-between h-16 flex items-center text-foreground bg-background select-none top-0 max-w-none sm:px-10 px-4 border-b-1 border-b-stone-200 dark:border-b-neutral-700`}
             >
                 <div className="flex gap-3 items-center">
                     <Button className="sm:hidden flex" variant="light" isIconOnly onPress={onOpen}>
                         <Lucide.Menu />
                     </Button>
-                    <p className="font-bold text-inherit">{title}</p>
+                    <p className={`font-bold text-inherit`}>{title}</p>
                 </div>
                 <div className="flex gap-3 items-center">
                     <Tabs className="hidden sm:flex" variant="underlined" selectedKey={`${current}`}>
                         {menu &&
                             menu.map((m) => (
                                 <Tab
+                                    className="p-0"
                                     key={m.key}
                                     title={
-                                        <div className="flex items-center space-x-2" onClick={() => setCurrent(m.key)}>
-                                            {m.icon && <span>{m.icon}</span>}
-                                            {m.title && <span>{m.title}</span>}
-                                        </div>
+                                        <Tooltip content={m.title} offset={25}>
+                                            <div
+                                                className="flex items-center space-x-2 px-2"
+                                                onClick={() => setCurrent(m.key)}
+                                            >
+                                                {m.icon && <span>{m.icon}</span>}
+                                                {/* {m.title && <span>{m.title}</span>} */}
+                                            </div>
+                                        </Tooltip>
                                     }
                                 />
                             ))}
                     </Tabs>
                     <DarkTheme />
                 </div>
-            </div>
+            </motion.div>
 
             <ScrollArea className="flex-1">
                 <Page id="page-c" className="bg-transparent min-h-screen" onReveal={() => setCurrent("c")}></Page>
@@ -141,19 +167,19 @@ function Navigator({ title, menu, contents }: IComponent.Navigator) {
                     animate={current !== "c" && current !== "f" ? onAppear() : onDisappear()}
                     exit={onDisappear()}
                 >
-                    <Page className="bg-background bg-opacity-90 backdrop-blur">
+                    <Page className="bg-background bg-opacity-95 backdrop-blur">
                         {menu &&
                             menu.map((m) => (
-                            <Page
-                                key={m.key}
-                                id={`page-${m.key}`}
-                                className="min-h-screen pb-52"
-                                onReveal={() => (scrolling ? void 0 : setCurrent(m.key))}
-                            >
-                                <PageTitle>{m.title}</PageTitle>
-                                <ContentBlock content={contents[m.key]} />
-                            </Page>
-                        ))}
+                                <Page
+                                    key={m.key}
+                                    id={`page-${m.key}`}
+                                    className="min-h-screen pb-52"
+                                    onReveal={() => (scrolling ? void 0 : setCurrent(m.key))}
+                                >
+                                    <PageTitle>{m.title}</PageTitle>
+                                    <ContentBlock content={contents[m.key]} />
+                                </Page>
+                            ))}
                     </Page>
                 </motion.span>
 
@@ -184,25 +210,25 @@ function Navigator({ title, menu, contents }: IComponent.Navigator) {
                         </div>
                         <div>
                             {menu &&
-                            menu.map((m) => (
-                                <Button
-                                    fullWidth
-                                    variant={m.key === current ? "flat" : "light"}
-                                    radius="none"
-                                    className="justify-start"
-                                    key={m.key}
-                                    onPress={() => {
-                                        if (current !== m.key) {
-                                            setCurrent(m.key);
-                                            onClose();
-                                        }
-                                    }}
-                                    color={m.key === current ? "primary" : "default"}
-                                    startContent={m.icon}
-                                >
-                                    {m.title}
-                                </Button>
-                            ))}
+                                menu.map((m) => (
+                                    <Button
+                                        fullWidth
+                                        variant={m.key === current ? "flat" : "light"}
+                                        radius="none"
+                                        className="justify-start"
+                                        key={m.key}
+                                        onPress={() => {
+                                            if (current !== m.key) {
+                                                setCurrent(m.key);
+                                                onClose();
+                                            }
+                                        }}
+                                        color={m.key === current ? "primary" : "default"}
+                                        startContent={m.icon}
+                                    >
+                                        {m.title}
+                                    </Button>
+                                ))}
                         </div>
                     </DrawerBody>
                 </DrawerContent>

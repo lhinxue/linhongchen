@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Chip, CircularProgress, Image } from "@heroui/react";
+import { Button, Card, CardBody, CardFooter, CardHeader, Chip, CircularProgress, Image, Tooltip } from "@heroui/react";
 import parse from "html-react-parser";
 import styled from "styled-components";
 
@@ -13,6 +13,7 @@ export function GalleryItem({
     image,
     progress = 100,
     progressLabel,
+    progressIcon = <Lucide.Percent size={16} />,
     tags,
     galleryStyle,
 }: IComponent.GalleryItem) {
@@ -33,7 +34,12 @@ export function GalleryItem({
                         </div>
                     )}
                 </div>
-                <CircularProgress showValueLabel value={progress} size="md" valueLabel={<Lucide.Percent size={16} />} />
+                {progress && progressLabel && (
+                    <Tooltip content={progressLabel} placement="bottom-end">
+                        <CircularProgress showValueLabel value={progress} size="md" valueLabel={progressIcon} />
+                    </Tooltip>
+                )}
+
                 {/* <span className="flex flex-col items-end">
                     <span className="text-sm">{progressLabel}</span>
                     

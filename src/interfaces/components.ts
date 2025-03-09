@@ -68,6 +68,7 @@ export namespace IComponent {
         content: string[];
         progress?: number;
         progressLabel?: string;
+        progressIcon?: ReactNode;
         tags?: string[];
         galleryStyle?: GalleryStyle;
     }
