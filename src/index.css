@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+    font-family: "Bitter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root,
+#app {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.box {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #0000;
+    border-radius: 12px;
+    background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(var(--angle),
+            #ffffff,
+            #6b6b6b) border-box;
+    animation: 8s rotate linear infinite;
+}
+
+@keyframes rotate {
+    to {
+        --angle: 360deg;
+    }
+}
+
+@property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+
+
+:root,
+.light,
+.light {
+    --fg-color: #000000;
+    --bg-color: #ffffff;
+    --primary: #7fe8ff;
+    color: var(--fg-color);
+}
+
+.dark {
+    --fg-color: #ffffff;
+    --bg-color: #101010;
+    --primary: #5399a8;
+    color: var(--fg-color);
+}

@@ -1,0 +1,23 @@
+section.card {
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+
+section.card>h3 {
+    font-size: 1.6em;
+    /* font-weight: 600; */
+}
+
+section.card>div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+    line-height: 1rem;
+    margin: .2rem 0;
+}
+
+/* section.card>*:nth-child(2){
+
+} */

@@ -1,0 +1,55 @@
+button {
+    color: var(--fg-color);
+    border-color: var(--fg-color);
+    background-color: color-mix(in srgb, var(--bg-color) 50%, transparent);
+}
+
+button:not(.icon-only) {
+    border: 1px solid;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    position: relative;
+}
+
+button.icon-only {
+    border: 1px solid;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    border-radius: 1em;
+    transition: all .3s ease-in-out;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:not(.tag):hover {
+    background-color: color-mix(in srgb, var(--primary) 50%, transparent);
+}
+
+button.inactive,
+button.disabled {
+    opacity: .5;
+}
+
+button:not(.disabled) {
+    pointer-events: all !important;
+}
+
+button.rounded {
+    border-radius: 1em;
+}
+
+button.tag {
+    font-size: .9em;
+    border:none;
+    line-height: 1.3em;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--fg-color) 60%, transparent);
+}
+
+button:not(.tag){
+    padding: .1rem .6rem;
+}
+
