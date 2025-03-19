@@ -1,0 +1,18 @@
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.overflow-y-auto {
+    overflow-y: auto;
+}
+
+.radix-scrollbar {
+    z-index: 10;
+}
+
+.radix-scrollbar-thumb {
+    width: .5rem;
+    border-radius: 1rem;
+    background-color: color-mix(in srgb, var(--fg-color) 20%, transparent);
+    cursor: pointer;
+}

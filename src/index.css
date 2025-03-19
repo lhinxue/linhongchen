@@ -1,7 +1,16 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: 'CustomFont';
+    src: url('assets/仓耳今楷01-W03.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
 :root {
-    font-family: "Bitter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: "Bitter", 'CustomFont', system-ui, Avenir, Helvetica, Arial, sans-serif;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -25,39 +34,19 @@ body,
     overflow-x: hidden;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-.box {
-    display: flex;
-    flex-direction: column;
-    border: 2px solid #0000;
-    border-radius: 12px;
-    background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(var(--angle),
-            #ffffff,
-            #6b6b6b) border-box;
-    animation: 8s rotate linear infinite;
+* {
+    transition: background-color .5s ease-in-out;
 }
 
-@keyframes rotate {
-    to {
-        --angle: 360deg;
-    }
-}
 
-@property --angle {
-    syntax: "<angle>";
-    initial-value: 0deg;
-    inherits: false;
-}
+
+
+
+
+
+
+
+
 
 
 

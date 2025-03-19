@@ -6,13 +6,15 @@ import { useInView } from "react-intersection-observer";
 import { create } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
-import Abilities from "./pages/Abilities";
-import Experience from "./pages/Experience";
+import Button from "./components/Button";
 import Icons from "./components/Icons";
+import Title from "./components/Title";
+import Abilities from "./pages/Abilities";
+import About from "./pages/About";
+import Experience from "./pages/Experience";
 
 import "./App.css";
-import Button from "./components/Button";
-import About from "./pages/About";
+import ScrollArea from "./components/ScrollArea";
 
 const useNavigator = create()(
     subscribeWithSelector((set) => ({
@@ -39,8 +41,12 @@ const useNavigator = create()(
             }),
     }))
 );
+const useTheme = create((set) => ({
+    dark: false,
+    toggle: () => set((state) => ({ dark: !state.dark })),
+}));
 
-export function Page({ children, id, onReveal = () => {} }) {
+export function Page({ children, id, onReveal = () => {}, h1, h2, headerContent }) {
     const { inView, ref } = useInView({ threshold: 0.1 });
 
     useEffect(() => {
@@ -50,7 +56,13 @@ export function Page({ children, id, onReveal = () => {} }) {
     return (
         <>
             <div id={id} ref={ref} className="page">
-                {children}
+                {h1 && (
+                    <div className="page-header">
+                        <Title h1={h1} h2={h2} />
+                        {headerContent}
+                    </div>
+                )}
+                <div className="page-content">{children}</div>
             </div>
         </>
     );
@@ -94,8 +106,9 @@ function App() {
             transition: { duration: 0.5, delay: 0, ease: "easeInOut" },
         };
     };
+    const { dark, toggle } = useTheme();
     return (
-        <div id="app" className="dark">
+        <div id="app" className={`${dark ? "dark" : ""}`}>
             <video
                 id="bg"
                 // poster="https://fastcdn.hoyoverse.com/content-v2/hkrpg/101831/be5f1cc27a611c0e5997a63832d0f8db_1539232401522007101.mp4?x-oss-process=video/snapshot,t_1,f_jpg,m_fast"
@@ -106,6 +119,7 @@ function App() {
                 crossOrigin="anonymous"
                 playsInline
             ></video>
+            <div id="bg-mask"/>
             <motion.div
                 id="header"
                 className="bg-white"
@@ -122,19 +136,18 @@ function App() {
                         <button className="icon-only">
                             <Icons.Translate />
                         </button>
-                        <button className="icon-only">
+                        <button className="icon-only" onClick={toggle}>
                             <Icons.Sun />
                         </button>
                     </div>
                 </section>
             </motion.div>
-            <div id="body">
+            <ScrollArea id="body">
                 <Page id="cover" onReveal={() => (scrolling ? void 0 : setCurrent("cover"))}>
                     <motion.section
                         initial={onAppear()}
                         animate={current !== "cover" ? onDisappear() : onAppear()}
                         exit={onAppear()}
-                        className="dark"
                     >
                         <h1>
                             {/* See you tomorrow */}
@@ -176,7 +189,7 @@ function App() {
                         </section>
                     </Page>
                 </motion.span>
-            </div>
+            </ScrollArea>
         </div>
     );
 }

@@ -1,9 +1,10 @@
 import { useState } from "react";
+
 import { Page } from "../App";
 import Button from "../components/Button";
+import Card from "../components/Card";
 import Icons from "../components/Icons";
 import Title from "../components/Title";
-import Card from "../components/Card";
 
 function Skills({ onReveal }) {
     const skills = [
@@ -72,21 +73,27 @@ function Skills({ onReveal }) {
     const filteredWorks = works.filter((work) => work.tags.some((tag) => activeTags.includes(tag)));
 
     return (
-        <Page id="abilities" onReveal={onReveal}>
-            <Title h1={"abilities"} h2={["Areas of Expertise", "contributed Projects"]} />
-            <section className="tags sticky">
-                {skills.map((skill) => (
-                    <Button
-                        tag
-                        key={skill.name}
-                        rounded
-                        inactive={!activeTags.includes(skill.name)}
-                        onClick={() => toggleTag(skill.name)}
-                    >
-                        {skill.name}
-                    </Button>
-                ))}
-            </section>
+        <Page
+            id="abilities"
+            onReveal={onReveal}
+            h1={"abilities"}
+            h2={["Areas of Expertise", "contributed Projects"]}
+            headerContent={
+                <section className="tags">
+                    {skills.map((skill) => (
+                        <Button
+                            tag
+                            key={skill.name}
+                            rounded
+                            inactive={!activeTags.includes(skill.name)}
+                            onClick={() => toggleTag(skill.name)}
+                        >
+                            {skill.name}
+                        </Button>
+                    ))}
+                </section>
+            }
+        >
             <section className="gallery">
                 {filteredWorks.map((work, index) => (
                     <Card h1={work.name} timestamp={work.timestamp} tags={work.tags} p={work.notes} />

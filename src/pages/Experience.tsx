@@ -1,4 +1,5 @@
 import { Page } from "../App";
+import Card from "../components/Card";
 import Title from "../components/Title";
 
 function Experience({ onReveal }) {
@@ -43,19 +44,9 @@ function Experience({ onReveal }) {
     ];
 
     return (
-        <Page id="experience" onReveal={onReveal}>
-            <Title h1={"experience"} h2={["education background", "work experience"]} />
+        <Page id="experience" onReveal={onReveal} h1={"experience"} h2={["education background", "work experience"]}>
             {events.map((event) => (
-                <section>
-                    <h3>{event.name}</h3>
-                    <p>
-                        <em>{event.timestamp}</em>
-                    </p>
-                    <p>
-                        <em>{event.tag}</em>
-                    </p>
-                    <p dangerouslySetInnerHTML={{ __html: event.notes }} />
-                </section>
+                <Card h1={event.name} timestamp={event.timestamp} tags={[event.tag]} p={event.notes} />
             ))}
         </Page>
     );

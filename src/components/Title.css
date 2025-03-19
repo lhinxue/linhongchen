@@ -3,11 +3,12 @@ section.title>h1 {
 }
 
 section.title>h2 {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
 }
 
 section.title>h2 {
     display: flex;
     align-items: center;
+    font-style: italic;
     gap: .3em;
 }
