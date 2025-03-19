@@ -119,7 +119,7 @@ function App() {
                 crossOrigin="anonymous"
                 playsInline
             ></video>
-            <div id="bg-mask"/>
+            <div id="bg-mask" />
             <motion.div
                 id="header"
                 className="bg-white"
@@ -177,15 +177,21 @@ function App() {
                                     <h1>Hongchen Lin</h1>
                                     <h2>a real man</h2>
                                 </div>
-                                <div>
-                                    <div>a b c d</div>
-                                    <sub>linhongchen.com created by Honghchenlin and hosted by Github</sub>
+                                <div id="contacts">
+                                    <Icons.LinkedinLogo />
+                                    <Icons.GithubLogo />
+                                    <Icons.YoutubeLogo />
+                                    <Icons.XLogo />
+                                    <Icons.FacebookLogo />
                                 </div>
                             </div>
                             <div>
                                 <Button>download CV</Button>
                                 <Button>Send Email</Button>
                             </div>
+                        </section>
+                        <section>
+                            <p>linhongchen.com created by Honghchenlin and hosted by Github</p>
                         </section>
                     </Page>
                 </motion.span>

@@ -43,13 +43,12 @@ button.rounded {
 
 button.tag {
     font-size: .9em;
-    border:none;
+    border: none;
     line-height: 1.3em;
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--fg-color) 60%, transparent);
 }
 
-button:not(.tag){
+button:not(.tag) {
     padding: .1rem .6rem;
 }
-

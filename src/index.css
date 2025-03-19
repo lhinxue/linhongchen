@@ -7,8 +7,6 @@
     font-style: normal;
 }
 
-
-
 :root {
     font-family: "Bitter", 'CustomFont', system-ui, Avenir, Helvetica, Arial, sans-serif;
 
@@ -36,19 +34,8 @@ body,
 
 * {
     transition: background-color .5s ease-in-out;
+    
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 :root,
 .light,
