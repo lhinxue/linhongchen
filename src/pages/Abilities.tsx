@@ -1,13 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
-import { Page } from "../App";
+import Page from "../components/Page";
 import Button from "../components/Button";
 import Card from "../components/Card";
-import Icons from "../components/Icons";
-import Title from "../components/Title";
 
-function Skills({ onReveal }) {
-    const skills = [
+export interface Skill {
+    name: string;
+}
+
+export interface Work {
+    name: string;
+    tags: string[];
+    timestamp: string;
+    notes: string;
+}
+
+interface AbilitiesProps {
+    onReveal: () => void;
+}
+
+const Abilities: React.FC<AbilitiesProps> = ({ onReveal }) => {
+    const skills: Skill[] = [
         { name: "React" },
         { name: "OfficeJs" },
         { name: "Python" },
@@ -21,7 +34,7 @@ function Skills({ onReveal }) {
         { name: "Adobe Premiuem Pro" },
     ];
 
-    const works = [
+    const works: Work[] = [
         {
             name: "Outlook Integration",
             tags: ["React", "OfficeJs", "HTML", "CSS", "Javascript"],
@@ -49,25 +62,12 @@ function Skills({ onReveal }) {
     ];
 
     // Initialize activeTags with all available skills.
-    const [activeTags, setActiveTags] = useState(skills.map((skill) => skill.name));
+    const [activeTags, setActiveTags] = useState<string[]>(skills.map((skill) => skill.name));
 
     // Toggle the active state of a tag.
-    const toggleTag = (tagName) => {
-        setActiveTags((prev) => {
-            if (prev.includes(tagName)) {
-                return prev.filter((tag) => tag !== tagName);
-            } else {
-                return [...prev, tagName];
-            }
-        });
+    const toggleTag = (tagName: string) => {
+        setActiveTags((prev) => (prev.includes(tagName) ? prev.filter((tag) => tag !== tagName) : [...prev, tagName]));
     };
-
-    // Tag component shows full opacity when active, 0.5 when inactive.
-    const Tag = ({ name, isActive, onClick }) => (
-        <div className="tag" style={{ opacity: isActive ? 1 : 0.5 }} onClick={onClick}>
-            {name}
-        </div>
-    );
 
     // Filter works: only include those that have at least one tag that is active.
     const filteredWorks = works.filter((work) => work.tags.some((tag) => activeTags.includes(tag)));
@@ -96,11 +96,11 @@ function Skills({ onReveal }) {
         >
             <section className="gallery">
                 {filteredWorks.map((work, index) => (
-                    <Card h1={work.name} timestamp={work.timestamp} tags={work.tags} p={work.notes} />
+                    <Card key={index} h1={work.name} timestamp={work.timestamp} tags={work.tags} p={work.notes} />
                 ))}
             </section>
         </Page>
     );
-}
+};
 
-export default Skills;
+export default Abilities;

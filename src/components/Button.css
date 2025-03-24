@@ -1,6 +1,9 @@
 button {
     color: var(--fg-color);
     border-color: var(--fg-color);
+}
+
+button:not(.tag) {
     background-color: color-mix(in srgb, var(--bg-color) 50%, transparent);
 }
 

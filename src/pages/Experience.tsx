@@ -1,9 +1,20 @@
-import { Page } from "../App";
+import React from "react";
+import Page from "../components/Page";
 import Card from "../components/Card";
-import Title from "../components/Title";
 
-function Experience({ onReveal }) {
-    const events = [
+interface ExperienceProps {
+    onReveal: () => void;
+}
+
+interface Event {
+    name: string;
+    tag: string;
+    timestamp: string;
+    notes: string;
+}
+
+const Experience: React.FC<ExperienceProps> = ({ onReveal }) => {
+    const events: Event[] = [
         {
             name: "Westlake Boys High school",
             tag: "Education background",
@@ -18,10 +29,9 @@ function Experience({ onReveal }) {
             name: "University of Auckland",
             tag: "Education background",
             timestamp: "2022-Now",
-            notes: ` Im not one of the best student, but I don't think I am bad. In school, there's 4 kind of student:
+            notes: `Im not one of the best student, but I don't think I am bad. In school, there's 4 kind of student:
                     who never ask for help and just knows everything; who usually being asked for help but also need to
-                    ask for help sometimes; who asked for help; and anonymas. I am the second group of people :)
-               `,
+                    ask for help sometimes; who asked for help; and anonymas. I am the second group of people :)`,
         },
         {
             name: "Fields Cafe",
@@ -38,18 +48,17 @@ function Experience({ onReveal }) {
             notes: `My first job, gained by my very first interview. Well it again proves I am one of the top.
                     <br />
                     In SIF I am one of the PSG which is converting Customer's requirements into actual program needs. I
-                    did alot of things, including webpage, database, desktop, etc...
-                `,
+                    did alot of things, including webpage, database, desktop, etc...`,
         },
     ];
 
     return (
         <Page id="experience" onReveal={onReveal} h1={"experience"} h2={["education background", "work experience"]}>
-            {events.map((event) => (
-                <Card h1={event.name} timestamp={event.timestamp} tags={[event.tag]} p={event.notes} />
+            {events.map((event, index) => (
+                <Card key={index} h1={event.name} timestamp={event.timestamp} tags={[event.tag]} p={event.notes} />
             ))}
         </Page>
     );
-}
+};
 
 export default Experience;

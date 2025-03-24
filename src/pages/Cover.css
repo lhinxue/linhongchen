@@ -1,0 +1,47 @@
+#cover {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    z-index: 5;
+}
+
+#cover>section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+#cover {
+    display: flex;
+}
+
+#cover>section {
+
+    text-shadow: 0 0 6px var(--bg-color);
+}
+
+#cover h1 {
+    font-size: min(11vw, 3em);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    /* font-style: italic; */
+    font-variant-ligatures: none;
+    /* font-weight: 300; */
+}
+
+#cover h1 * {
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0;
+}
+
+#cover .page-content {
+    position: fixed;
+    pointer-events: none;
+}

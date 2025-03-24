@@ -1,0 +1,49 @@
+
+
+#footer {
+    box-shadow: 0 0 10px 0 color-mix(in srgb, var(--fg-color) 30%, transparent);
+}
+
+#footer h1 {
+    font-size: 1.3em;
+}
+
+#footer h2 {
+    font-size: .8em;
+}
+
+#footer section {
+    display: flex;
+    justify-content: space-between;
+}
+
+#footer p {
+    font-size: .6em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+#footer section>div:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+#footer section>div:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: .3rem;
+}
+
+#footer #contacts {
+    display: flex;
+    flex-direction: row;
+}
+
+#footer button {
+    font-size: .8em;
+}
+

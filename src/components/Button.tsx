@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import "./Button.css";
 
-type ButtonProps = {
+interface ButtonProps {
     children: React.ReactNode;
     inactive?: boolean;
     iconOnly?: boolean;
@@ -10,7 +10,7 @@ type ButtonProps = {
     rounded?: boolean;
     tag?: boolean;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-};
+}
 
 const Button: React.FC<ButtonProps> = ({ children, inactive, iconOnly, disabled, rounded, tag, onClick }) => {
     return (

@@ -2,7 +2,7 @@ import React from "react";
 import "./Card.css";
 import Icons from "./Icons";
 
-type CardProps = {
+interface CardProps {
     h1: string;
     timestamp?: string;
     tags: string[];

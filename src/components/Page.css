@@ -1,0 +1,32 @@
+.page {
+    width: 100%;
+    position: relative;
+    z-index: 10;
+
+}
+
+.page>.page-header>section,
+.page-content>section {
+    width: 85vw;
+    max-width: 900px;
+    margin: auto;
+    padding: .5rem 0;
+}
+
+.page:not(#cover) {
+    background-color: var(--bg-color);
+
+}
+
+.page-header {
+    background-color: var(--bg-color);
+    box-shadow: 0px 0 20px 10px var(--bg-color);
+    padding-top: 6rem;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.page-content {
+    padding-top: 1rem;
+}

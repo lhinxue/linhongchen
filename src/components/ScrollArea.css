@@ -1,4 +1,5 @@
 .radix-scrollbar-root {
+    --radix-scroll-area-thumb-width: .4rem;
     overflow: hidden;
     height: 100%;
 }
@@ -13,7 +14,6 @@
 }
 
 .radix-scrollbar-thumb {
-    width: .4rem;
     border-radius: 1rem;
     background-color: color-mix(in srgb, var(--fg-color) 20%, transparent);
     cursor: pointer;
