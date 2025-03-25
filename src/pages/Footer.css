@@ -1,7 +1,7 @@
-
-
 #footer {
     box-shadow: 0 0 10px 0 color-mix(in srgb, var(--fg-color) 30%, transparent);
+    padding-bottom: 1rem;
+    min-height: 0px;
 }
 
 #footer h1 {
@@ -46,4 +46,3 @@
 #footer button {
     font-size: .8em;
 }
-

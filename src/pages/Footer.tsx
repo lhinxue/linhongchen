@@ -2,19 +2,23 @@ import Page from "../components/Page";
 import Button from "../components/Button";
 import Icons from "../components/Icons";
 import "./Footer.css";
+import useApp from "../hooks/useApp";
+import P from "../components/P";
 
 interface FooterProps {
     onReveal: () => void;
 }
 
 export default function Footer({ onReveal }: FooterProps) {
+    const { content } = useApp();
+
     return (
         <Page id="footer" onReveal={onReveal}>
             <section>
                 <div>
                     <div>
-                        <h1>Hongchen Lin</h1>
-                        <h2>a real man</h2>
+                        <h1>{content.name}</h1>
+                        <h2>{content.epithet}</h2>
                     </div>
                     <div id="contacts">
                         <Icons.LinkedinLogo />
@@ -25,12 +29,11 @@ export default function Footer({ onReveal }: FooterProps) {
                     </div>
                 </div>
                 <div>
-                    <Button>download CV</Button>
-                    <Button>Send Email</Button>
+                    <Button>{content.footerBtn1}</Button>
                 </div>
             </section>
             <section>
-                <p>linhongchen.com created by Honghchenlin and hosted by Github</p>
+                <P>{content.license}</P>
             </section>
         </Page>
     );

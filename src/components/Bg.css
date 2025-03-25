@@ -1,0 +1,19 @@
+#bg {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    object-position: center center;
+    z-index: -2;
+
+}
+
+#bg-mask {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: color-mix(in srgb, var(--bg-color) 60%, transparent);
+    /* backdrop-filter: blur(5px); */
+}

@@ -43,7 +43,6 @@ export interface Content {
     license: string;
     links: Links;
     tagline: Tagline[];
-    coverP: string;
     coverBtn: string;
     aboutH1: string;
     aboutH2: string[];
