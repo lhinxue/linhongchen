@@ -7,8 +7,15 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'CustomFont';
+    src: url('assets/仓耳今楷01-W05.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
 :root {
-    font-family: "Bitter", 'CustomFont', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: 'CustomFont', system-ui, Avenir, Helvetica, Arial, sans-serif;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -49,6 +56,7 @@ body,
 .dark {
     --fg-color: #ffffff;
     --bg-color: #101010;
+    --shadow-color: #000000;
     --primary: #5399a8;
     color: var(--fg-color);
 }

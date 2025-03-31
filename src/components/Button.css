@@ -1,6 +1,9 @@
 button {
     color: var(--fg-color);
     border-color: var(--fg-color);
+    display: flex;
+    align-items: center;
+    gap: .3rem;
 }
 
 button:not(.tag) {
@@ -14,17 +17,21 @@ button:not(.icon-only) {
     position: relative;
 }
 
+button:not(.tag) {
+    padding: .1rem .6rem;
+}
+
 button.icon-only {
     border: 1px solid;
-    width: 2rem;
-    height: 2rem;
+    width: 1.8rem;
+    height: 1.8rem;
     cursor: pointer;
-    border-radius: 1em;
-    transition: all .3s ease-in-out;
+    /* border-radius: 1em; */
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    padding: .3rem;
 }
 
 button:not(.tag):hover {
@@ -36,7 +43,8 @@ button.disabled {
     opacity: .5;
 }
 
-button:not(.disabled) {
+button:not(.disabled),
+button:not(.disabled) * {
     pointer-events: all !important;
 }
 
@@ -50,8 +58,4 @@ button.tag {
     line-height: 1.3em;
     text-decoration: underline;
     text-decoration-color: color-mix(in srgb, var(--fg-color) 60%, transparent);
-}
-
-button:not(.tag) {
-    padding: .1rem .6rem;
 }

@@ -1,4 +1,5 @@
 import en from "./src/en";
+import zh from "./src/zh";
 
 export interface Personality {
     icon: React.FC;
@@ -34,7 +35,9 @@ export interface Links {
 
 export interface Tagline {
     _1: string;
+    _1p: string;
     _2: string;
+    _2p: string;
 }
 
 export interface Content {
@@ -58,4 +61,4 @@ export interface Content {
     footerBtn1: string;
 }
 
-export default {en};
+export default { en, zh };

@@ -17,6 +17,7 @@ import useApp from "./hooks/useApp";
 import Button from "./components/Button";
 import Bg from "./components/Bg";
 import aActions from "./animations/actions";
+import Select from "./components/Select";
 
 function App() {
     const { current, setCurrent: _setCurrent, scrollTo, scrolling } = useNavigator();
@@ -35,19 +36,27 @@ function App() {
             animate: current !== "cover" ? aActions.fadeOut() : aActions.fadeIn(),
             exit: aActions.fadeIn(),
         },
+        footer: {
+            initial: aActions.fadeIn(),
+            animate: current !== "footer" ? aActions.fadeOut() : aActions.fadeIn(),
+            exit: aActions.fadeIn(),
+        },
         header: {
             initial: aActions.fadeOut({ up: "100%" }),
-            animate: current !== "cover" ? aActions.fadeIn({ delay: 0 }) : aActions.fadeOut({ up: "100%" }),
+            animate:
+                current !== "cover" && current !== "footer"
+                    ? aActions.fadeIn({ delay: 0 })
+                    : aActions.fadeOut({ up: "100%" }),
             exit: aActions.fadeOut({ up: "100%" }),
         },
         body: {
             initial: aActions.fadeOut(),
-            animate: current !== "cover" ? aActions.fadeIn() : aActions.fadeOut(),
+            animate: current !== "cover" && current !== "footer" ? aActions.fadeIn() : aActions.fadeOut(),
             exit: aActions.fadeOut(),
         },
     };
 
-    const { content, dark, toggleDarkTheme } = useApp();
+    const { content, dark, toggleDarkTheme, locale, locales, setLocale } = useApp();
 
     return (
         <div id="app" className={clsx({ dark })}>
@@ -59,9 +68,10 @@ function App() {
                         <blockquote>{content.epithet}</blockquote>
                     </div>
                     <div>
-                        <Button iconOnly>
+                        <Select options={locales} selection={locale} onSelect={setLocale}>
                             <Icons.Translate />
-                        </Button>
+                            {locale}
+                        </Select>
                         <Button iconOnly onClick={toggleDarkTheme}>
                             <Icons.Sun />
                         </Button>
@@ -70,12 +80,12 @@ function App() {
             </motion.div>
             <ScrollArea id="body">
                 <Cover animation={animations.cover} onReveal={setCurrent} onNext={() => setCurrent("about")} />
-                <motion.span {...animations.body}>
+                <motion.span {...animations.body} className="body-content">
                     <About onReveal={setCurrent} />
                     <Experience onReveal={setCurrent} />
                     <Abilities onReveal={setCurrent} />
-                    <Footer onReveal={setCurrent} />
                 </motion.span>
+                <Footer animation={animations.footer} onReveal={setCurrent} />
             </ScrollArea>
         </div>
     );

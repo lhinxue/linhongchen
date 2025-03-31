@@ -6,14 +6,15 @@ import "./Page.css";
 interface PageProps {
     children?: React.ReactNode;
     id?: string;
+    className?: string;
     onReveal?: (id?: string) => void;
     h1?: string;
     h2?: string[];
     headerContent?: React.ReactNode;
 }
 
-const Page: React.FC<PageProps> = ({ children, id, onReveal = () => {}, h1, h2, headerContent }) => {
-    const { inView, ref } = useInView({ threshold: 0.2 });
+const Page: React.FC<PageProps> = ({ children, id, className = "", onReveal = () => {}, h1, h2, headerContent }) => {
+    const { inView, ref } = useInView({ threshold: 0.05 });
 
     useEffect(() => {
         if (inView) onReveal(id);
@@ -21,7 +22,7 @@ const Page: React.FC<PageProps> = ({ children, id, onReveal = () => {}, h1, h2, 
 
     return (
         <>
-            <div id={id} ref={ref} className="page">
+            <div id={id} ref={ref} className={`page ${className}`}>
                 {h1 && (
                     <div className="page-header">
                         <Title h1={h1} h2={h2} />
