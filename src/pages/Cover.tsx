@@ -1,9 +1,12 @@
-import Page from "../components/Page";
-import Button from "../components/Button";
 import { AnimationProps, motion } from "motion/react";
-import "./Cover.css";
+import { useEffect, useState } from "react";
+
+import Button from "../components/Button";
+import Page from "../components/Page";
 import useApp from "../hooks/useApp";
-import { useState, useEffect } from "react";
+
+import "./Cover.css";
+import Icons from "../components/Icons";
 
 interface CoverProps {
     onReveal: (id?: string) => void;
@@ -51,22 +54,39 @@ export default function Cover({ onReveal, animation, onNext }: CoverProps) {
         <Page id="cover" className="dark" onReveal={handleReveal}>
             <motion.section initial={animation.initial} animate={animation.animate} exit={animation.exit}>
                 <h1>
-                    <span dangerouslySetInnerHTML={{ __html: tagline1 }} />
+                    {/* <span dangerouslySetInnerHTML={{ __html: tagline1 }} /> */}
+                    <span>
+                        {tagline1.split("").map((l, i) => (
+                            <span
+                                className={`${
+                                    (i == 0 || tagline1[i - 1] === " ") && l.match(/[a-z]/i) ? "cap-letter" : ""
+                                }`}
+                            >
+                                {l}
+                            </span>
+                        ))}
+                    </span>
                     <span>
                         {tagline1p.split("").map((l) => (
                             <span>{l}</span>
                         ))}
                     </span>
                 </h1>
-                <h2>
+                {/* <h2>
                     <span>
                         {tagline2p.split("").map((l) => (
                             <span>{l}</span>
                         ))}
+                    </span>{" "}
+                    <span>
+                        {tagline2.split("").map((l, i) => (
+                            <span className={`${i == 0 || tagline2[i - 1] === " " ? "capletter" : ""}`}>{l}</span>
+                        ))}
                     </span>
-                    <span dangerouslySetInnerHTML={{ __html: tagline2 }} />
-                </h2>
-                <Button onClick={onNext}>Discover more</Button>
+                </h2> */}
+                <Button onClick={onNext} iconOnly>
+                    <Icons.CaretDown />{" "}
+                </Button>
             </motion.section>
         </Page>
     );

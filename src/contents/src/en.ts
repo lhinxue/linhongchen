@@ -7,12 +7,11 @@ const en: Content = {
     license: "2023 by Hongchen Lin",
     links: { linkedin: "", github: "", youtube: "", x: "", facebook: "" },
     tagline: [
-        { _1: "See you tomorrow", _1p: "明天见", _2: "is the greatest prophecy in the world", _2p: "是世界上最伟大的预言" },
         {
-            _1: "why does life slumber?",
-            _1p: "生命因何而沉睡",
-            _2: "Because someday, we will wake from our dreams",
-            _2p: "因为总有一天，我们会从梦中醒来",
+            _1: "why does life slumber ?",
+            _1p: "生命因何而沉睡？",
+            _2: "Because someday, we will all wake from our dreams",
+            _2p: "因为总有一天，我们都会从梦中醒来",
         },
     ],
     coverBtn: "discover more",

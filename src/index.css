@@ -3,19 +3,27 @@
 @font-face {
     font-family: 'CustomFont';
     src: url('assets/仓耳今楷01-W03.ttf') format('truetype');
-    font-weight: normal;
+    font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'CustomFont';
+    src: url('assets/仓耳今楷01-W04.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'CustomFont';
     src: url('assets/仓耳今楷01-W05.ttf') format('truetype');
-    font-weight: bold;
+    font-weight: 800;
     font-style: normal;
 }
 
 :root {
-    font-family: 'CustomFont', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    font-family: "Bitter", 'CustomFont', system-ui, Avenir, Helvetica, Arial, sans-serif;
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;

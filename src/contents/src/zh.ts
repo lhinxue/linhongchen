@@ -11,8 +11,8 @@ const zh: Content = {
         {
             _1: "why does life slumber",
             _1p: "生命因何而沉睡",
-            _2: "Because someday, we will wake from our dreams",
-            _2p: "因为总有一天，我们会从梦中醒来",
+            _2: "Because someday, we will all wake from our dreams",
+            _2p: "因为总有一天，我们都会从梦中醒来",
         },
     ],
     coverBtn: "discover more",
